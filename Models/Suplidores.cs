@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class Suplidores
+    public class AgroVeterinariaSoft.Models
     {
         [Key]
         public int CodigoSuplidor { get; set; }
