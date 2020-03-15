@@ -18,7 +18,7 @@ namespace AgroVeterinariaSoft.Models
         public string Telefono { get; set; }
         public decimal Total { get; set; }
 
-        [ForeignKey("OrdenDeCompraId")]
+        [ForeignKey("CompraId")]
         public virtual List<DetalleProductos> ListaProductos { get; set; }
 
         public Compras()
