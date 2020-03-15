@@ -5,12 +5,59 @@
 
 <div class="container">
     <h3 class="display-3 text-center">Registro de Clientes</h3>
-    
-    <div>
-        <EditForm>
 
-        </EditForm>
-    </div>
+
+    <EditForm Model="Cliente" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator/>
+
+        <div class="form-group">
+            <label>Id</label>
+            <div class="input-group">
+                <InputNumber @bind-Value="Cliente.ClienteId" class="form-control" />
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label>Nombres</label>
+            <InputText @bind-Value="Cliente.Nombres" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Fecha de Nacimiento</label>
+            <InputDate @bind-Value="Cliente.FechaNacimiento" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Cedula</label>
+            <InputText @bind-Value="Cliente.Cedula" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Telefono</label>
+            <InputText @bind-Value="Cliente.Telefono" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Direccion</label>
+            <InputText @bind-Value="Cliente.Direccion" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Balance</label>
+            <InputNumber @bind-Value="Cliente.Balance" class="form-control" />
+        </div>
+
+        <ValidationSummary/>
+        <button type="button" class="btn btn-primary" @onclick="Limpiar">Limpiar</button>
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+
+    </EditForm>
+
 
 </div>
 
@@ -19,6 +66,79 @@
     public Clientes Cliente { get; set; }
 
     protected override void OnInitialized()
+    {
+        Cliente = new Clientes();
+    }
+
+    private void Guardar()
+    {
+        try
+        {
+            if(ClientesController.Guardar(Cliente))
+            {
+                Cliente = new Clientes();
+                toastService.ShowSuccess("Guardado correctamente");
+            }
+            else
+            {
+                toastService.ShowError("No se pudo guardar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void Buscar()
+    {
+        try
+        {
+            Clientes temp = ClientesController.Buscar(Cliente.ClienteId);
+
+            if(temp != null)
+            {
+                Cliente = temp;
+            }
+            else
+            {
+                toastService.ShowError("No se pudo encontrar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void Eliminar()
+    {
+        try
+        {
+
+
+            if(ClientesController.Existe(Cliente.ClienteId))
+            {
+                if(ClientesController.Eliminar(Cliente.ClienteId))
+                {
+                    toastService.ShowError("No se pudo eliminar");
+                }
+            }
+            else
+            {
+                toastService.ShowInfo("No se pudo encontrar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void Limpiar()
     {
         Cliente = new Clientes();
     }

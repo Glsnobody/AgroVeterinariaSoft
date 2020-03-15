@@ -12,6 +12,12 @@ namespace AgroVeterinariaSoft.Models
         public int ClienteId { get; set; }
         [Required(ErrorMessage = "Es necesario introducir un nombre")]
         public string Nombres { get; set; }
+        [Required(ErrorMessage = "Es necesario introducir una direccion")]
+        [StringLength(maximumLength:100,ErrorMessage ="La direccion esta fuera de rango")]
+        public string Direccion { get; set; }
+        [Required(ErrorMessage = "Es necesario introducir un telefono")]
+        [StringLength(maximumLength: 10, ErrorMessage = "El telefono esta fuera de rango")]
+        public string Telefono { get; set; }
         [Required(ErrorMessage = "Es necesario introducir una fecha de creacion")]
         [Range(typeof(DateTime), minimum: "1/1/2000", maximum: "1/1/2030", ErrorMessage = "La fecha de creacion esta fuera de rango")]
         public DateTime FechaCreacion { get; set; }
