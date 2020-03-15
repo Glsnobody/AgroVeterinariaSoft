@@ -1,0 +1,59 @@
+﻿
+
+
+<div class="container">
+
+    <h3 class="display-3 text-center">Registro de Ventas</h3>
+
+    <div>
+        <EditForm>
+            <div class="form-group">
+                <label>Id</label>
+                <div class="input-group">
+                    <InputNumber @bind-Value="Venta.VentaId" class="form-control" />
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-row">
+                <div class="col form-group">
+                    <label>ClienteId</label>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="Cliente.ClienteId" class="form-control" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-primary" @onclick="BuscarCliente">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col form-group">
+                    <label>Cliente</label>
+                    <InputText @bind-Value="Cliente.Nombres" class="form-control"/>
+                </div>
+            </div>
+
+            <div class="form-control">
+                <label>Fecha</label>
+                <InputDate @bind-Value="Venta.Fecha" class="form-control"/>
+            </div>
+                
+                
+        </EditForm>
+    </div>
+
+</div>
+
+@code {
+
+    public Ventas Venta { get; set; }
+    public Clientes Cliente { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Venta = new Ventas();
+    }
+
+}
