@@ -26,7 +26,7 @@ namespace AgroVeterinariaSoft.Models
         public decimal Itbis { get; set; }
         [Required(ErrorMessage = "Es necesario definir un tipo de compra")]
         [Range(typeof(decimal), minimum: "1", maximum: "2", ErrorMessage = " El tipo de compra es incorrecto")]
-        public int TipoCompra { get; set; }
+        public int TipoVenta { get; set; }
         [ForeignKey("VentaId")]
         public List<VentasDetalle> Productos { get; set; }
 
@@ -38,7 +38,7 @@ namespace AgroVeterinariaSoft.Models
             Observacion = string.Empty;
             Total = 0;
             Itbis = 0;
-            TipoCompra = 1;
+            TipoVenta = 1;
             Productos = new List<VentasDetalle>();
         }
     }
