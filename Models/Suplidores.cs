@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entidades
+namespace AgroVeterinariaSoft.Models
 {
-    public class AgroVeterinariaSoft.Models
+    public class Suplidores
     {
         [Key]
         public int CodigoSuplidor { get; set; }
