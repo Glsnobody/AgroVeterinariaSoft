@@ -74,7 +74,7 @@ namespace AgroVeterinariaSoft.Controllers
                     if (item.ID==0)
                     {
                         Database.Entry(item).State = EntityState.Added;
-                        var productos = ProductosController.Buscar(item.CompraId);
+                        var productos = ProductosController.Buscar(item.ProductoId);
                         productos.Cantidad += item.Cantidad;
                     }
                 }
@@ -84,7 +84,7 @@ namespace AgroVeterinariaSoft.Controllers
                     if (!Compra.ListaProductos.Any(Q=>Q.ID==item.ID))
                     {
                         Database.Entry(item).State = EntityState.Deleted;
-                        var productos = ProductosController.Buscar(item.CompraId);
+                        var productos = ProductosController.Buscar(item.ProductoId);
                         productos.Cantidad -= item.Cantidad;
 
                     }
