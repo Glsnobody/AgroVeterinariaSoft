@@ -1,4 +1,5 @@
 ﻿@page "/RVenta"
+@inject IToastService toastService
 
 
 <div class="container">
@@ -6,13 +7,13 @@
     <h3 class="display-3 text-center">Registro de Ventas</h3>
 
     <div>
-        <EditForm Model="Venta">
+        <EditForm Model="Venta" OnValidSubmit="Guardar">
             <div class="form-group">
                 <label>Id</label>
                 <div class="input-group">
                     <InputNumber @bind-Value="Venta.VentaId" class="form-control" />
                     <div class="input-group-append">
-                        <button type="button" class="btn btn-primary">Buscar</button>
+                        <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
                     </div>
                 </div>
 
@@ -22,9 +23,9 @@
                 <div class="col form-group">
                     <label>ClienteId</label>
                     <div class="input-group">
-                        <InputNumber @bind-Value="Cliente.ClienteId" class="form-control" />
+                        <InputNumber @bind-Value="Venta.ClienteId" class="form-control" />
                         <div class="input-group-append">
-                            <button type="button" class="btn btn-primary">Buscar</button>
+                            <button type="button" class="btn btn-primary" @onclick="BuscarCliente">Buscar</button>
                         </div>
                     </div>
                 </div>
@@ -57,7 +58,7 @@
                     <div class="input-group">
                         <InputNumber @bind-Value="Producto.ProductoId" class="form-control" />
                         <div class="input-group-append">
-                            <button type="button" class="btn btn-outline-primary">Agregar</button>
+                            <button type="button" class="btn btn-outline-primary" @onclick="BuscarProducto">Buscar</button>
                         </div>
                     </div>
 
@@ -70,7 +71,13 @@
 
                 <div class="form-group col">
                     <label>Cantidad</label>
-                    <InputNumber @bind-Value="CantidadProducto" class="form-control" />
+                    <div class="input-group">
+                        <InputNumber @bind-Value="CantidadProducto" class="form-control" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
 
@@ -109,9 +116,9 @@
             </div>
 
             <div class="form-group">
-                <button type="button" class="btn btn-primary">Limpiar</button>
+                <button type="button" class="btn btn-primary" @onclick="Limpiar">Limpiar</button>
                 <button type="submit" class="btn btn-success">Guardar</button>
-                <button type="button" class="btn btn-danger">Eliminar</button>
+                <button type="button" class="btn btn-danger" >Eliminar</button>
             </div>
         </EditForm>
     </div>
@@ -126,14 +133,133 @@
 
     public int CantidadProducto { get; set; }
     public string TipoVentaSeleccionada { get; set; }
+
     protected override void OnInitialized()
+    {
+
+        Limpiar();
+    }
+
+
+    private void Guardar()
+    {
+        try
+        {
+            if(VentasController.Guardar(Venta))
+            {
+                Venta = new Ventas();
+                toastService.ShowSuccess("Guardado correctamente");
+            }
+            else
+            {
+                toastService.ShowInfo("No se pudo guardar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void BuscarProducto()
+    {
+        try
+        {
+            Productos temp = ProductosController.Buscar(Producto.ProductoId);
+            if(temp != null)
+            {
+                Producto = temp;
+            }
+            else
+            {
+                toastService.ShowInfo("No se pudo encontrar el producto");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void AgregarProducto()
+    {
+        Venta.Productos.Add(new VentasDetalle()
+        {
+            ProductoId = Producto.ProductoId,
+            Precio = Producto.Precio,
+            Cantidad = CantidadProducto,
+            Descripcion = Producto.Descripcion
+
+        }) ;
+
+        CalcularTotal();
+
+        Producto = new Productos();
+    }
+
+    private void Buscar()
+    {
+        try
+        {
+            Ventas temp = VentasController.Buscar(Venta.VentaId);
+
+            if(temp != null)
+            {
+                Venta = temp;
+                BuscarCliente();
+            }
+            else
+            {
+                toastService.ShowInfo("No se pudo encontrar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void Limpiar()
     {
         Venta = new Ventas();
         Cliente = new Clientes();
         Producto = new Productos();
+        
+        CalcularTotal();
 
         CantidadProducto = 0;
-        TipoVentaSeleccionada = "1";
+        TipoVentaSeleccionada = Venta.TipoVenta.ToString();
+
+    }
+
+    private void BuscarCliente()
+    {
+        try
+        {
+            Clientes temp = ClientesController.Buscar(Venta.ClienteId);
+
+            if(temp != null)
+            {
+                Cliente = temp;
+            }
+            else
+            {
+                toastService.ShowInfo("No se encontro el cliente");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void CalcularTotal()
+    {
+        Venta.Total = Venta.Productos.Sum(A=> A.Precio * A.Cantidad);
     }
 
 }
