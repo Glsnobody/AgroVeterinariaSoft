@@ -99,7 +99,7 @@ namespace AgroVeterinariaSoft.Migrations
                         name: "FK_DetalleProductos_OrdenDeCompras_OrdenDeCompraNoOrden",
                         column: x => x.OrdenDeCompraNoOrden,
                         principalTable: "OrdenDeCompras",
-                        principalColumn: "NoOrden",
+                        principalColumn: "OrdenDeCompraId",
                         onDelete: ReferentialAction.Restrict);
                 });
 

@@ -1,0 +1,76 @@
+﻿@page "/UI/Regsitros/registroProductos"
+
+@using AgroVeterinariaSoft.Data;
+@using AgroVeterinariaSoft.Models;
+@using AgroVeterinariaSoft.Controllers;
+<h3>RegistroProductos</h3>
+
+<EditForm Model="Producto" OnValidSubmit="Guardar">
+    <div class="form-group">
+        <label for="ProductoIdNumber">Producto ID: </label>
+        <div class="form-row">
+            <div class="col col-md-4">
+                <InputNumber id="ProductoIdNumber" @bind-Value="Producto.ProductoId" class="form-control" />
+            </div>
+            <div class="col col-md-4">
+                <button type="button" class="btn btn-primary" @onclick="Buscar"> Buscar</button>
+            </div>
+        </div>
+        <label for="FechaDate">Fecha: </label>
+        <InputDate id="FechaDate" @bind-Value="Producto.Fecha" class="form-control"> Fecha: </InputDate>
+
+        <label for="DescripcionText">Descripcion: </label>
+        <InputText id="DescripcionText" @bind-Value="Producto.Descripcion" class="form-control"></InputText>
+
+        <label for="CantidadNumber">Cantidad: </label>
+        <InputNumber id="CantidadNumber" @bind-Value="Producto.Cantidad" class="form-control"></InputNumber>
+
+        <label for="MinimoNumber">Minimo: </label>
+        <InputNumber id="MinimoNumber" @bind-Value="Producto.Minimo" class="form-control"></InputNumber>
+
+        <label for="UnidadText">Unidad: </label>
+        <InputText id="UnidadText" @bind-Value="Producto.Unidad" class="form-control"></InputText>
+
+        <label for="CostoNumber">Costo: </label>
+        <InputNumber id="CostoNumber" @bind-Value="Producto.Costo" class="form-control"></InputNumber>
+
+        <label for="GananciaNumber">Ganancia: </label>
+        <InputNumber id="GananciaNumber" @bind-Value="Producto.Ganancia" class="form-control"></InputNumber>
+
+        <label for="PrecioNumber">Precio: </label>
+        <InputNumber id="PrecioNumber" @bind-Value="Producto.Precio" class="form-control"></InputNumber>
+        <div class="btn-group">
+            <button class="btn btn-primary" @onclick="Nuevo" type="button">Nuevo</button>
+            <button class="btn btn-success" @onclick="Guardar" type="submit">Guardar</button>
+            <button class="btn btn-danger" @onclick="Borrar" type="button">Eliminar</button>
+        </div>
+
+
+    </div>
+</EditForm>
+
+
+@code {
+    Productos Producto = new Productos();
+
+    private void Guardar()
+    {
+
+    }
+    private void Buscar()
+    {
+
+    }
+    private void Borrar()
+    {
+
+    }
+    private void Nuevo()
+    {
+
+    }
+    private void Calcular()
+    {
+
+    }
+}

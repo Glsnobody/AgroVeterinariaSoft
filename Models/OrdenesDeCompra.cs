@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace AgroVeterinariaSoft.Models
 {
-    public class OrdenDeCompra
+    public class OrdenesDeCompra
     {
         [Key]
-        public int NoOrden { get; set; }
-        public int CodigoSuplidor { get; set; }
+        public int OrdenDeCompraId { get; set; }
+        public int SuplidorId { get; set; }
         public DateTime Fecha { get; set; }
         public decimal Impuesto { get; set; }
         public string Telefono { get; set; }
@@ -19,10 +19,10 @@ namespace AgroVeterinariaSoft.Models
 
         public virtual List<DetalleProductos> ListaProductos { get; set; }
 
-        public OrdenDeCompra()
+        public OrdenesDeCompra()
         {
-            NoOrden = 0;
-            CodigoSuplidor = 0;
+            OrdenDeCompraId = 0;
+            SuplidorId = 0;
             Fecha = DateTime.Now;
             Impuesto = 0;
             Telefono = string.Empty;

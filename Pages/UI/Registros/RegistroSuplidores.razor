@@ -1,4 +1,4 @@
-﻿@page "/UI/Regsitros/resgisrtoSuplidores"
+﻿@page "/UI/Regsitros/registroSuplidores"
 
 @using AgroVeterinariaSoft.Data;
 @using AgroVeterinariaSoft.Models;
@@ -6,7 +6,34 @@
 <h3>RegistroSuplidores</h3>
 
 <EditForm Model="Suplidor" OnValidSubmit="Guardar">
+    <div class="form-group">
+        <label for="SuplidorIdNumber">SuplidorId:</label>
+        <div class="form-row">
+            <div class="col-3">
+                <InputNumber id="SuplidorIdNumber" @bind-Value="Suplidor.SuplidorId" class="form-control" />
+            </div>
+            <div class="col-4">
+                <button class="btn btn-primary" type="button" @onclick="Buscar">Buscar </button>
+            </div>
+        </div>
+        <label for="FechaCreacionDate">Fecha: </label>
+        <InputDate id="FechaCreacionDate" @bind-Value="Suplidor.FechaCreacion" class="form-control"> Fecha: </InputDate>
+        <label for="NombreText">Nombre: </label>
+        <InputText id="NombreText" @bind-Value="Suplidor.Nombre" class="form-control"></InputText>
 
+        <label for="DireccionText">Direccion: </label>
+        <InputText id="DireccionText" @bind-Value="Suplidor.Direccion" class="form-control"></InputText>
+
+        <label for="RNCText">RNC: </label>
+        <InputText id="RNCText" @bind-Value="Suplidor.RNC" class="form-control"></InputText>
+        <div class="btn-group">
+            <button class="btn btn-primary" @onclick="Nuevo" type="button">Nuevo</button>
+            <button class="btn btn-success" @onclick="Guardar" type="submit">Guardar</button>
+            <button class="btn btn-danger"  @onclick="Eliminar" type="button">Eliminar</button>
+        </div>
+
+    </div>
+    
 </EditForm>
 
 
@@ -15,6 +42,21 @@
     Suplidores Suplidor = new Suplidores();
 
     private void Guardar()
+    {
+
+    }
+
+    private void Buscar()
+    {
+
+    }
+
+    private void Nuevo()
+    {
+
+    }
+
+    private void Eliminar()
     {
 
     }

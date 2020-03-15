@@ -12,7 +12,7 @@ namespace AgroVeterinariaSoft.Data
         public DbSet<Suplidores> Suplidores { get; set; }
         public DbSet<Usuarios> Usuarios { get; set; }
         public DbSet<Productos> Productos { get; set; }
-        public DbSet<OrdenDeCompra> OrdenDeCompras { get; set; }
+        public DbSet<OrdenesDeCompra> OrdenesDeCompras { get; set; }
         public DbSet<DetalleProductos> DetalleProductos { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

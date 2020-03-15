@@ -11,7 +11,7 @@ namespace AgroVeterinariaSoft.Models
     {
         [Key]
         public int ID { get; set; }
-        public int NoProducto { get; set; }
+        public int ProductoId { get; set; }
         public string Descripcion { get; set; }
         public int Cantidad { get; set; }
         public decimal Precio { get; set; }
@@ -20,7 +20,7 @@ namespace AgroVeterinariaSoft.Models
         public DetalleProductos(int iD, int noProducto, string descripcion, int cantidad, decimal precio, decimal importe)
         {
             ID = iD;
-            NoProducto = noProducto;
+            ProductoId = noProducto;
             Descripcion = descripcion;
             Cantidad = cantidad;
             Precio = precio;
