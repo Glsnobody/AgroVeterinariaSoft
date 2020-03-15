@@ -23,7 +23,7 @@
                 <div class="col form-group">
                     <label>ClienteId</label>
                     <div class="input-group">
-                        <InputNumber @bind-Value="Venta.ClienteId" class="form-control" />
+                        <InputNumber @bind-Value="Venta.ClienteId" class="form-control" @onchange="BuscarCliente" />
                         <div class="input-group-append">
                             <button type="button" class="btn btn-primary" @onclick="BuscarCliente">Buscar</button>
                         </div>
@@ -102,7 +102,7 @@
                                 <td>@obj.Descripcion</td>
                                 <td>@obj.Precio</td>
                                 <td>@obj.Cantidad</td>
-                                <td><button type="button" class="btn btn-sm " @onclick="(()=> Venta.Productos.Remove(obj))">Eliminar</button></td>
+                                <td><button type="button" class="btn btn-sm " @onclick="(()=> RemoverProducto(obj))">Eliminar</button></td>
                             </tr>
                         }
 
@@ -110,10 +110,17 @@
 
                 </table>
             </div>
-            <div class="form-group">
-                <label>Observacion</label>
-                <InputTextArea @bind-Value="Venta.Observacion" class="form-control" />
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Observacion</label>
+                    <InputTextArea @bind-Value="Venta.Observacion" class="form-control" />
+                </div>
+                <div class="col form-group">
+                    <label>Total</label>
+                    <InputNumber @bind-Value="Venta.Total" class="form-control" />
+                </div>
             </div>
+           
 
             <div class="form-group">
                 <button type="button" class="btn btn-primary" @onclick="Limpiar">Limpiar</button>
@@ -145,6 +152,18 @@
     {
         try
         {
+            if(!ClientesController.Existe(Venta.ClienteId))
+            {
+                toastService.ShowWarning("El cliente no existe");
+                return;
+            }
+
+            if(Venta.Productos.Count <= 0)
+            {
+                 toastService.ShowWarning("Debe agregar productos");
+                return;
+            }
+
             if(VentasController.Guardar(Venta))
             {
                 Venta = new Ventas();
@@ -185,6 +204,18 @@
 
     private void AgregarProducto()
     {
+        if(string.IsNullOrWhiteSpace(Producto.Descripcion))
+        {
+            toastService.ShowInfo("Se debe buscar un producto");
+            return;
+        }
+
+        if(CantidadProducto <= 0)
+        {
+            toastService.ShowInfo("La cantidad del producto debe ser mayot a 0");
+            return;
+        }
+
         Venta.Productos.Add(new VentasDetalle()
         {
             ProductoId = Producto.ProductoId,
@@ -197,6 +228,13 @@
         CalcularTotal();
 
         Producto = new Productos();
+    }
+
+    private void RemoverProducto(VentasDetalle entity)
+    {
+        Venta.Productos.Remove(entity);
+        CalcularTotal();
+
     }
 
     private void Buscar()
@@ -227,7 +265,7 @@
         Venta = new Ventas();
         Cliente = new Clientes();
         Producto = new Productos();
-        
+
         CalcularTotal();
 
         CantidadProducto = 0;
