@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace AgroVeterinariaSoft.Models
 {
-    public class OrdenesDeCompra
+    public class Compras
     {
         [Key]
-        public int OrdenDeCompraId { get; set; }
+        public int CompraId { get; set; }
         public int SuplidorId { get; set; }
         public DateTime Fecha { get; set; }
         public decimal Impuesto { get; set; }
@@ -21,9 +21,9 @@ namespace AgroVeterinariaSoft.Models
         [ForeignKey("OrdenDeCompraId")]
         public virtual List<DetalleProductos> ListaProductos { get; set; }
 
-        public OrdenesDeCompra()
+        public Compras()
         {
-            OrdenDeCompraId = 0;
+            CompraId = 0;
             SuplidorId = 0;
             Fecha = DateTime.Now;
             Impuesto = 0;
