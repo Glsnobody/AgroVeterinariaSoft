@@ -1,0 +1,25 @@
+﻿@page "/RClientes"
+@inject IToastService toastService
+
+<h3>RClientesComponent</h3>
+
+<div class="container">
+    <h3 class="display-3 text-center">Registro de Clientes</h3>
+    
+    <div>
+        <EditForm>
+
+        </EditForm>
+    </div>
+
+</div>
+
+@code {
+
+    public Clientes Cliente { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Cliente = new Clientes();
+    }
+}
