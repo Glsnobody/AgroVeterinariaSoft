@@ -17,9 +17,9 @@ namespace AgroVeterinariaSoft.Controllers
             Contexto db = new Contexto();
             try
             {
-                if (!db.Clientes.Any(A => A.ClienteId == entity.ClienteId))
+                if (!db.Ventas.Any(A => A.VentaId == entity.VentaId))
                 {
-                    if (entity.ClienteId == 0)
+                    if (entity.VentaId == 0)
                     {
                         paso = Insertar(entity);
                     }
@@ -114,7 +114,7 @@ namespace AgroVeterinariaSoft.Controllers
 
             try
             {
-                venta = db.Ventas.Where(A => A.ClienteId == Id).Include(A=> A.Productos).FirstOrDefault();
+                venta = db.Ventas.Where(A => A.VentaId == Id).Include(A=> A.Productos).FirstOrDefault();
             }
             catch (Exception)
             {

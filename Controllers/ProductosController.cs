@@ -19,8 +19,7 @@ namespace AgroVeterinariaSoft.Controllers
             {
                 if (Producto.ProductoId == 0)
                 {
-                    paso=Insertar(Producto);
-                    
+                    paso = Insertar(Producto);
                 }
                 else
                 {
