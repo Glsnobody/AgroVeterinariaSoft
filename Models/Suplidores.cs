@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entidades
+namespace AgroVeterinariaSoft.Models
 {
-    public class AgroVeterinariaSoft.Models
+    public class Suplidores
     {
         [Key]
-        public int CodigoSuplidor { get; set; }
+        public int SuplidorId { get; set; }
         public string Nombre { get; set; }
         public string Direccion { get; set; }
         public string  Telefono { get; set; }
@@ -19,7 +19,7 @@ namespace Entidades
         
         public Suplidores()
         {
-            CodigoSuplidor = 0;
+            SuplidorId = 0;
             Nombre = string.Empty;
             Direccion = string.Empty;
             Telefono = string.Empty;

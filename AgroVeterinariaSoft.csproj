@@ -2,13 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartWorkingDirectory>$(MSBuildProjectDirectory)</StartWorkingDirectory>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.entityframeworkcore.tools" Version="3.1.2">
+    <PackageReference Include="Blazored.Toast" Version="2.0.9" />
+    <PackageReference Include="Microsoft.entityframeworkcore.sqlite" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DataBase\" />
+    <Folder Include="Pages\UI\Consultas\" />
   </ItemGroup>
 
 </Project>

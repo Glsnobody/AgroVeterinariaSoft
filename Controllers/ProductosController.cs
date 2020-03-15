@@ -1,29 +1,29 @@
-﻿using System;
+﻿using AgroVeterinariaSoft.Data;
+using AgroVeterinariaSoft.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using AgroVeterinariaSoft.Data;
-using AgroVeterinariaSoft.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace AgroVeterinariaSoft.Controllers
 {
-    public class SuplidoresController
+    public class ProductosController
     {
-        public static bool Guardar(Suplidores Suplidor)
+        public static bool Guardar(Productos Producto)
         {
             bool paso = false;
             Contexto Database = new Contexto();
             try
             {
-                if(Suplidor.SuplidorId==0)
+                if (Producto.ProductoId == 0)
                 {
-                    Insertar(Suplidor);
+                    Insertar(Producto);
                 }
                 else
                 {
-                    Modificar(Suplidor);
+                    Modificar(Producto);
                 }
             }
             catch (Exception)
@@ -33,14 +33,14 @@ namespace AgroVeterinariaSoft.Controllers
             }
             return paso;
         }
-        public static bool Insertar(Suplidores Suplidor)
+        public static bool Insertar(Productos Producto)
         {
-            Contexto Database = new Contexto(); 
+            Contexto Database = new Contexto();
             bool paso = false;
 
             try
             {
-                Database.Suplidores.Add(Suplidor);
+                Database.Productos.Add(Producto);
                 paso = Database.SaveChanges() > 0;
 
             }
@@ -54,14 +54,14 @@ namespace AgroVeterinariaSoft.Controllers
             return paso;
         }
 
-        public static bool Modificar(Suplidores Suplidor)
+        public static bool Modificar(Productos Producto)
         {
             Contexto Database = new Contexto();
             bool paso = false;
             try
             {
-                Database.Entry(Suplidor).State = EntityState.Modified;
-                paso = Database.SaveChanges()>0;
+                Database.Entry(Producto).State = EntityState.Modified;
+                paso = Database.SaveChanges() > 0;
             }
             catch (Exception)
             {
@@ -71,17 +71,17 @@ namespace AgroVeterinariaSoft.Controllers
             Database.Dispose();
 
             return paso;
-           
+
         }
 
-        public static Suplidores Buscar(int Id)
+        public static Productos Buscar(int Id)
         {
-            Suplidores Suplidor;
+            Productos Producto;
             Contexto Database = new Contexto();
 
             try
             {
-                Suplidor = Database.Suplidores.Find(Id);
+                Producto = Database.Productos.Find(Id);
             }
             catch (Exception)
             {
@@ -90,20 +90,20 @@ namespace AgroVeterinariaSoft.Controllers
             }
             Database.Dispose();
 
-            return Suplidor;
+            return Producto;
         }
 
         public static bool Eliminar(int Id)
         {
-            bool paso=false;
-           
+            bool paso = false;
+
             Contexto Database = new Contexto();
 
             try
             {
-                Suplidores Suplidor = Database.Suplidores.Find(Id);
-                Database.Suplidores.Remove(Suplidor);
-                if(Database.SaveChanges()>0)
+                Productos Producto = Database.Productos.Find(Id);
+                Database.Productos.Remove(Producto);
+                if (Database.SaveChanges() > 0)
                 {
                     paso = true;
                 }
@@ -119,14 +119,14 @@ namespace AgroVeterinariaSoft.Controllers
 
         }
 
-        public static List<Suplidores> GetList(Expression<Func<Suplidores,bool>>expression)
+        public static List<Productos> GetList(Expression<Func<Productos, bool>> expression)
         {
             Contexto Database = new Contexto();
-            List<Suplidores> Lista;
+            List<Productos> Lista;
 
             try
             {
-                Lista = Database.Suplidores.Where(expression).ToList();
+                Lista = Database.Productos.Where(expression).ToList();
             }
             catch (Exception)
             {
