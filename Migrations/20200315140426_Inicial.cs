@@ -3,17 +3,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AgroVeterinariaSoft.Migrations
 {
-    public partial class Migracion : Migration
+    public partial class Inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "OrdenDeCompras",
+                name: "OrdenesDeCompras",
                 columns: table => new
                 {
-                    NoOrden = table.Column<int>(nullable: false)
+                    OrdenDeCompraId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    CodigoSuplidor = table.Column<int>(nullable: false),
+                    SuplidorId = table.Column<int>(nullable: false),
                     Fecha = table.Column<DateTime>(nullable: false),
                     Impuesto = table.Column<decimal>(nullable: false),
                     Telefono = table.Column<string>(nullable: true),
@@ -21,14 +21,14 @@ namespace AgroVeterinariaSoft.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrdenDeCompras", x => x.NoOrden);
+                    table.PrimaryKey("PK_OrdenesDeCompras", x => x.OrdenDeCompraId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Productos",
                 columns: table => new
                 {
-                    NoProducto = table.Column<int>(nullable: false)
+                    ProductoId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Fecha = table.Column<DateTime>(nullable: false),
                     Descripcion = table.Column<string>(nullable: true),
@@ -41,14 +41,14 @@ namespace AgroVeterinariaSoft.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Productos", x => x.NoProducto);
+                    table.PrimaryKey("PK_Productos", x => x.ProductoId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Suplidores",
                 columns: table => new
                 {
-                    CodigoSuplidor = table.Column<int>(nullable: false)
+                    SuplidorId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Nombre = table.Column<string>(nullable: true),
                     Direccion = table.Column<string>(nullable: true),
@@ -58,7 +58,7 @@ namespace AgroVeterinariaSoft.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Suplidores", x => x.CodigoSuplidor);
+                    table.PrimaryKey("PK_Suplidores", x => x.SuplidorId);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,28 +85,28 @@ namespace AgroVeterinariaSoft.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    NoProducto = table.Column<int>(nullable: false),
+                    OrdenDeCompraId = table.Column<int>(nullable: false),
+                    ProductoId = table.Column<int>(nullable: false),
                     Descripcion = table.Column<string>(nullable: true),
                     Cantidad = table.Column<int>(nullable: false),
                     Precio = table.Column<decimal>(nullable: false),
-                    Importe = table.Column<decimal>(nullable: false),
-                    OrdenDeCompraNoOrden = table.Column<int>(nullable: true)
+                    Importe = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DetalleProductos", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_DetalleProductos_OrdenDeCompras_OrdenDeCompraNoOrden",
-                        column: x => x.OrdenDeCompraNoOrden,
-                        principalTable: "OrdenDeCompras",
+                        name: "FK_DetalleProductos_OrdenesDeCompras_OrdenDeCompraId",
+                        column: x => x.OrdenDeCompraId,
+                        principalTable: "OrdenesDeCompras",
                         principalColumn: "OrdenDeCompraId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DetalleProductos_OrdenDeCompraNoOrden",
+                name: "IX_DetalleProductos_OrdenDeCompraId",
                 table: "DetalleProductos",
-                column: "OrdenDeCompraNoOrden");
+                column: "OrdenDeCompraId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -124,7 +124,7 @@ namespace AgroVeterinariaSoft.Migrations
                 name: "Usuarios");
 
             migrationBuilder.DropTable(
-                name: "OrdenDeCompras");
+                name: "OrdenesDeCompras");
         }
     }
 }

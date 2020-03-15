@@ -9,14 +9,43 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgroVeterinariaSoft.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200314234902_Migracion")]
-    partial class Migracion
+    [Migration("20200315140931_Ventas")]
+    partial class Ventas
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.2");
+
+            modelBuilder.Entity("AgroVeterinariaSoft.Models.Clientes", b =>
+                {
+                    b.Property<int>("ClienteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Cedula")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(13);
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("FechaNacimiento")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombres")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ClienteId");
+
+                    b.ToTable("Clientes");
+                });
 
             modelBuilder.Entity("AgroVeterinariaSoft.Models.DetalleProductos", b =>
                 {
@@ -33,18 +62,18 @@ namespace AgroVeterinariaSoft.Migrations
                     b.Property<decimal>("Importe")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ProductosId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("OrdenDeCompraNoOrden")
+                    b.Property<int>("OrdenDeCompraId")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Precio")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("ProductoId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("OrdenDeCompraNoOrden");
+                    b.HasIndex("OrdenDeCompraId");
 
                     b.ToTable("DetalleProductos");
                 });
@@ -55,14 +84,14 @@ namespace AgroVeterinariaSoft.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ProductosId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Impuesto")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("SuplidorId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Telefono")
                         .HasColumnType("TEXT");
@@ -72,12 +101,12 @@ namespace AgroVeterinariaSoft.Migrations
 
                     b.HasKey("OrdenDeCompraId");
 
-                    b.ToTable("OrdenDeCompras");
+                    b.ToTable("OrdenesDeCompras");
                 });
 
             modelBuilder.Entity("AgroVeterinariaSoft.Models.Productos", b =>
                 {
-                    b.Property<int>("ProductosId")
+                    b.Property<int>("ProductoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -105,14 +134,14 @@ namespace AgroVeterinariaSoft.Migrations
                     b.Property<string>("Unidad")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ProductosId");
+                    b.HasKey("ProductoId");
 
                     b.ToTable("Productos");
                 });
 
             modelBuilder.Entity("AgroVeterinariaSoft.Models.Suplidores", b =>
                 {
-                    b.Property<int>("ProductosId")
+                    b.Property<int>("SuplidorId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -131,7 +160,7 @@ namespace AgroVeterinariaSoft.Migrations
                     b.Property<string>("Telefono")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ProductosId");
+                    b.HasKey("SuplidorId");
 
                     b.ToTable("Suplidores");
                 });
@@ -165,11 +194,80 @@ namespace AgroVeterinariaSoft.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("AgroVeterinariaSoft.Models.Ventas", b =>
+                {
+                    b.Property<int>("VentaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Itbis")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Observacion")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("TipoCompra")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("VentaId");
+
+                    b.ToTable("Ventas");
+                });
+
+            modelBuilder.Entity("AgroVeterinariaSoft.Models.VentasDetalle", b =>
+                {
+                    b.Property<int>("VentaDetalleID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ProductoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("VentaId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("VentaDetalleID");
+
+                    b.HasIndex("VentaId");
+
+                    b.ToTable("VentasDetalle");
+                });
+
             modelBuilder.Entity("AgroVeterinariaSoft.Models.DetalleProductos", b =>
                 {
                     b.HasOne("AgroVeterinariaSoft.Models.OrdenesDeCompra", null)
                         .WithMany("ListaProductos")
-                        .HasForeignKey("OrdenDeCompraNoOrden");
+                        .HasForeignKey("OrdenDeCompraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AgroVeterinariaSoft.Models.VentasDetalle", b =>
+                {
+                    b.HasOne("AgroVeterinariaSoft.Models.Ventas", null)
+                        .WithMany("Productos")
+                        .HasForeignKey("VentaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
