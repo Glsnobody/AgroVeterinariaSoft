@@ -1,4 +1,4 @@
-﻿
+﻿@page "/RVenta"
 
 
 <div class="container">
@@ -6,13 +6,13 @@
     <h3 class="display-3 text-center">Registro de Ventas</h3>
 
     <div>
-        <EditForm>
+        <EditForm Model="Venta">
             <div class="form-group">
                 <label>Id</label>
                 <div class="input-group">
                     <InputNumber @bind-Value="Venta.VentaId" class="form-control" />
                     <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+                        <button type="button" class="btn btn-primary">Buscar</button>
                     </div>
                 </div>
 
@@ -24,23 +24,89 @@
                     <div class="input-group">
                         <InputNumber @bind-Value="Cliente.ClienteId" class="form-control" />
                         <div class="input-group-append">
-                            <button type="button" class="btn btn-primary" @onclick="BuscarCliente">Buscar</button>
+                            <button type="button" class="btn btn-primary">Buscar</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="col form-group">
                     <label>Cliente</label>
-                    <InputText @bind-Value="Cliente.Nombres" class="form-control"/>
+                    <InputText @bind-Value="Cliente.Nombres" class="form-control" />
                 </div>
             </div>
 
-            <div class="form-control">
-                <label>Fecha</label>
-                <InputDate @bind-Value="Venta.Fecha" class="form-control"/>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Fecha</label>
+                    <InputDate @bind-Value="Venta.Fecha" class="form-control" />
+                </div>
+
+                <div class="form-group col">
+                    <label>Tipo de Venta</label>
+                    <InputSelect @bind-Value="TipoVentaSeleccionada" class="form-control">
+                        <option selected value="1">Contado</option>
+                        <option value="2">Credito</option>
+                    </InputSelect>
+
+                </div>
             </div>
-                
-                
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>ProductoId</label>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="Producto.ProductoId" class="form-control" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-outline-primary">Agregar</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group col">
+                    <label>Producto</label>
+                    <InputText @bind-Value="Producto.Descripcion" class="form-control" />
+                </div>
+
+                <div class="form-group col">
+                    <label>Cantidad</label>
+                    <InputNumber @bind-Value="CantidadProducto" class="form-control" />
+                </div>
+            </div>
+
+
+            <div>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="row">Id</th>
+                            <th scope="row">Producto</th>
+                            <th scope="row">Precio</th>
+                            <th scope="row">Cantidad</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var obj in Venta.Productos)
+                        {
+                            <tr>
+                                <td>@obj.ProductoId</td>
+                                <td>@obj.Descripcion</td>
+                                <td>@obj.Precio</td>
+                                <td>@obj.Cantidad</td>
+                                <td><button type="button" class="btn btn-sm " @onclick="(()=> Venta.Productos.Remove(obj))">Eliminar</button></td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="form-group">
+                <label>Observacion</label>
+                <InputTextArea @bind-Value="Venta.Observacion" class="form-control" />
+            </div>
         </EditForm>
     </div>
 
@@ -50,10 +116,18 @@
 
     public Ventas Venta { get; set; }
     public Clientes Cliente { get; set; }
+    public Productos Producto { get; set; }
 
+    public int CantidadProducto { get; set; }
+    public string TipoVentaSeleccionada { get; set; }
     protected override void OnInitialized()
     {
         Venta = new Ventas();
+        Cliente = new Clientes();
+        Producto = new Productos();
+
+        CantidadProducto = 0;
+        TipoVentaSeleccionada = "1";
     }
 
 }
