@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AgroVeterinariaSoft.Data;
 using AgroVeterinariaSoft.Models;
@@ -10,6 +11,28 @@ namespace AgroVeterinariaSoft.Controllers
 {
     public class SuplidoresController
     {
+        public static bool Guardar(Suplidores Suplidor)
+        {
+            bool paso = false;
+            Contexto Database = new Contexto();
+            try
+            {
+                if(Suplidor.CodigoSuplidor==0)
+                {
+                    Insertar(Suplidor);
+                }
+                else
+                {
+                    Modificar(Suplidor);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return paso;
+        }
         public static bool Insertar(Suplidores Suplidor)
         {
             Contexto Database = new Contexto(); 
@@ -94,6 +117,23 @@ namespace AgroVeterinariaSoft.Controllers
 
             return paso;
 
+        }
+
+        public static List<Suplidores> GetList(Expression<Func<Suplidores,bool>>expression)
+        {
+            Contexto Database = new Contexto();
+            List<Suplidores> Lista;
+
+            try
+            {
+                Lista = Database.Suplidores.Where(expression).ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return Lista;
         }
     }
 }
