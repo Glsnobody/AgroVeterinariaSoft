@@ -10,7 +10,7 @@ namespace AgroVeterinariaSoft.Controllers
 {
     public class SuplidoresController
     {
-        public virtual bool Insertar(Suplidores Suplidor)
+        public static bool Insertar(Suplidores Suplidor)
         {
             Contexto Database = new Contexto(); 
             bool paso = false;
@@ -26,11 +26,12 @@ namespace AgroVeterinariaSoft.Controllers
 
                 throw;
             }
+            Database.Dispose();
 
             return paso;
         }
 
-        public virtual bool Modificar(Suplidores Suplidor)
+        public static bool Modificar(Suplidores Suplidor)
         {
             Contexto Database = new Contexto();
             bool paso = false;
@@ -44,7 +45,55 @@ namespace AgroVeterinariaSoft.Controllers
 
                 throw;
             }
+            Database.Dispose();
+
             return paso;
+           
+        }
+
+        public static Suplidores Buscar(int Id)
+        {
+            Suplidores Suplidor;
+            Contexto Database = new Contexto();
+
+            try
+            {
+                Suplidor = Database.Suplidores.Find(Id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            Database.Dispose();
+
+            return Suplidor;
+        }
+
+        public static bool Eliminar(int Id)
+        {
+            bool paso=false;
+           
+            Contexto Database = new Contexto();
+
+            try
+            {
+                Suplidores Suplidor = Database.Suplidores.Find(Id);
+                Database.Suplidores.Remove(Suplidor);
+                if(Database.SaveChanges()>0)
+                {
+                    paso = true;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            Database.Dispose();
+
+            return paso;
+
         }
     }
 }
