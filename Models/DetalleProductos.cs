@@ -28,5 +28,16 @@ namespace AgroVeterinariaSoft.Models
             Precio = 0;
             Importe = 0;
         }
+
+        public DetalleProductos(int iD, int compraId, int productoId, string descripcion, int cantidad, decimal precio, decimal importe)
+        {
+            ID = iD;
+            CompraId = compraId;
+            ProductoId = productoId;
+            Descripcion = descripcion;
+            Cantidad = cantidad;
+            Precio = precio;
+            Importe = importe;
+        }
     }
 }
