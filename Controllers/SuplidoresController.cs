@@ -19,11 +19,11 @@ namespace AgroVeterinariaSoft.Controllers
             {
                 if(Suplidor.SuplidorId==0)
                 {
-                    Insertar(Suplidor);
+                    paso= Insertar(Suplidor);
                 }
                 else
                 {
-                    Modificar(Suplidor);
+                    paso=Modificar(Suplidor);
                 }
             }
             catch (Exception)

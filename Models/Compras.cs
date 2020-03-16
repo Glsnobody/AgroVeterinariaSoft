@@ -15,7 +15,6 @@ namespace AgroVeterinariaSoft.Models
         public int SuplidorId { get; set; }
         public DateTime Fecha { get; set; }
         public decimal Impuesto { get; set; }
-        public string Telefono { get; set; }
         public decimal Total { get; set; }
 
         [ForeignKey("CompraId")]
@@ -27,7 +26,6 @@ namespace AgroVeterinariaSoft.Models
             SuplidorId = 0;
             Fecha = DateTime.Now;
             Impuesto = 0;
-            Telefono = string.Empty;
             ListaProductos = new List<DetalleProductos>();
             Total = 0;
 
