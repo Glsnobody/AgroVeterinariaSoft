@@ -1,0 +1,194 @@
+﻿@page "/CVentas"
+
+<div class="container">
+
+    <h3 class="display-3 text-center">Consulta de Ventas</h3>
+
+    <div>
+        @if (ListaVentas == null)
+        {
+            <div class="text-center">
+                <div class="spinner-border">
+                    <span class="sr-only">Loading....</span>
+                </div>
+            </div>}
+        else
+        {
+            if (ListaVentas.Count <= 0)
+            {
+                <h3 class="display-3 text-center">No hay datos que mostrar</h3>
+            }
+            else
+            {
+
+                <div class="form-row">
+                    <div class="col form-group">
+                        <div>
+                            <label>Desde</label>
+                            <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
+                        </div>
+
+                        <input type="date" @bind-value="DesdeFecha" class="form-control" />
+                    </div>
+
+                    <div class="col form-group">
+                        <label>Hasta</label>
+                        <input type="date" @bind-value="HastaFecha" class="form-control" />
+                    </div>
+
+                    <div class="col form-group">
+                        <label>Criterio</label>
+                        <input type="text" @bind-value="Criterio" class="form-control" />
+                    </div>
+                    <EditForm Model="Venta">
+                        <div class="col form-group">
+                            <label>Filtrar por</label>
+                            <div class="input-group">
+                                <InputSelect @bind-Value="Filtro" class="form-control">
+                                    <option selected value="0">Todo</option>
+                                    <option value="1">VentaId</option>
+                                    <option value="2">ClienteId</option>
+                                    <option value="3">Observacion</option>
+                                    <option value="4">Total</option>
+                                    <option value="5">Cant. Productos</option>
+                                </InputSelect>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </EditForm>
+
+
+                </div>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Cliente</th>
+                            <th scope="col">Fecha </th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Observacion</th>
+                            <th scope="col">Cant. Productos</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var entity in ListaVentasTemp)
+                        {
+                        <tr>
+                            <td scope="row">@entity.ClienteId</td>
+                            <td>@ClientesController.GetNombre(entity.ClienteId)</td>
+                            <td>@entity.Fecha.ToShortDateString()</td>
+                            <td>@entity.Total</td>
+                            <td>@entity.Observacion</td>
+                            <td>@entity.Productos.Count</td>
+                            <td><a class="btn btn-sm btn-outline-primary" href="/RVentas/@entity.VentaId">Ver</a></td>
+                        </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+            }
+        }
+
+    </div>
+
+</div>
+
+
+@code {
+
+    public List<Ventas> ListaVentas { get; set; }
+    public List<Ventas> ListaVentasTemp { get; set; }
+
+    public DateTime DesdeFecha { get; set; }
+    public DateTime HastaFecha { get; set; }
+    public string Criterio { get; set; }
+    public string Filtro { get; set; }
+    public bool FiltrarPorFecha { get; set; }
+
+
+
+    public Ventas Venta { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Run(() => { CargarLista(); Inicialzar(); });
+    }
+
+    private void Inicialzar()
+    {
+        DesdeFecha = DateTime.Now;
+        HastaFecha = DateTime.Now;
+        Venta = new Ventas();
+        ListaVentasTemp = ListaVentas;
+        FiltrarPorFecha = false;
+        Filtro = "0";
+    }
+
+    private void CargarLista()
+    {
+        try
+        {
+            ListaVentas = VentasController.GetList(A => true);
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+
+    }
+
+    private void filtrar()
+    {
+        try
+        {
+            switch (Filtro)
+            {
+                case "0":
+                    ListaVentasTemp = ListaVentas;
+                    break;
+
+                case "1":
+                    ListaVentasTemp = ListaVentas.Where(A => A.VentaId == int.Parse(Criterio)).ToList();
+                    break;
+
+                case "2":
+                    ListaVentasTemp = ListaVentas.Where(A => A.ClienteId == int.Parse(Criterio)).ToList();
+                    break;
+
+
+                case "3":
+                    ListaVentasTemp = ListaVentas.Where(A => A.Observacion.Contains(Criterio)).ToList();
+                    break;
+
+
+
+                case "4":
+                    ListaVentasTemp = ListaVentas.Where(A => A.Total == decimal.Parse(Criterio)).ToList();
+                    break;
+
+                    case "5":
+                    ListaVentasTemp = ListaVentas.Where(A=> A.Productos.Count == int.Parse(Criterio)).ToList();
+                    break;
+
+                default:
+                    ListaVentasTemp = ListaVentas;
+                    break;
+
+            }
+            if (FiltrarPorFecha)
+                ListaVentasTemp = ListaVentas.Where(A => A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date).ToList();
+
+        }
+        catch (Exception)
+        {
+
+
+        }
+    }
+
+}

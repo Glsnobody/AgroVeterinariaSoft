@@ -168,7 +168,7 @@ namespace AgroVeterinariaSoft.Controllers
 
             try
             {
-                list = db.Ventas.Where(expression).ToList();
+                list = db.Ventas.Where(expression).Include(A=> A.Productos).ToList();
             }
             catch (Exception)
             {

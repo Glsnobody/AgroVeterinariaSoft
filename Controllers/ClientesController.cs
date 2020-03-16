@@ -183,5 +183,32 @@ namespace AgroVeterinariaSoft.Controllers
 
             return paso;
         }
+
+        public static string GetNombre(int id)
+        {
+            string nombre = string.Empty;
+            Contexto db = new Contexto();
+            try
+            {
+                string temp = null;
+                temp = db.Clientes.Where(A => A.ClienteId == id).Select(A => A.Nombres).FirstOrDefault();
+
+                if (temp != null)
+                    nombre = temp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+
+
+            return nombre;
+
+        }
     }
 }
