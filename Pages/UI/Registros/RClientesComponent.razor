@@ -1,4 +1,5 @@
 ﻿@page "/RClientes"
+@page "/RClientes/{ClienteId:int}"
 @inject IToastService toastService
 
 <h3>RClientesComponent</h3>
@@ -8,7 +9,7 @@
 
 
     <EditForm Model="Cliente" OnValidSubmit="Guardar">
-        <DataAnnotationsValidator/>
+        <DataAnnotationsValidator />
 
         <div class="form-group">
             <label>Id</label>
@@ -51,7 +52,7 @@
             <InputNumber @bind-Value="Cliente.Balance" class="form-control" />
         </div>
 
-        <ValidationSummary/>
+        <ValidationSummary />
         <button type="button" class="btn btn-primary" @onclick="Limpiar">Limpiar</button>
         <button type="submit" class="btn btn-success">Guardar</button>
         <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
@@ -64,17 +65,28 @@
 @code {
 
     public Clientes Cliente { get; set; }
+    [Parameter]
+    public int ClienteId { get; set; }
 
     protected override void OnInitialized()
     {
         Cliente = new Clientes();
     }
 
+    protected override void OnParametersSet()
+    {
+        if(ClienteId > 0)
+        {
+            Cliente.ClienteId = ClienteId;
+            Buscar();
+        }
+    }
+
     private void Guardar()
     {
         try
         {
-            if(ClientesController.Guardar(Cliente))
+            if (ClientesController.Guardar(Cliente))
             {
                 Cliente = new Clientes();
                 toastService.ShowSuccess("Guardado correctamente");
@@ -97,7 +109,7 @@
         {
             Clientes temp = ClientesController.Buscar(Cliente.ClienteId);
 
-            if(temp != null)
+            if (temp != null)
             {
                 Cliente = temp;
             }
@@ -119,9 +131,9 @@
         {
 
 
-            if(ClientesController.Existe(Cliente.ClienteId))
+            if (ClientesController.Existe(Cliente.ClienteId))
             {
-                if(ClientesController.Eliminar(Cliente.ClienteId))
+                if (ClientesController.Eliminar(Cliente.ClienteId))
                 {
                     toastService.ShowError("No se pudo eliminar");
                 }
