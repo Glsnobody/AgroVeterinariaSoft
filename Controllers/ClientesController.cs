@@ -210,5 +210,24 @@ namespace AgroVeterinariaSoft.Controllers
             return nombre;
 
         }
+
+        public static bool ExisteNombre(int id,string nombre)
+        {
+            bool paso = false;
+            Contexto db = new Contexto();
+
+
+            try
+            {
+                paso = db.Clientes.Where(A=> A.ClienteId == id).Any(A =>  A.Nombres.Contains(nombre));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return paso;
+        }
     }
 }

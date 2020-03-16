@@ -47,7 +47,7 @@
                                 <InputSelect @bind-Value="Filtro" class="form-control">
                                     <option selected value="0">Todo</option>
                                     <option value="1">VentaId</option>
-                                    <option value="2">ClienteId</option>
+                                    <option value="2">Cliente</option>
                                     <option value="3">Observacion</option>
                                     <option value="4">Total</option>
                                     <option value="5">Cant. Productos</option>
@@ -157,7 +157,7 @@
                     break;
 
                 case "2":
-                    ListaVentasTemp = ListaVentas.Where(A => A.ClienteId == int.Parse(Criterio)).ToList();
+                    ListaVentasTemp = ListaVentas.Where( A => ClientesController.ExisteNombre(A.ClienteId,Criterio)).ToList();
                     break;
 
 
