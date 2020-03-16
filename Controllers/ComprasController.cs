@@ -23,7 +23,7 @@ namespace AgroVeterinariaSoft.Controllers
 
                 foreach (var item in Compra.ListaProductos)
                 {
-                    var productos = ProductosController.Buscar(item.CompraId);
+                    var productos = ProductosController.Buscar(item.ProductoId);
                     productos.Cantidad += item.Cantidad;
                 }
             }
