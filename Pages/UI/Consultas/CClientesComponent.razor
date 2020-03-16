@@ -1,0 +1,188 @@
+﻿@page "/CClientes"
+
+<div class="container">
+
+    <h3 class="display-3 text-center">Consulta de Clientes</h3>
+
+    <div>
+        @if (ListaClientes == null)
+        {
+            <div class="text-center">
+                <div class="spinner-border">
+                    <span class="sr-only">Loading....</span>
+                </div>
+            </div>}
+        else
+        {
+            if (ListaClientes.Count <= 0)
+            {
+                <h3 class="display-3 text-center">No hay datos que mostrar</h3>
+            }
+            else
+            {
+
+                <div class="form-row" >
+                    <div class="col form-group">
+                        <div>
+                            <label>Desde</label>
+                            <input type="checkbox" @bind-value="FiltrarPorFecha"/> Filtrar Fecha
+                        </div>
+                        
+                        <input type="date" @bind-value="DesdeFecha" class="form-control" />
+                    </div>
+
+                    <div class="col form-group">
+                        <label>Hasta</label>
+                        <input type="date" @bind-value="HastaFecha" class="form-control" />
+                    </div>
+
+                    <div class="col form-group">
+                        <label>Criterio</label>
+                        <input type="text" @bind-value="Criterio" class="form-control" />
+                    </div>
+                    <EditForm Model="Cliente">
+                        <div class="col form-group">
+                            <label>Filtrar por</label>
+                            <div class="input-group">
+                                <InputSelect @bind-Value="Filtro" class="form-control">
+                                    <option selected value="0">Todo</option>
+                                    <option value="1">Id</option>
+                                    <option value="2">Nombres</option>
+                                    <option value="3">Cedula</option>
+                                    <option value="4">Balance</option>
+                                    <option value="5">Fecha de Nacimiento</option>
+                                </InputSelect>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </EditForm>
+
+
+                </div>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Nombres</th>
+                            <th scope="col">Fecha Nacimiento</th>
+                            <th scope="col">Telefono</th>
+                            <th scope="col">Cedula</th>
+                            <th scope="col">Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var entity in ListaClientesTemp)
+                        {
+                            <tr>
+                                <td scope="row">@entity.ClienteId</td>
+                                <td>@entity.Nombres</td>
+                                <td>@entity.FechaNacimiento.ToShortDateString()</td>
+                                <td>@entity.Telefono</td>
+                                <td>@entity.Cedula</td>
+                                <td>@entity.Balance</td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+            }
+        }
+
+    </div>
+
+</div>
+
+
+@code {
+
+    public List<Clientes> ListaClientes { get; set; }
+    public List<Clientes> ListaClientesTemp { get; set; }
+
+    public DateTime DesdeFecha { get; set; }
+    public DateTime HastaFecha { get; set; }
+    public string Criterio { get; set; }
+    public string Filtro { get; set; }
+    public bool FiltrarPorFecha { get; set; }
+
+    public Clientes Cliente { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Run(() => { CargarLista(); Inicialzar(); });
+    }
+
+    private void Inicialzar()
+    {
+        DesdeFecha = DateTime.Now;
+        HastaFecha = DateTime.Now;
+        Cliente = new Clientes();
+        ListaClientesTemp = ListaClientes;
+        FiltrarPorFecha = false;
+        Filtro = "0";
+    }
+
+    private void CargarLista()
+    {
+        try
+        {
+            ListaClientes = ClientesController.GetList(A => true);
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+
+    }
+
+    private void filtrar()
+    {
+        try
+        {
+            switch (Filtro)
+            {
+                case "0":
+                    ListaClientesTemp = ListaClientes;
+                    break;
+
+                case "1":
+                    ListaClientesTemp = ListaClientes.Where(A => A.ClienteId == int.Parse(Criterio)).ToList();
+                    break;
+
+                case "2":
+                    ListaClientesTemp = ListaClientes.Where(A => A.Nombres.Contains(Criterio)).ToList();
+                    break;
+
+                case "3":
+                    ListaClientesTemp = ListaClientes.Where(A => A.Cedula.Contains(Criterio)).ToList();
+                    break;
+
+
+                case "4":
+                    ListaClientesTemp = ListaClientes.Where(A => A.Balance == decimal.Parse(Criterio)).ToList();
+                    break;
+
+                    case "5":
+                    ListaClientesTemp = ListaClientes.Where(A=> A.FechaNacimiento.Date >= DesdeFecha.Date && A.FechaNacimiento.Date <= HastaFecha.Date).ToList();
+                    break;
+
+                default:
+                    ListaClientesTemp = ListaClientes;
+                    break;
+
+            }
+            if(FiltrarPorFecha == true && Filtro.Equals("5") == false)
+             ListaClientesTemp = ListaClientes.Where(A=> A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date).ToList();
+
+        }
+        catch (Exception)
+        {
+
+            
+        }
+    }
+
+}

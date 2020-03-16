@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="DataBase\" />
-    <Folder Include="Pages\UI\Consultas\" />
   </ItemGroup>
 
 </Project>
