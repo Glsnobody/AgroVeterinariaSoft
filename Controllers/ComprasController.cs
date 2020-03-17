@@ -32,7 +32,10 @@ namespace AgroVeterinariaSoft.Controllers
 
                 throw;
             }
-            Database.Dispose();
+            finally
+            {
+                Database.Dispose();
+            }
             return paso;
 
         }
@@ -45,17 +48,21 @@ namespace AgroVeterinariaSoft.Controllers
             {
                 if (Compra.CompraId == 0)
                 {
-                    Insertar(Compra);
+                    paso = Insertar(Compra);
                 }
                 else
                 {
-                    Modificar(Compra);
+                    paso = Modificar(Compra);
                 }
             }
             catch (Exception)
             {
 
                 throw;
+            }
+            finally
+            {
+                Database.Dispose();
             }
             return paso;
         }
@@ -71,7 +78,7 @@ namespace AgroVeterinariaSoft.Controllers
 
                 foreach (var item in Compra.ListaProductos)
                 {
-                    if (item.ID==0)
+                    if (item.ID == 0)
                     {
                         Database.Entry(item).State = EntityState.Added;
                         var productos = ProductosController.Buscar(item.ProductoId);
@@ -81,7 +88,7 @@ namespace AgroVeterinariaSoft.Controllers
 
                 foreach (var item in anterior.ListaProductos)
                 {
-                    if (!Compra.ListaProductos.Any(Q=>Q.ID==item.ID))
+                    if (!Compra.ListaProductos.Any(Q => Q.ID == item.ID))
                     {
                         Database.Entry(item).State = EntityState.Deleted;
                         var productos = ProductosController.Buscar(item.ProductoId);
@@ -91,7 +98,7 @@ namespace AgroVeterinariaSoft.Controllers
 
                 }
 
-                
+
 
                 Database.Entry(Compra).State = EntityState.Modified;
                 paso = Database.SaveChanges() > 0;
@@ -101,7 +108,11 @@ namespace AgroVeterinariaSoft.Controllers
 
                 throw;
             }
-            Database.Dispose();
+            finally
+            {
+                Database.Dispose();
+            }
+
 
             return paso;
 
@@ -114,14 +125,17 @@ namespace AgroVeterinariaSoft.Controllers
 
             try
             {
-                Compra = Database.Compras.Find(Id);
+                Compra = Database.Compras.Where(A => A.CompraId == Id).Include(A => A.ListaProductos).FirstOrDefault();
             }
             catch (Exception)
             {
 
                 throw;
             }
-            Database.Dispose();
+            finally
+            {
+                Database.Dispose();
+            }
 
             return Compra;
         }
@@ -153,7 +167,10 @@ namespace AgroVeterinariaSoft.Controllers
 
                 throw;
             }
-            Database.Dispose();
+            finally
+            {
+                Database.Dispose();
+            }
 
             return paso;
 
@@ -166,12 +183,16 @@ namespace AgroVeterinariaSoft.Controllers
 
             try
             {
-                Lista = Database.Compras.Where(expression).ToList();
+                Lista = Database.Compras.Where(expression).Include(A => A.ListaProductos).ToList();
             }
             catch (Exception)
             {
 
                 throw;
+            }
+            finally
+            {
+                Database.Dispose();
             }
             return Lista;
         }

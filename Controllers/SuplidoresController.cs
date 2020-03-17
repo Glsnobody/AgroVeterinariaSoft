@@ -135,5 +135,51 @@ namespace AgroVeterinariaSoft.Controllers
             }
             return Lista;
         }
+
+        public static string GetNombre(int id)
+        {
+            string nombre = string.Empty;
+            Contexto db = new Contexto();
+            try
+            {
+                string temp = null;
+                temp = db.Suplidores.Where(A => A.SuplidorId == id).Select(A => A.Nombre).FirstOrDefault();
+
+                if (temp != null)
+                    nombre = temp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+
+
+            return nombre;
+
+        }
+
+        public static bool ExisteNombre(int id, string nombre)
+        {
+            bool paso = false;
+            Contexto db = new Contexto();
+
+
+            try
+            {
+                paso = db.Suplidores.Where(A => A.SuplidorId == id).Any(A => A.Nombre.Contains(nombre));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return paso;
+        }
     }
 }

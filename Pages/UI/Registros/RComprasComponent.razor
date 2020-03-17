@@ -1,10 +1,11 @@
-﻿@page "/UI/Regsitros/rComprasComponent"
+﻿@page "/RCompras"
+@page "/RCompras/{CompraId:int}"
 @inject IToastService toastService
 
 @using AgroVeterinariaSoft.Data;
 @using AgroVeterinariaSoft.Models;
 @using AgroVeterinariaSoft.Controllers;
-    <h3 class="display-3 text-center">Registro de Compras</h3>
+<h3 class="display-3 text-center">Registro de Compras</h3>
 <div class="container">
     <EditForm Model="Compra" OnValidSubmit="Guardar">
         <div class="form-group">
@@ -89,14 +90,14 @@
                 <tbody>
                     @foreach (var obj in Compra.ListaProductos)
                     {
-                    <tr>
-                        <td>@obj.ProductoId</td>
-                        <td>@obj.Descripcion</td>
-                        <td>@obj.Precio</td>
-                        <td>@obj.Cantidad</td>
-                        <td>@obj.Importe</td>
-                        <td><button type="button" class="btn btn-sm btn-danger " @onclick="(()=> Compra.ListaProductos.Remove(obj))">Eliminar</button></td>
-                    </tr>
+                        <tr>
+                            <td>@obj.ProductoId</td>
+                            <td>@obj.Descripcion</td>
+                            <td>@obj.Precio</td>
+                            <td>@obj.Cantidad</td>
+                            <td>@obj.Importe</td>
+                            <td><button type="button" class="btn btn-sm btn-danger " @onclick="(()=> Compra.ListaProductos.Remove(obj))">Eliminar</button></td>
+                        </tr>
                     }
 
                 </tbody>
@@ -105,7 +106,7 @@
         </div>
         <div class="form-group">
             <label for="TotalNumber"> </label>
-            <InputNumber id="TotalNumber" @bind-Value="Compra.Total" class="form-control"/>
+            <InputNumber id="TotalNumber" @bind-Value="Compra.Total" class="form-control" />
 
         </div>
 
@@ -122,17 +123,28 @@
 @code {
 
     Compras Compra = new Compras();
+    [Parameter]
+    public int CompraId { get; set; }
 
     Suplidores Suplidor = new Suplidores();
     Productos Producto = new Productos();
 
     public int CantidadProducto { get; set; }
 
+    protected override void OnParametersSet()
+    {
+        if(CompraId > 0)
+        {
+            Compra.CompraId = CompraId;
+            Buscar();
+        }
+    }
+
     public void Guardar()
     {
         try
         {
-            if(ComprasController.Guardar(Compra))
+            if (ComprasController.Guardar(Compra))
             {
                 Compra = new Compras();
                 toastService.ShowSuccess("Guardado correctamente");
@@ -155,7 +167,7 @@
         {
             Suplidores temp = SuplidoresController.Buscar(Compra.SuplidorId);
 
-            if(temp != null)
+            if (temp != null)
             {
                 Suplidor = temp;
             }
@@ -178,9 +190,9 @@
             compraId: Compra.CompraId,
             productoId: Producto.ProductoId,
             precio: Producto.Precio,
-            cantidad:  CantidadProducto,
+            cantidad: CantidadProducto,
             descripcion: Producto.Descripcion,
-            importe:Producto.Precio*CantidadProducto
+            importe: Producto.Precio * CantidadProducto
 
             ));
 
@@ -195,7 +207,7 @@
         {
             Productos temp = ProductosController.Buscar(Producto.ProductoId);
 
-            if(temp != null)
+            if (temp != null)
             {
                 Producto = temp;
             }
@@ -214,13 +226,13 @@
     public void Nuevo()
     {
         Compra = new Compras();
-        Suplidor= new Suplidores();
+        Suplidor = new Suplidores();
         Producto = new Productos();
-        
+
         CalcularTotal();
 
         CantidadProducto = 0;
-        
+
     }
 
     private void CalcularTotal()
@@ -234,7 +246,7 @@
         {
             Compras temp = ComprasController.Buscar(Compra.CompraId);
 
-            if(temp != null)
+            if (temp != null)
             {
                 Compra = temp;
                 BuscarSuplidor();

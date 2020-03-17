@@ -1,8 +1,8 @@
-﻿@page "/CProductos"
+﻿@page "/CSuplidores"
 
 <div class="container">
 
-    <h3 class="display-3 text-center">Consulta de Productos</h3>
+    <h3 class="display-3 text-center">Consulta de Suplidores</h3>
 
     <div>
         @if (Lista == null)
@@ -40,18 +40,16 @@
                         <label>Criterio</label>
                         <input type="text" @bind-value="Criterio" class="form-control" />
                     </div>
-                    <EditForm Model="Producto">
+                    <EditForm Model="Suplidore">
                         <div class="col form-group">
                             <label>Filtrar por</label>
                             <div class="input-group">
                                 <InputSelect @bind-Value="Filtro" class="form-control">
                                     <option selected value="0">Todo</option>
                                     <option value="1">Id</option>
-                                    <option value="2">Descripcion</option>
-                                    <option value="3">Cantidad</option>
-                                    <option value="4">Unidad</option>
-                                    <option value="5">Costo</option>
-                                    <option value="6">Precio</option>
+                                    <option value="2">Nombre</option>
+                                    <option value="3">Telefono</option>
+                                    <option value="4">RNC</option>
                                 </InputSelect>
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
@@ -67,12 +65,10 @@
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">Id</th>
-                            <th scope="col">Descripcion</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Unidad</th>
+                            <th scope="col">Nombres</th>
+                            <th scope="col">Telefono</th>
+                            <th scope="col">RNC</th>
                             <th scope="col">Fecha</th>
-                            <th scope="col">Costo</th>
-                            <th scope="col">Precio</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -80,14 +76,12 @@
                         @foreach (var entity in ListaTemp)
                         {
                             <tr>
-                                <td scope="row">@entity.ProductoId</td>
-                                <td>@entity.Descripcion</td>
-                                <td>@entity.Cantidad</td>
-                                <td>@entity.Unidad</td>
-                                <td>@entity.Fecha.ToShortDateString()</td>
-                                <td>@entity.Costo</td>
-                                <td>@entity.Precio</td>
-                                <td><a class="btn btn-sm btn-outline-primary" href="/RProductos/@entity.ProductoId">Ver</a></td>
+                                <td scope="row">@entity.SuplidorId</td>
+                                <td>@entity.Nombre</td>
+                                <td>@entity.Telefono</td>
+                                <td>@entity.RNC</td>
+                                <td>@entity.FechaCreacion.ToShortDateString()</td>
+                                <td><a class="btn btn-sm btn-outline-primary" href="/RSuplidores/@entity.SuplidorId">Ver</a></td>
                             </tr>
                         }
 
@@ -95,9 +89,9 @@
 
                 </table>
                 @*<div class="form-group">
-                    <button type="button" class="btn btn-secondary" @onclick="AnteriorPagina">Ant</button>
-                    <button type="button" class="btn btn-secondary" @onclick="SiguientePagina">Sig</button>
-                </div>*@
+                        <button type="button" class="btn btn-secondary" @onclick="AnteriorPagina">Ant</button>
+                        <button type="button" class="btn btn-secondary" @onclick="SiguientePagina">Sig</button>
+                    </div>*@
             }
         }
 
@@ -108,8 +102,8 @@
 
 @code {
 
-    public List<Productos> Lista { get; set; }
-    public List<Productos> ListaTemp { get; set; }
+    public List<Suplidores> Lista { get; set; }
+    public List<Suplidores> ListaTemp { get; set; }
 
     public DateTime DesdeFecha { get; set; }
     public DateTime HastaFecha { get; set; }
@@ -117,7 +111,7 @@
     public string Filtro { get; set; }
     public bool FiltrarPorFecha { get; set; }
 
-    public Productos Producto { get; set; }
+    public Suplidores Suplidore { get; set; }
 
     //public Paginacion<Productos> Paginacion { get; set; }
     protected override async Task OnInitializedAsync()
@@ -129,7 +123,7 @@
     {
         DesdeFecha = DateTime.Now;
         HastaFecha = DateTime.Now;
-        Producto = new Productos();
+        Suplidore = new Suplidores();
 
         ListaTemp = Lista;
         FiltrarPorFecha = false;
@@ -141,7 +135,7 @@
     {
         try
         {
-            Lista = ProductosController.GetList(A => true);
+            Lista = SuplidoresController.GetList(A => true);
             //ListaClientes = ClientesController.Paginacion(Paginacion);
         }
         catch (Exception)
@@ -151,7 +145,7 @@
         }
 
     }
-   
+
 
     private void filtrar()
     {
@@ -164,37 +158,29 @@
                     break;
 
                 case "1":
-                    ListaTemp = Lista.Where(A => A.ProductoId == int.Parse(Criterio)).ToList();
+                    ListaTemp = Lista.Where(A => A.SuplidorId == int.Parse(Criterio)).ToList();
                     break;
 
                 case "2":
-                    ListaTemp = Lista.Where(A => A.Descripcion.Contains(Criterio)).ToList();
+                    ListaTemp = Lista.Where(A => A.Nombre.Contains(Criterio)).ToList();
                     break;
 
                 case "3":
-                    ListaTemp = Lista.Where(A => A.Cantidad == int.Parse(Criterio)).ToList();
+                    ListaTemp = Lista.Where(A => A.Telefono.Contains(Criterio)).ToList();
                     break;
-
 
                 case "4":
-                    ListaTemp = Lista.Where(A => A.Unidad.Contains(Criterio)).ToList();
+                    ListaTemp = Lista.Where(A => A.RNC.Contains(Criterio)).ToList();
                     break;
 
-                case "5":
-                    ListaTemp = Lista.Where(A => A.Costo == int.Parse(Criterio)).ToList();
-                    break;
-
-                    case "6":
-                    ListaTemp = Lista.Where(A => A.Precio == int.Parse(Criterio)).ToList();
-                    break;
 
                 default:
                     ListaTemp = Lista;
                     break;
 
             }
-            if (FiltrarPorFecha == true && Filtro.Equals("5") == false)
-                ListaTemp = Lista.Where(A => A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date).ToList();
+            if (FiltrarPorFecha)
+                ListaTemp = Lista.Where(A => A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date).ToList();
 
         }
         catch (Exception)
