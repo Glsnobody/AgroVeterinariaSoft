@@ -1,4 +1,5 @@
-﻿@page "/UI/Regsitros/registroSuplidores"
+﻿@page "/RSuplidores"
+@page "/RSuplidores/{SuplidorId:int}"
 @inject IToastService toastService
 
 @using AgroVeterinariaSoft.Data;
@@ -49,6 +50,17 @@
 
 @code {
     Suplidores Suplidor = new Suplidores();
+    [Parameter]
+    public int SuplidorId { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if(SuplidorId >0)
+        {
+            Suplidor.SuplidorId = SuplidorId;
+            Buscar();
+        }
+    }
 
     private void Guardar()
     {
