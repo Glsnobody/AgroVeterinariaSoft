@@ -1,4 +1,5 @@
-﻿@page "/UI/Regsitros/registroProductos"
+﻿@page "/RProductos"
+@page "/RProductos/{ProductoId:int}"
 @inject IToastService toastService
 
 @using AgroVeterinariaSoft.Data;
@@ -42,13 +43,13 @@
 
         <div class="form-group">
             <label for="CostoNumber">Costo: </label>
-            <InputNumber id="CostoNumber" @bind-Value="Producto.Costo" @onfocus="Calcular"  @onfocusin="Calcular" @onfocusout="Calcular" @onchange="Calcular"  class="form-control"></InputNumber>
+            <InputNumber id="CostoNumber" @bind-Value="Producto.Costo" @onfocus="Calcular" @onfocusin="Calcular" @onfocusout="Calcular" @onchange="Calcular" class="form-control"></InputNumber>
 
         </div>
 
         <div class="form-group">
             <label for="GananciaNumber">Ganancia: </label>
-            <InputNumber id="GananciaNumber" @bind-Value="Producto.Ganancia" @onfocus="Calcular"  @onfocusin="Calcular" @onfocusout="Calcular" @onchange="Calcular" class="form-control"></InputNumber>
+            <InputNumber id="GananciaNumber" @bind-Value="Producto.Ganancia" @onfocus="Calcular" @onfocusin="Calcular" @onfocusout="Calcular" @onchange="Calcular" class="form-control"></InputNumber>
         </div>
 
         <div class="form-group">
@@ -68,8 +69,19 @@
 
 @code {
     Productos Producto = new Productos();
+    [Parameter]
+    public int ProductoId { get; set; }
 
     protected string OkayDisabled { get; set; } = "disabled";
+
+    protected override void OnParametersSet()
+    {
+        if(ProductoId > 0)
+        {
+            Producto.ProductoId = ProductoId;
+            Buscar();
+        }
+    }
 
     private void Guardar()
     {
@@ -94,7 +106,7 @@
     }
     private void Borrar()
     {
-        if (Producto.ProductoId==0)
+        if (Producto.ProductoId == 0)
         {
             toastService.ShowError("El Producto no se pudo borrar porque aun no existe");
         }
@@ -117,6 +129,6 @@
     private void Calcular()
     {
         decimal val = Producto.Ganancia / 100;
-        Producto.Precio = (Producto.Costo * val)+Producto.Costo;
+        Producto.Precio = (Producto.Costo * val) + Producto.Costo;
     }
 }
