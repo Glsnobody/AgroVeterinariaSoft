@@ -1,11 +1,11 @@
-﻿@page "/CClientes"
+﻿@page "/CProductos"
 
 <div class="container">
 
     <h3 class="display-3 text-center">Consulta de Clientes</h3>
 
     <div>
-        @if (ListaClientes == null)
+        @if (Lista == null)
         {
             <div class="text-center">
                 <div class="spinner-border">
@@ -14,20 +14,20 @@
             </div>}
         else
         {
-            if (ListaClientes.Count <= 0)
+            if (Lista.Count <= 0)
             {
                 <h3 class="display-3 text-center">No hay datos que mostrar</h3>
             }
             else
             {
 
-                <div class="form-row" >
+                <div class="form-row">
                     <div class="col form-group">
                         <div>
                             <label>Desde</label>
-                            <input type="checkbox" @bind-value="FiltrarPorFecha"/> Filtrar Fecha
+                            <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
                         </div>
-                        
+
                         <input type="date" @bind-value="DesdeFecha" class="form-control" />
                     </div>
 
@@ -40,17 +40,18 @@
                         <label>Criterio</label>
                         <input type="text" @bind-value="Criterio" class="form-control" />
                     </div>
-                    <EditForm Model="Cliente">
+                    <EditForm Model="Producto">
                         <div class="col form-group">
                             <label>Filtrar por</label>
                             <div class="input-group">
                                 <InputSelect @bind-Value="Filtro" class="form-control">
                                     <option selected value="0">Todo</option>
                                     <option value="1">Id</option>
-                                    <option value="2">Nombres</option>
-                                    <option value="3">Cedula</option>
-                                    <option value="4">Balance</option>
-                                    <option value="5">Fecha de Nacimiento</option>
+                                    <option value="2">Descripcion</option>
+                                    <option value="3">Cantidad</option>
+                                    <option value="4">Unidad</option>
+                                    <option value="5">Costo</option>
+                                    <option value="6">Precio</option>
                                 </InputSelect>
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
@@ -66,25 +67,27 @@
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">Id</th>
-                            <th scope="col">Nombres</th>
-                            <th scope="col">Fecha Nacimiento</th>
-                            <th scope="col">Telefono</th>
-                            <th scope="col">Cedula</th>
-                            <th scope="col">Balance</th>
+                            <th scope="col">Descripcion</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Unidad</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Costo</th>
+                            <th scope="col">Precio</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var entity in ListaClientesTemp)
+                        @foreach (var entity in ListaTemp)
                         {
                             <tr>
-                                <td scope="row">@entity.ClienteId</td>
-                                <td>@entity.Nombres</td>
-                                <td>@entity.FechaNacimiento.ToShortDateString()</td>
-                                <td>@entity.Telefono</td>
-                                <td>@entity.Cedula</td>
-                                <td>@entity.Balance</td>
-                                <td><a class="btn btn-sm btn-outline-primary" href="/RClientes/@entity.ClienteId" >Ver</a></td>
+                                <td scope="row">@entity.ProductoId</td>
+                                <td>@entity.Descripcion</td>
+                                <td>@entity.Cantidad</td>
+                                <td>@entity.Unidad</td>
+                                <td>@entity.Fecha.ToShortDateString()</td>
+                                <td>@entity.Costo</td>
+                                <td>@entity.Precio</td>
+                                <td><a class="btn btn-sm btn-outline-primary" href="/RProductos/@entity.ProductoId">Ver</a></td>
                             </tr>
                         }
 
@@ -105,8 +108,8 @@
 
 @code {
 
-    public List<Clientes> ListaClientes { get; set; }
-    public List<Clientes> ListaClientesTemp { get; set; }
+    public List<Productos> Lista { get; set; }
+    public List<Productos> ListaTemp { get; set; }
 
     public DateTime DesdeFecha { get; set; }
     public DateTime HastaFecha { get; set; }
@@ -114,31 +117,31 @@
     public string Filtro { get; set; }
     public bool FiltrarPorFecha { get; set; }
 
-    public Clientes Cliente { get; set; }
+    public Productos Producto { get; set; }
 
-    public Paginacion<Clientes> Paginacion { get; set; }
+    //public Paginacion<Productos> Paginacion { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => {   CargarLista(); Inicialzar();});
+        await Task.Run(() => { CargarLista(); Inicialzar(); });
     }
 
     private void Inicialzar()
     {
         DesdeFecha = DateTime.Now;
         HastaFecha = DateTime.Now;
-        Cliente = new Clientes();
+        Producto = new Productos();
 
-        ListaClientesTemp = ListaClientes;
+        ListaTemp = Lista;
         FiltrarPorFecha = false;
         Filtro = "0";
-        Paginacion = new Paginacion<Clientes>();
+        //Paginacion = new Paginacion<Clientes>();
     }
 
     private void CargarLista()
     {
         try
         {
-            ListaClientes = ClientesController.GetList(A => true);
+            Lista = ProductosController.GetList(A => true);
             //ListaClientes = ClientesController.Paginacion(Paginacion);
         }
         catch (Exception)
@@ -148,36 +151,7 @@
         }
 
     }
-
-    //private void SiguientePagina()
-    //{
-    //    if (Paginacion.PaginaActual < Paginacion.TotalPaginas)
-    //    {
-    //        Paginacion.PaginaActual++;
-    //        CargarLista();
-
-    //    }
-    //    else
-    //    {
-
-    //        return;
-    //    }
-    //}
-
-    //private void AnteriorPagina()
-    //{
-    //    if (Paginacion.PaginaActual > 0)
-    //    {
-    //        Paginacion.PaginaActual--;
-    //        CargarLista();
-
-    //    }
-    //    else
-    //    {
-    //        return;
-
-    //    }
-    //}
+   
 
     private void filtrar()
     {
@@ -186,37 +160,41 @@
             switch (Filtro)
             {
                 case "0":
-                    ListaClientesTemp = ListaClientes;
+                    ListaTemp = Lista;
                     break;
 
                 case "1":
-                    ListaClientesTemp = ListaClientes.Where(A => A.ClienteId == int.Parse(Criterio)).ToList();
+                    ListaTemp = Lista.Where(A => A.ProductoId == int.Parse(Criterio)).ToList();
                     break;
 
                 case "2":
-                    ListaClientesTemp = ListaClientes.Where(A => A.Nombres.Contains(Criterio)).ToList();
+                    ListaTemp = Lista.Where(A => A.Descripcion.Contains(Criterio)).ToList();
                     break;
 
                 case "3":
-                    ListaClientesTemp = ListaClientes.Where(A => A.Cedula.Contains(Criterio)).ToList();
+                    ListaTemp = Lista.Where(A => A.Cantidad == int.Parse(Criterio)).ToList();
                     break;
 
 
                 case "4":
-                    ListaClientesTemp = ListaClientes.Where(A => A.Balance == decimal.Parse(Criterio)).ToList();
+                    ListaTemp = Lista.Where(A => A.Unidad.Contains(Criterio)).ToList();
                     break;
 
                 case "5":
-                    ListaClientesTemp = ListaClientes.Where(A=> A.FechaNacimiento.Date >= DesdeFecha.Date && A.FechaNacimiento.Date <= HastaFecha.Date).ToList();
+                    ListaTemp = Lista.Where(A => A.Costo == int.Parse(Criterio)).ToList();
+                    break;
+
+                    case "6":
+                    ListaTemp = Lista.Where(A => A.Precio == int.Parse(Criterio)).ToList();
                     break;
 
                 default:
-                    ListaClientesTemp = ListaClientes;
+                    ListaTemp = Lista;
                     break;
 
             }
-            if(FiltrarPorFecha == true && Filtro.Equals("5") == false)
-                ListaClientesTemp = ListaClientes.Where(A=> A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date).ToList();
+            if (FiltrarPorFecha == true && Filtro.Equals("5") == false)
+                ListaTemp = Lista.Where(A => A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date).ToList();
 
         }
         catch (Exception)
