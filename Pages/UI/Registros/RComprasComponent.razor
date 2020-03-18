@@ -98,7 +98,7 @@
                             <td>@obj.Precio</td>
                             <td>@obj.Cantidad</td>
                             <td>@obj.Importe</td>
-                            <td><button type="button" class="btn btn-sm btn-danger " @onclick="(()=> Compra.ListaProductos.Remove(obj))">Eliminar</button></td>
+                            <td><button type="button" class="btn btn-sm btn-danger " @onclick="(()=> Remover(obj))" >Eliminar</button></td>
                         </tr>
                     }
 
@@ -107,7 +107,7 @@
             </table>
         </div>
         <div class="form-group">
-            <label for="TotalNumber"> </label>
+            <label for="TotalNumber">Total:  </label>
             <InputNumber id="TotalNumber" @bind-Value="Compra.Total" class="form-control" />
 
         </div>
@@ -146,6 +146,18 @@
     {
         try
         {
+            if (SuplidoresController.Buscar(Compra.SuplidorId)==null)
+            {
+                toastService.ShowWarning("El suplidor no existe");
+                return;
+            }
+
+            if (Compra.ListaProductos.Count <= 0)
+            {
+                toastService.ShowWarning("Debe agregar productos");
+                return;
+            }
+            CalcularTotal();
             if (ComprasController.Guardar(Compra))
             {
                 Compra = new Compras();
@@ -163,11 +175,27 @@
         }
     }
 
+    public void Remover(DetalleProductos dr)
+    {
+        Compra.ListaProductos.Remove(dr);
+        CalcularTotal();
+    }
+
     public void BuscarSuplidor()
     {
         try
         {
             Suplidores temp = SuplidoresController.Buscar(Compra.SuplidorId);
+            if(Suplidor.SuplidorId==0)
+            {
+                toastService.ShowWarning("Debe agregar un Suplidor");
+                return;
+            }
+            if(Suplidor==null)
+            {
+                toastService.ShowWarning("Debe agregar un Suplidor existente");
+                return;
+            }
 
             if (temp != null)
             {
@@ -187,6 +215,31 @@
 
     private void AgregarProducto()
     {
+        if(Producto.ProductoId==0)
+        {
+            toastService.ShowWarning("Debe agregar un producto");
+                return;
+        }
+        if(Producto==null)
+        {
+            toastService.ShowWarning("Debe agregar un producto existente");
+                return;
+        }
+         if(CantidadProducto<=0)
+        {
+            toastService.ShowWarning("Agregue una cantidad valida");
+                return;
+        }
+        if(Suplidor.SuplidorId==0)
+        {
+            toastService.ShowWarning("Debe agregar un Suplidor");
+            return;
+        }
+        if(Suplidor==null)
+        {
+            toastService.ShowWarning("Debe agregar un Suplidor existente");
+            return;
+        }
         Compra.ListaProductos.Add(new DetalleProductos(
             iD: 0,
             compraId: Compra.CompraId,
@@ -252,6 +305,7 @@
             {
                 Compra = temp;
                 BuscarSuplidor();
+                CalcularTotal();
             }
             else
             {
