@@ -30,6 +30,10 @@
             <InputText id="DireccionText" @bind-Value="Suplidor.Direccion" class="form-control"></InputText>
         </div>
         <div class="form-group">
+            <label for="DireccionText">Telefono: </label>
+            <InputText id="TelefonoText" @bind-Value="Suplidor.Telefono" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
             <label for="RNCText">RNC: </label>
             <InputText id="RNCText" @bind-Value="Suplidor.RNC" class="form-control"></InputText>
         </div>
@@ -92,7 +96,10 @@
         else
         {
             if (SuplidoresController.Eliminar(Suplidor.SuplidorId))
+            {
                 toastService.ShowSuccess("El Suplidor se borro correctamente");
+            }
+            
             else
                 toastService.ShowError("El Suplidor no se pudo borrar");
         }
