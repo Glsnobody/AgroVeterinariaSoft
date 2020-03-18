@@ -50,7 +50,7 @@
 
                 <div class="form-group col">
                     <label>Tipo de Venta</label>
-                    <InputSelect @bind-Value="TipoVentaSeleccionada" class="form-control">
+                    <InputSelect @bind-Value="TipoVentaSeleccionada" class="form-control" @onclick="setTipoVenta">
                         <option selected value="1">Contado</option>
                         <option value="2">Credito</option>
                     </InputSelect>
@@ -165,6 +165,11 @@
             Venta.VentaId = VentaId;
             Buscar();
         }
+    }
+
+    private void setTipoVenta()
+    {
+        Venta.TipoVenta = int.Parse(TipoVentaSeleccionada);
     }
 
     private void Guardar()

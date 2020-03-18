@@ -13,7 +13,7 @@ namespace AgroVeterinariaSoft.Models
         [Key]
         public int CompraId { get; set; }
         [Required(ErrorMessage ="Es necesario introducir un suplidor")]
-        [Range(typeof(int), minimum: "0", maximum: "100", ErrorMessage = "El suplidorId esta fuera de rango")]
+        [Range(typeof(int), minimum: "0", maximum: "1000000", ErrorMessage = "El suplidorId esta fuera de rango")]
         public int SuplidorId { get; set; }
 
         [Required(ErrorMessage = "Es necesario introducir la fecha actual")]
@@ -25,7 +25,7 @@ namespace AgroVeterinariaSoft.Models
         public decimal Impuesto { get; set; }
 
         [Required(ErrorMessage = "Esnecesario tener un Total")]
-        [Range(typeof(decimal), minimum: "0", maximum: "1000", ErrorMessage = "El total esta fuera de rango")]
+        [Range(typeof(decimal), minimum: "1", maximum: "1000000000000", ErrorMessage = "El total esta fuera de rango")]
         public decimal Total { get; set; }
         
 
