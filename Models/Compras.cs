@@ -25,7 +25,7 @@ namespace AgroVeterinariaSoft.Models
         public decimal Impuesto { get; set; }
 
         [Required(ErrorMessage = "Esnecesario tener un Total")]
-        [Range(typeof(decimal), minimum: "0", maximum: "100", ErrorMessage = "El total esta fuera de rango")]
+        [Range(typeof(decimal), minimum: "0", maximum: "1000", ErrorMessage = "El total esta fuera de rango")]
         public decimal Total { get; set; }
         
 
