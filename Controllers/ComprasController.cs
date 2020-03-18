@@ -17,15 +17,15 @@ namespace AgroVeterinariaSoft.Controllers
             bool paso = false;
             try
             {
-                Database.Compras.Add(Compra);
-
-                paso = Database.SaveChanges() > 0;
-
                 foreach (var item in Compra.ListaProductos)
                 {
                     var productos = ProductosController.Buscar(item.ProductoId);
                     productos.Cantidad += item.Cantidad;
+                    ProductosController.Guardar(productos);
                 }
+
+                Database.Compras.Add(Compra);
+                paso = Database.SaveChanges() > 0;
             }
             catch (Exception)
             {
@@ -46,9 +46,12 @@ namespace AgroVeterinariaSoft.Controllers
             Contexto Database = new Contexto();
             try
             {
-                if (Compra.CompraId == 0)
+                if (!Database.Compras.Any(A => A.CompraId == Compra.CompraId))
                 {
-                    paso = Insertar(Compra);
+                    if (Compra.CompraId == 0)
+                    {
+                        paso = Insertar(Compra);
+                    }
                 }
                 else
                 {
@@ -71,10 +74,10 @@ namespace AgroVeterinariaSoft.Controllers
         {
             Contexto Database = new Contexto();
             bool paso = false;
+
             try
             {
                 var anterior = ComprasController.Buscar(Compra.CompraId);
-
 
                 foreach (var item in Compra.ListaProductos)
                 {
@@ -83,6 +86,7 @@ namespace AgroVeterinariaSoft.Controllers
                         Database.Entry(item).State = EntityState.Added;
                         var productos = ProductosController.Buscar(item.ProductoId);
                         productos.Cantidad += item.Cantidad;
+                        ProductosController.Guardar(productos);
                     }
                 }
 
@@ -93,12 +97,10 @@ namespace AgroVeterinariaSoft.Controllers
                         Database.Entry(item).State = EntityState.Deleted;
                         var productos = ProductosController.Buscar(item.ProductoId);
                         productos.Cantidad -= item.Cantidad;
-
+                        ProductosController.Guardar(productos);
                     }
 
                 }
-
-
 
                 Database.Entry(Compra).State = EntityState.Modified;
                 paso = Database.SaveChanges() > 0;
@@ -112,7 +114,6 @@ namespace AgroVeterinariaSoft.Controllers
             {
                 Database.Dispose();
             }
-
 
             return paso;
 
@@ -143,7 +144,6 @@ namespace AgroVeterinariaSoft.Controllers
         public static bool Eliminar(int Id)
         {
             bool paso = false;
-
             Contexto Database = new Contexto();
 
             try
@@ -151,20 +151,19 @@ namespace AgroVeterinariaSoft.Controllers
                 Compras Compra = Database.Compras.Find(Id);
                 if (Compra != null)
                 {
-
                     foreach (var item in Compra.ListaProductos)
                     {
                         var producto = ProductosController.Buscar(item.ProductoId);
                         producto.Cantidad -= item.Cantidad;
+                        ProductosController.Guardar(producto);
                     }
                     Database.Compras.Remove(Compra);
+                    paso = Database.SaveChanges() > 0;
                 }
 
-                paso = Database.SaveChanges() > 0;
             }
             catch (Exception)
             {
-
                 throw;
             }
             finally

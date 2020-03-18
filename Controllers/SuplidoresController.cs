@@ -17,10 +17,13 @@ namespace AgroVeterinariaSoft.Controllers
             Contexto Database = new Contexto();
             try
             {
-                if(Suplidor.SuplidorId==0)
+                if(!Database.Suplidores.Any(A=> A.SuplidorId == Suplidor.SuplidorId))
                 {
-                    paso= Insertar(Suplidor);
-                }
+                    if (Suplidor.SuplidorId == 0)
+                    {
+                        paso = Insertar(Suplidor);
+                    }
+                }                
                 else
                 {
                     paso=Modificar(Suplidor);
@@ -28,8 +31,11 @@ namespace AgroVeterinariaSoft.Controllers
             }
             catch (Exception)
             {
-
                 throw;
+            }
+            finally
+            {
+                Database.Dispose();
             }
             return paso;
         }
@@ -49,7 +55,11 @@ namespace AgroVeterinariaSoft.Controllers
 
                 throw;
             }
-            Database.Dispose();
+            finally
+            {
+                Database.Dispose();
+            }
+            
 
             return paso;
         }
@@ -68,7 +78,10 @@ namespace AgroVeterinariaSoft.Controllers
 
                 throw;
             }
-            Database.Dispose();
+            finally
+            {
+                Database.Dispose();
+            }
 
             return paso;
            
@@ -88,7 +101,10 @@ namespace AgroVeterinariaSoft.Controllers
 
                 throw;
             }
-            Database.Dispose();
+            finally
+            {
+                Database.Dispose();
+            }
 
             return Suplidor;
         }
@@ -102,18 +118,21 @@ namespace AgroVeterinariaSoft.Controllers
             try
             {
                 Suplidores Suplidor = Database.Suplidores.Find(Id);
-                Database.Suplidores.Remove(Suplidor);
-                if(Database.SaveChanges()>0)
+                if(Suplidor != null)
                 {
-                    paso = true;
+                    Database.Suplidores.Remove(Suplidor);
+                    paso = Database.SaveChanges() > 0;
                 }
+
             }
             catch (Exception)
             {
-
                 throw;
             }
-            Database.Dispose();
+            finally
+            {
+                Database.Dispose();
+            }
 
             return paso;
 
@@ -133,6 +152,11 @@ namespace AgroVeterinariaSoft.Controllers
 
                 throw;
             }
+            finally
+            {
+                Database.Dispose();
+            }
+
             return Lista;
         }
 
@@ -177,6 +201,10 @@ namespace AgroVeterinariaSoft.Controllers
             {
 
                 throw;
+            }
+            finally
+            {
+                db.Dispose();
             }
 
             return paso;

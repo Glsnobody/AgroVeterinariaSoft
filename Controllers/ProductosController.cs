@@ -158,19 +158,6 @@ namespace AgroVeterinariaSoft.Controllers
             return Lista;
         }
 
-        public static void ActualizarExistencia(int id,int cantidad)
-        {
-            Contexto db = new Contexto();
-
-            try
-            {
-                db.Database.ExecuteSqlRaw($"Update dbo.Productos Set Cantidad = {cantidad} Where ProductoId = {id}");
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
+       
     }
 }
