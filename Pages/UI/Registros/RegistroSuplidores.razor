@@ -2,10 +2,9 @@
 @page "/RSuplidores/{SuplidorId:int}"
 @inject IToastService toastService
 
-@using AgroVeterinariaSoft.Data;
-@using AgroVeterinariaSoft.Models;
-@using AgroVeterinariaSoft.Controllers;
-<h3>RegistroSuplidores</h3>
+
+
+    <h3 class="display-3 text-center">Registro de Suplidores</h3>
 
 <div class="container">
     <EditForm Model="Suplidor" OnValidSubmit="Guardar">

@@ -48,6 +48,18 @@ namespace AgroVeterinariaSoft.Controllers
 
             try
             {
+                foreach (var producto in entity.Productos)
+                {
+                    var productos = ProductosController.Buscar(producto.ProductoId);
+                    productos.Cantidad -= producto.Cantidad;
+                    ProductosController.Guardar(productos);
+
+                }
+
+                var cliente = ClientesController.Buscar(entity.ClienteId);
+                cliente.Balance += entity.Total;
+                ClientesController.Guardar(cliente);
+
                 db.Ventas.Add(entity);
                 paso = db.SaveChanges() > 0;
 
@@ -78,17 +90,27 @@ namespace AgroVeterinariaSoft.Controllers
                 {
                     if(producto.VentaDetalleID == 0)
                         db.Entry(producto).State = EntityState.Added;
+                    var productos = ProductosController.Buscar(producto.ProductoId);
+                    productos.Cantidad -= producto.Cantidad;
+                    ProductosController.Guardar(productos);
+
                 }
 
                 foreach (var producto in anterior.Productos)
                 {
-                    if (!entity.Productos.Any(A => A.ProductoId == producto.ProductoId))
+                    if (!entity.Productos.Any(A => A.VentaDetalleID == producto.VentaDetalleID))
                     {
                         db.Entry(producto).State = EntityState.Deleted;
+                        var productos = ProductosController.Buscar(producto.ProductoId);
+                        productos.Cantidad += producto.Cantidad;
+                        ProductosController.Guardar(productos);
                     }
                 }
 
-
+                var cliente = ClientesController.Buscar(entity.ClienteId);
+                cliente.Balance -= anterior.Total;
+                cliente.Balance += entity.Total;
+                ClientesController.Guardar(cliente);
                 db.Entry(entity).State = EntityState.Modified;
                 paso = db.SaveChanges() > 0;
             }
@@ -141,6 +163,19 @@ namespace AgroVeterinariaSoft.Controllers
                 Ventas venta = Buscar(Id);
                 if (venta != null)
                 {
+
+                    foreach (var producto in venta.Productos)
+                    {
+                        var productos = ProductosController.Buscar(producto.ProductoId);
+                        productos.Cantidad += producto.Cantidad;
+                        ProductosController.Guardar(productos);
+
+                    }
+
+                    var cliente = ClientesController.Buscar(venta.ClienteId);
+                    cliente.Balance -= venta.Total;
+                    ClientesController.Guardar(cliente);
+
                     db.Entry(venta).State = EntityState.Deleted;
                     paso = db.SaveChanges() > 0;
                 }
