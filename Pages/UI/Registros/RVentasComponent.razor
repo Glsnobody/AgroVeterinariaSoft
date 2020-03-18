@@ -76,6 +76,11 @@
                 </div>
 
                 <div class="form-group col">
+                    <label>Existencia</label>
+                    <InputNumber @bind-Value="Producto.Cantidad" class="form-control" ReadOnly="true" />
+                </div>
+
+                <div class="form-group col">
                     <label>Cantidad</label>
                     <div class="input-group">
                         <InputNumber @bind-Value="CantidadProducto" class="form-control" />
@@ -123,7 +128,7 @@
                 </div>
                 <div class="col form-group">
                     <label>Total</label>
-                    <InputNumber @bind-Value="Venta.Total" class="form-control" />
+                    <InputNumber @bind-Value="Venta.Total" class="form-control" ReadOnly="true" />
                 </div>
             </div>
 
@@ -131,7 +136,7 @@
             <div class="form-group">
                 <button type="button" class="btn btn-primary" @onclick="Limpiar">Limpiar</button>
                 <button type="submit" class="btn btn-success">Guardar</button>
-                <button type="button" class="btn btn-danger">Eliminar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
             </div>
         </EditForm>
     </div>
@@ -228,15 +233,8 @@
 
     private void AgregarProducto()
     {
-        if (string.IsNullOrWhiteSpace(Producto.Descripcion))
+        if(!ValidarAgregarProducto())
         {
-            toastService.ShowInfo("Se debe buscar un producto");
-            return;
-        }
-
-        if (CantidadProducto <= 0)
-        {
-            toastService.ShowInfo("La cantidad del producto debe ser mayot a 0");
             return;
         }
 
@@ -252,6 +250,36 @@
         CalcularTotal();
 
         Producto = new Productos();
+    }
+
+    private bool ValidarAgregarProducto()
+    {
+        bool paso = true;
+        if (string.IsNullOrWhiteSpace(Producto.Descripcion))
+        {
+            toastService.ShowInfo("Se debe buscar un producto");
+            paso = false;
+        }
+
+        if (CantidadProducto <= 0)
+        {
+            toastService.ShowInfo("La cantidad del producto debe ser mayot a 0");
+            paso = false;
+        }
+
+        if(CantidadProducto > Producto.Cantidad || CantidadProducto < 0)
+        {
+            toastService.ShowInfo("La cantidad del producto no es suficiente");
+            paso = false;
+        }
+
+        if(Venta.Productos.Any(A=> A.ProductoId == Producto.ProductoId))
+        {
+            toastService.ShowInfo("No se puede agregar el mismo producto otra vez");
+            paso = false;
+        }
+
+        return paso;
     }
 
     private void RemoverProducto(VentasDetalle entity)
@@ -322,6 +350,32 @@
     private void CalcularTotal()
     {
         Venta.Total = Venta.Productos.Sum(A => A.Precio * A.Cantidad);
+    }
+
+    private void Eliminar()
+    {
+        try
+        {
+
+
+            if (VentasController.Existe(Venta.VentaId))
+            {
+                if (VentasController.Eliminar(Venta.VentaId))
+                {
+                    Limpiar();
+                    toastService.ShowSuccess("Elliminado Correctamente");
+                }
+            }
+            else
+            {
+                toastService.ShowInfo("No se pudo encontrar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
 
 }

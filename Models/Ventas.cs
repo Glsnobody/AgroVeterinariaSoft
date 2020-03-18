@@ -25,7 +25,7 @@ namespace AgroVeterinariaSoft.Models
         [Range(typeof(decimal), minimum: "0", maximum: "1000000000000000", ErrorMessage = "Itbis esta fuera de rango")]
         public decimal Itbis { get; set; }
         [Required(ErrorMessage = "Es necesario definir un tipo de compra")]
-        [Range(typeof(decimal), minimum: "1", maximum: "2", ErrorMessage = " El tipo de compra es incorrecto")]
+        [Range(typeof(int), minimum: "1", maximum: "2", ErrorMessage = " El tipo de compra es incorrecto")]
         public int TipoVenta { get; set; }
         [ForeignKey("VentaId")]
         public List<VentasDetalle> Productos { get; set; }
