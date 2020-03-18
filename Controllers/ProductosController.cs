@@ -19,17 +19,21 @@ namespace AgroVeterinariaSoft.Controllers
             {
                 if (Producto.ProductoId == 0)
                 {
-                    Insertar(Producto);
+                   paso =  Insertar(Producto);
                 }
                 else
                 {
-                    Modificar(Producto);
+                   paso = Modificar(Producto);
                 }
             }
             catch (Exception)
             {
 
                 throw;
+            }
+            finally
+            {
+                Database.Dispose();
             }
             return paso;
         }
@@ -49,7 +53,10 @@ namespace AgroVeterinariaSoft.Controllers
 
                 throw;
             }
-            Database.Dispose();
+            finally
+            {
+                Database.Dispose();
+            }
 
             return paso;
         }
@@ -68,7 +75,10 @@ namespace AgroVeterinariaSoft.Controllers
 
                 throw;
             }
-            Database.Dispose();
+            finally
+            {
+                Database.Dispose();
+            }
 
             return paso;
 
@@ -81,14 +91,17 @@ namespace AgroVeterinariaSoft.Controllers
 
             try
             {
-                Producto = Database.Productos.Find(Id);
+                Producto = Database.Productos.Where(A=> A.ProductoId ==  Id).FirstOrDefault();
             }
             catch (Exception)
             {
 
                 throw;
             }
-            Database.Dispose();
+            finally
+            {
+                Database.Dispose();
+            }
 
             return Producto;
         }
@@ -102,18 +115,23 @@ namespace AgroVeterinariaSoft.Controllers
             try
             {
                 Productos Producto = Database.Productos.Find(Id);
-                Database.Productos.Remove(Producto);
-                if (Database.SaveChanges() > 0)
+
+                if(Producto != null)
                 {
-                    paso = true;
+                    Database.Productos.Remove(Producto);
+                    paso = Database.SaveChanges() > 0;
                 }
+                
             }
             catch (Exception)
             {
 
                 throw;
             }
-            Database.Dispose();
+            finally
+            {
+                Database.Dispose();
+            }
 
             return paso;
 
@@ -132,6 +150,10 @@ namespace AgroVeterinariaSoft.Controllers
             {
 
                 throw;
+            }
+            finally
+            {
+                Database.Dispose();
             }
             return Lista;
         }
