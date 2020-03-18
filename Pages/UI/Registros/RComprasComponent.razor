@@ -186,12 +186,7 @@
         try
         {
             Suplidores temp = SuplidoresController.Buscar(Compra.SuplidorId);
-            if(Suplidor.SuplidorId==0)
-            {
-                toastService.ShowWarning("Debe agregar un Suplidor");
-                return;
-            }
-            if(Suplidor==null)
+            if(temp==null)
             {
                 toastService.ShowWarning("Debe agregar un Suplidor existente");
                 return;
