@@ -70,9 +70,6 @@ namespace AgroVeterinariaSoft.Migrations
                     b.Property<int>("SuplidorId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Telefono")
-                        .HasColumnType("TEXT");
-
                     b.Property<decimal>("Total")
                         .HasColumnType("TEXT");
 

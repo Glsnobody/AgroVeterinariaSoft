@@ -1,6 +1,9 @@
-﻿@page "/RVenta"
+﻿@attribute [Authorize]
+
+@page "/RVenta"
 @page "/RVenta/{VentaId:int}"
 @inject IToastService toastService
+
 
 
 <div class="container">
@@ -100,13 +103,13 @@
                     <tbody>
                         @foreach (var obj in Venta.Productos)
                         {
-                        <tr>
-                            <td>@obj.ProductoId</td>
-                            <td>@obj.Descripcion</td>
-                            <td>@obj.Precio</td>
-                            <td>@obj.Cantidad</td>
-                            <td><button type="button" class="btn btn-sm " @onclick="(()=> RemoverProducto(obj))">Eliminar</button></td>
-                        </tr>
+                            <tr>
+                                <td>@obj.ProductoId</td>
+                                <td>@obj.Descripcion</td>
+                                <td>@obj.Precio</td>
+                                <td>@obj.Cantidad</td>
+                                <td><button type="button" class="btn btn-sm " @onclick="(()=> RemoverProducto(obj))">Eliminar</button></td>
+                            </tr>
                         }
 
                     </tbody>
@@ -147,7 +150,7 @@
     public int CantidadProducto { get; set; }
     public string TipoVentaSeleccionada { get; set; }
 
-    
+
 
     protected override void OnInitialized()
     {
@@ -157,7 +160,7 @@
 
     protected override void OnParametersSet()
     {
-        if(VentaId > 0)
+        if (VentaId > 0)
         {
             Venta.VentaId = VentaId;
             Buscar();
@@ -168,19 +171,19 @@
     {
         try
         {
-            if(!ClientesController.Existe(Venta.ClienteId))
+            if (!ClientesController.Existe(Venta.ClienteId))
             {
                 toastService.ShowWarning("El cliente no existe");
                 return;
             }
 
-            if(Venta.Productos.Count <= 0)
+            if (Venta.Productos.Count <= 0)
             {
                 toastService.ShowWarning("Debe agregar productos");
                 return;
             }
 
-            if(VentasController.Guardar(Venta))
+            if (VentasController.Guardar(Venta))
             {
                 Venta = new Ventas();
                 toastService.ShowSuccess("Guardado correctamente");
@@ -202,7 +205,7 @@
         try
         {
             Productos temp = ProductosController.Buscar(Producto.ProductoId);
-            if(temp != null)
+            if (temp != null)
             {
                 Producto = temp;
             }
@@ -220,13 +223,13 @@
 
     private void AgregarProducto()
     {
-        if(string.IsNullOrWhiteSpace(Producto.Descripcion))
+        if (string.IsNullOrWhiteSpace(Producto.Descripcion))
         {
             toastService.ShowInfo("Se debe buscar un producto");
             return;
         }
 
-        if(CantidadProducto <= 0)
+        if (CantidadProducto <= 0)
         {
             toastService.ShowInfo("La cantidad del producto debe ser mayot a 0");
             return;
@@ -239,7 +242,7 @@
             Cantidad = CantidadProducto,
             Descripcion = Producto.Descripcion
 
-        }) ;
+        });
 
         CalcularTotal();
 
@@ -259,7 +262,7 @@
         {
             Ventas temp = VentasController.Buscar(Venta.VentaId);
 
-            if(temp != null)
+            if (temp != null)
             {
                 Venta = temp;
                 BuscarCliente();
@@ -295,7 +298,7 @@
         {
             Clientes temp = ClientesController.Buscar(Venta.ClienteId);
 
-            if(temp != null)
+            if (temp != null)
             {
                 Cliente = temp;
             }
@@ -313,7 +316,7 @@
 
     private void CalcularTotal()
     {
-        Venta.Total = Venta.Productos.Sum(A=> A.Precio * A.Cantidad);
+        Venta.Total = Venta.Productos.Sum(A => A.Precio * A.Cantidad);
     }
 
 }
