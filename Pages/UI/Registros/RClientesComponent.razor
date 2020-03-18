@@ -18,7 +18,7 @@
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
-    <h3>RClientesComponent</h3>
+    <h3 class="display-3 text-center">Registro de Clientes</h3>
 
     <div class="container">
         <h3 class="display-3 text-center">Registro de Clientes</h3>
@@ -65,7 +65,7 @@
 
             <div class="form-group">
                 <label>Balance</label>
-                <InputNumber @bind-Value="Cliente.Balance" class="form-control" />
+                <InputNumber @bind-Value="Cliente.Balance" class="form-control" ReadOnly="true" />
             </div>
 
             <ValidationSummary />
