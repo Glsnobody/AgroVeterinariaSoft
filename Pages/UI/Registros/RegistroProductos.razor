@@ -61,7 +61,7 @@
 
         <div class="btn-group">
             <button class="btn btn-primary" @onclick="Nuevo" type="button">Nuevo</button>
-            <button class="btn btn-success" @onclick="Guardar" type="submit">Guardar</button>
+            <button class="btn btn-success" type="submit">Guardar</button>
             <button class="btn btn-danger" @onclick="Borrar" type="button">Eliminar</button>
         </div>
     </EditForm>
@@ -71,6 +71,7 @@
 
 @code {
     Productos Producto = new Productos();
+
     [Parameter]
     public int ProductoId { get; set; }
 
@@ -89,7 +90,10 @@
     {
         Calcular();
         if (ProductosController.Guardar(Producto))
+        {
             toastService.ShowSuccess("Producto Guardado");
+            Producto = new Productos();
+        }        
         else
             toastService.ShowError("HUno un error");
 
@@ -112,9 +116,6 @@
         {
             toastService.ShowError("El Producto no se pudo borrar porque aun no existe");
         }
-
-
-
         else
         {
             if (ProductosController.Eliminar(Producto.ProductoId))
@@ -124,10 +125,12 @@
         }
 
     }
+
     private void Nuevo()
     {
         Producto = new Productos();
     }
+
     private void Calcular()
     {
         decimal val = Producto.Ganancia / 100;
