@@ -8,6 +8,8 @@
 <h3 class="display-3 text-center">Registro de Compras</h3>
 <div class="container">
     <EditForm Model="Compra" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
         <div class="form-group">
             <label>Id</label>
             <div class="input-group">
