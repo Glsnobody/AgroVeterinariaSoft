@@ -9,6 +9,8 @@
 
 <div class="container">
     <EditForm Model="Suplidor" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
         <div class="form-group">
             <label for="SuplidorIdNumber">SuplidorId:</label>
             <div class="input-group">

@@ -9,6 +9,8 @@
 
     <div>
         <EditForm Model="Venta" OnValidSubmit="Guardar">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
             <div class="form-group">
                 <label>Id</label>
                 <div class="input-group">
