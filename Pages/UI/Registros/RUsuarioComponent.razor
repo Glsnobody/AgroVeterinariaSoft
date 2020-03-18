@@ -1,0 +1,157 @@
+﻿@page "/RUsuarios"
+@page "/RUsuarios/{UsuarioId:int}"
+@inject IToastService toastService
+
+<h3>RClientesComponent</h3>
+
+<div class="container">
+    <h3 class="display-3 text-center">Registro de Usuarios</h3>
+
+
+    <EditForm Model="Usuario" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+
+        <div class="form-group">
+            <label>Id</label>
+            <div class="input-group">
+                <InputNumber @bind-Value="Usuario.UsuarioId" class="form-control" />
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label>Nombres</label>
+            <InputText @bind-Value="Usuario.Nombres" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Fecha de Creacion</label>
+            <InputDate @bind-Value="Usuario.Fecha" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Usuario</label>
+            <InputText @bind-Value="Usuario.Usuario" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Contraseña</label>
+            <InputText @bind-Value="Usuario.Psw" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Correo</label>
+            <InputText @bind-Value="Usuario.Correo" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Nivel de Usuario</label>
+            <InputText @bind-Value="Usuario.NivelAcceso" class="form-control" />
+        </div>
+
+        <ValidationSummary />
+        <button type="button" class="btn btn-primary" @onclick="Limpiar">Limpiar</button>
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+
+    </EditForm>
+
+
+</div>
+
+@code {
+
+    public Usuarios Usuario { get; set; }
+    [Parameter]
+    public int UsuarioId { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Usuario = new Usuarios();
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (UsuarioId > 0)
+        {
+            Usuario.UsuarioId = UsuarioId;
+            Buscar();
+        }
+    }
+
+    private void Guardar()
+    {
+        try
+        {
+            if (UsuariosController.Guardar(Usuario))
+            {
+                Usuario = new Usuarios();
+                toastService.ShowSuccess("Guardado correctamente");
+            }
+            else
+            {
+                toastService.ShowError("No se pudo guardar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void Buscar()
+    {
+        try
+        {
+            Usuarios temp = UsuariosController.Buscar(Usuario.UsuarioId);
+
+            if (temp != null)
+            {
+                Usuario = temp;
+            }
+            else
+            {
+                toastService.ShowError("No se pudo encontrar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void Eliminar()
+    {
+        try
+        {
+
+
+            if (UsuariosController.Existe(Usuario.UsuarioId))
+            {
+                if (UsuariosController.Eliminar(Usuario.UsuarioId))
+                {
+                    toastService.ShowError("No se pudo eliminar");
+                }
+            }
+            else
+            {
+                toastService.ShowInfo("No se pudo encontrar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void Limpiar()
+    {
+        Usuario = new Usuarios();
+    }
+}

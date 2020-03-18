@@ -35,7 +35,6 @@ namespace AgroVeterinariaSoft.Migrations
                     SuplidorId = table.Column<int>(nullable: false),
                     Fecha = table.Column<DateTime>(nullable: false),
                     Impuesto = table.Column<decimal>(nullable: false),
-                    Telefono = table.Column<string>(nullable: true),
                     Total = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>

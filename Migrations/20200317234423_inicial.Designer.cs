@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgroVeterinariaSoft.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200315214256_inicial")]
+    [Migration("20200317234423_inicial")]
     partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,9 +71,6 @@ namespace AgroVeterinariaSoft.Migrations
 
                     b.Property<int>("SuplidorId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Telefono")
-                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("TEXT");
