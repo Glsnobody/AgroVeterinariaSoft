@@ -1,14 +1,14 @@
 ﻿@page "/RClientes"
 @page "/RClientes/{ClienteId:int}"
+@inject IToastService toastService
 
-@using Microsoft.AspNetCore.Components.Authorization
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
-@inject IToastService toastService
+
 
 <AuthorizeView>
-    
+
 
     <NotAuthorized>
         <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
@@ -18,7 +18,7 @@
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
-    <h3 class="display-3 text-center">Registro de Clientes</h3>
+   
 
     <div class="container">
         <h3 class="display-3 text-center">Registro de Clientes</h3>
@@ -38,35 +38,44 @@
 
             </div>
 
-            <div class="form-group">
-                <label>Nombres</label>
-                <InputText @bind-Value="Cliente.Nombres" class="form-control" />
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Nombres</label>
+                    <InputText @bind-Value="Cliente.Nombres" class="form-control" />
+                </div>
+
+                <div class="form-group col">
+                    <label>Fecha de Nacimiento</label>
+                    <InputDate @bind-Value="Cliente.FechaNacimiento" class="form-control" />
+                </div>
+            </div>
+           
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Cedula</label>
+                    <InputText @bind-Value="Cliente.Cedula" class="form-control" />
+                </div>
+
+                <div class="form-group col">
+                    <label>Telefono</label>
+                    <InputText @bind-Value="Cliente.Telefono" class="form-control" />
+                </div>
+
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Direccion</label>
+                    <InputText @bind-Value="Cliente.Direccion" class="form-control" />
+                </div>
+
+                <div class="form-group col">
+                    <label>Balance</label>
+                    <InputNumber @bind-Value="Cliente.Balance" class="form-control" ReadOnly="true" />
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Fecha de Nacimiento</label>
-                <InputDate @bind-Value="Cliente.FechaNacimiento" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <label>Cedula</label>
-                <InputText @bind-Value="Cliente.Cedula" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <label>Telefono</label>
-                <InputText @bind-Value="Cliente.Telefono" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <label>Direccion</label>
-                <InputText @bind-Value="Cliente.Direccion" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <label>Balance</label>
-                <InputNumber @bind-Value="Cliente.Balance" class="form-control" ReadOnly="true" />
-            </div>
+            
 
             <ValidationSummary />
             <button type="button" class="btn btn-primary" @onclick="Limpiar">Limpiar</button>
@@ -95,7 +104,7 @@
         Cliente = new Clientes();
         Autorizado = false;
 
-        
+
     }
 
     protected override void OnParametersSet()

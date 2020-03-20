@@ -5,143 +5,158 @@
 @inject IToastService toastService
 
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<div class="container">
 
-    <h3 class="display-3 text-center">Registro de Ventas</h3>
+<AuthorizeView>
 
-    <div>
-        <EditForm Model="Venta" OnValidSubmit="Guardar">
-            <DataAnnotationsValidator/>
-            <ValidationSummary/>
-            <div class="form-group">
-                <label>Id</label>
-                <div class="input-group">
-                    <InputNumber @bind-Value="Venta.VentaId" class="form-control" />
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
-                    </div>
-                </div>
 
-            </div>
+    <NotAuthorized>
+        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+    </NotAuthorized>
 
-            <div class="form-row">
-                <div class="col form-group">
-                    <label>ClienteId</label>
+</AuthorizeView>
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <div class="container">
+
+        <h3 class="display-3 text-center">Registro de Ventas</h3>
+
+        <div>
+            <EditForm Model="Venta" OnValidSubmit="Guardar">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="form-group">
+                    <label>Id</label>
                     <div class="input-group">
-                        <InputNumber @bind-Value="Venta.ClienteId" class="form-control" @onchange="BuscarCliente" />
+                        <InputNumber @bind-Value="Venta.VentaId" class="form-control" />
                         <div class="input-group-append">
-                            <button type="button" class="btn btn-primary" @onclick="BuscarCliente">Buscar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col form-group">
-                    <label>Cliente</label>
-                    <InputText @bind-Value="Cliente.Nombres" class="form-control" />
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group col">
-                    <label>Fecha</label>
-                    <InputDate @bind-Value="Venta.Fecha" class="form-control" />
-                </div>
-
-                <div class="form-group col">
-                    <label>Tipo de Venta</label>
-                    <InputSelect @bind-Value="TipoVentaSeleccionada" class="form-control" @onclick="setTipoVenta">
-                        <option selected value="1">Contado</option>
-                        <option value="2">Credito</option>
-                    </InputSelect>
-
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group col">
-                    <label>ProductoId</label>
-                    <div class="input-group">
-                        <InputNumber @bind-Value="Producto.ProductoId" class="form-control" />
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-outline-primary" @onclick="BuscarProducto">Buscar</button>
+                            <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
                         </div>
                     </div>
 
                 </div>
 
-                <div class="form-group col">
-                    <label>Producto</label>
-                    <InputText @bind-Value="Producto.Descripcion" class="form-control" />
-                </div>
-
-                <div class="form-group col">
-                    <label>Existencia</label>
-                    <InputNumber @bind-Value="Producto.Cantidad" class="form-control" ReadOnly="true" />
-                </div>
-
-                <div class="form-group col">
-                    <label>Cantidad</label>
-                    <div class="input-group">
-                        <InputNumber @bind-Value="CantidadProducto" class="form-control" />
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>
+                <div class="form-row">
+                    <div class="col form-group">
+                        <label>ClienteId</label>
+                        <div class="input-group">
+                            <InputNumber @bind-Value="Venta.ClienteId" class="form-control" @onchange="BuscarCliente" />
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary" @onclick="BuscarCliente">Buscar</button>
+                            </div>
                         </div>
                     </div>
 
+                    <div class="col form-group">
+                        <label>Cliente</label>
+                        <InputText @bind-Value="Cliente.Nombres" class="form-control" />
+                    </div>
                 </div>
-            </div>
+
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label>Fecha</label>
+                        <InputDate @bind-Value="Venta.Fecha" class="form-control" />
+                    </div>
+
+                    <div class="form-group col">
+                        <label>Tipo de Venta</label>
+                        <InputSelect @bind-Value="TipoVentaSeleccionada" class="form-control" @onclick="setTipoVenta">
+                            <option selected value="1">Contado</option>
+                            <option value="2">Credito</option>
+                        </InputSelect>
+
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label>ProductoId</label>
+                        <div class="input-group">
+                            <InputNumber @bind-Value="Producto.ProductoId" class="form-control" />
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-primary" @onclick="BuscarProducto">Buscar</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col">
+                        <label>Producto</label>
+                        <InputText @bind-Value="Producto.Descripcion" class="form-control" />
+                    </div>
+
+                    <div class="form-group col">
+                        <label>Existencia</label>
+                        <InputNumber @bind-Value="Producto.Cantidad" class="form-control" ReadOnly="true" />
+                    </div>
+
+                    <div class="form-group col">
+                        <label>Cantidad</label>
+                        <div class="input-group">
+                            <InputNumber @bind-Value="CantidadProducto" class="form-control" />
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
 
 
-            <div>
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="row">Id</th>
-                            <th scope="row">Producto</th>
-                            <th scope="row">Precio</th>
-                            <th scope="row">Cantidad</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach (var obj in Venta.Productos)
-                        {
+                <div>
+                    <table class="table">
+                        <thead class="thead-dark">
                             <tr>
-                                <td>@obj.ProductoId</td>
-                                <td>@obj.Descripcion</td>
-                                <td>@obj.Precio</td>
-                                <td>@obj.Cantidad</td>
-                                <td><button type="button" class="btn btn-sm " @onclick="(()=> RemoverProducto(obj))">Eliminar</button></td>
+                                <th scope="row">Id</th>
+                                <th scope="row">Producto</th>
+                                <th scope="row">Precio</th>
+                                <th scope="row">Cantidad</th>
+                                <th></th>
                             </tr>
-                        }
+                        </thead>
 
-                    </tbody>
+                        <tbody>
+                            @foreach (var obj in Venta.Productos)
+                            {
+                                <tr>
+                                    <td>@obj.ProductoId</td>
+                                    <td>@obj.Descripcion</td>
+                                    <td>@obj.Precio</td>
+                                    <td>@obj.Cantidad</td>
+                                    <td><button type="button" class="btn btn-sm " @onclick="(()=> RemoverProducto(obj))">Eliminar</button></td>
+                                </tr>
+                            }
 
-                </table>
-            </div>
-            <div class="form-row">
-                <div class="form-group col">
-                    <label>Observacion</label>
-                    <InputTextArea @bind-Value="Venta.Observacion" class="form-control" />
+                        </tbody>
+
+                    </table>
                 </div>
-                <div class="col form-group">
-                    <label>Total</label>
-                    <InputNumber @bind-Value="Venta.Total" class="form-control" ReadOnly="true" />
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label>Observacion</label>
+                        <InputTextArea @bind-Value="Venta.Observacion" class="form-control" />
+                    </div>
+                    <div class="col form-group">
+                        <label>Total</label>
+                        <InputNumber @bind-Value="Venta.Total" class="form-control" ReadOnly="true" />
+                    </div>
                 </div>
-            </div>
 
 
-            <div class="form-group">
-                <button type="button" class="btn btn-primary" @onclick="Limpiar">Limpiar</button>
-                <button type="submit" class="btn btn-success">Guardar</button>
-                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-            </div>
-        </EditForm>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" @onclick="Limpiar">Limpiar</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+                </div>
+            </EditForm>
+        </div>
+
     </div>
+}
 
-</div>
 
 @code {
 
@@ -233,7 +248,7 @@
 
     private void AgregarProducto()
     {
-        if(!ValidarAgregarProducto())
+        if (!ValidarAgregarProducto())
         {
             return;
         }
@@ -267,13 +282,13 @@
             paso = false;
         }
 
-        if(CantidadProducto > Producto.Cantidad || CantidadProducto < 0)
+        if (CantidadProducto > Producto.Cantidad || CantidadProducto < 0)
         {
             toastService.ShowInfo("La cantidad del producto no es suficiente");
             paso = false;
         }
 
-        if(Venta.Productos.Any(A=> A.ProductoId == Producto.ProductoId))
+        if (Venta.Productos.Any(A => A.ProductoId == Producto.ProductoId))
         {
             toastService.ShowInfo("No se puede agregar el mismo producto otra vez");
             paso = false;

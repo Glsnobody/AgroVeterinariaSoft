@@ -5,68 +5,98 @@
 @using AgroVeterinariaSoft.Data;
 @using AgroVeterinariaSoft.Models;
 @using AgroVeterinariaSoft.Controllers;
-<h3 class="display-3 text-center">Registro de Productos</h3>
-<div class="container">
-    <EditForm Model="Producto" OnValidSubmit="Guardar">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="form-group">
-            <label for="ProductoIdNumber">Producto ID: </label>
-            <div class="input-group">
-                <InputNumber id="ProductoIdNumber" @bind-Value="Producto.ProductoId" class="form-control" />
-                <button type="button" class="btn btn-primary" @onclick="Buscar"> Buscar</button>
+
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+<AuthorizeView>
+
+
+    <NotAuthorized>
+        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+    </NotAuthorized>
+
+</AuthorizeView>
+
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+
+    <div class="container">
+
+        <h3 class="display-3 text-center">Registro de Productos</h3>
+
+        <EditForm Model="Producto" OnValidSubmit="Guardar">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <label for="ProductoIdNumber">Producto ID: </label>
+                <div class="input-group">
+                    <InputNumber id="ProductoIdNumber" @bind-Value="Producto.ProductoId" class="form-control" />
+                    <button type="button" class="btn btn-primary" @onclick="Buscar"> Buscar</button>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="FechaDate">Fecha: </label>
-            <InputDate id="FechaDate" @bind-Value="Producto.Fecha" class="form-control"> Fecha: </InputDate>
-        </div>
+            <div class="form-group">
+                <label for="FechaDate">Fecha: </label>
+                <InputDate id="FechaDate" @bind-Value="Producto.Fecha" class="form-control"> Fecha: </InputDate>
+            </div>
 
-        <div class="form-group">
-            <label for="DescripcionText">Descripcion: </label>
-            <InputText id="DescripcionText" @bind-Value="Producto.Descripcion" class="form-control"></InputText>
-        </div>
+            <div class="form-group">
+                <label for="DescripcionText">Descripcion: </label>
+                <InputText id="DescripcionText" @bind-Value="Producto.Descripcion" class="form-control"></InputText>
+            </div>
 
-        <div class="form-group">
-            <label for="CantidadNumber">Cantidad: </label>
-            <InputNumber id="CantidadNumber" @bind-Value="Producto.Cantidad" class="form-control"></InputNumber>
-        </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="CantidadNumber">Cantidad: </label>
+                    <InputNumber id="CantidadNumber" @bind-Value="Producto.Cantidad" class="form-control"></InputNumber>
+                </div>
 
-        <div class="form-group">
-            <label for="MinimoNumber">Minimo: </label>
-            <InputNumber id="MinimoNumber" @bind-Value="Producto.Minimo" class="form-control"></InputNumber>
-        </div>
+                <div class="form-group col">
+                    <label for="MinimoNumber">Minimo: </label>
+                    <InputNumber id="MinimoNumber" @bind-Value="Producto.Minimo" class="form-control"></InputNumber>
+                </div>
+            </div>
 
-        <div class="form-group">
-            <label for="UnidadText">Unidad: </label>
-            <InputText id="UnidadText" @bind-Value="Producto.Unidad" class="form-control"></InputText>
-        </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="UnidadText">Unidad: </label>
+                    <InputText id="UnidadText" @bind-Value="Producto.Unidad" class="form-control"></InputText>
+                </div>
 
-        <div class="form-group">
-            <label for="CostoNumber">Costo: </label>
-            <InputNumber id="CostoNumber" @bind-Value="Producto.Costo" @onfocus="Calcular" @onfocusin="Calcular" @onfocusout="Calcular" @onchange="Calcular" class="form-control"></InputNumber>
+                <div class="form-group col">
+                    <label for="CostoNumber">Costo: </label>
+                    <InputNumber id="CostoNumber" @bind-Value="Producto.Costo" @onfocus="Calcular" @onfocusin="Calcular" @onfocusout="Calcular" @onchange="Calcular" class="form-control"></InputNumber>
 
-        </div>
+                </div>
 
-        <div class="form-group">
-            <label for="GananciaNumber">Ganancia: </label>
-            <InputNumber id="GananciaNumber" @bind-Value="Producto.Ganancia" @onfocus="Calcular" @onfocusin="Calcular" @onfocusout="Calcular" @onchange="Calcular" class="form-control"></InputNumber>
-        </div>
+            </div>
 
-        <div class="form-group">
-            <label for="PrecioNumber">Precio: </label>
-            <InputNumber id="PrecioNumber" @bind-Value="Producto.Precio" class="form-control" diasbled="disabled"></InputNumber>
-        </div>
+            <div class="form-row">
 
-        <div class="btn-group">
-            <button class="btn btn-primary" @onclick="Nuevo" type="button">Nuevo</button>
-            <button class="btn btn-success" type="submit">Guardar</button>
-            <button class="btn btn-danger" @onclick="Borrar" type="button">Eliminar</button>
-        </div>
-    </EditForm>
-</div>
+                <div class="form-group col">
+                    <label for="GananciaNumber">Ganancia: </label>
+                    <InputNumber id="GananciaNumber" @bind-Value="Producto.Ganancia" @onfocus="Calcular" @onfocusin="Calcular" @onfocusout="Calcular" @onchange="Calcular" class="form-control"></InputNumber>
+                </div>
 
+                <div class="form-group col">
+                    <label for="PrecioNumber">Precio: </label>
+                    <InputNumber id="PrecioNumber" @bind-Value="Producto.Precio" class="form-control" diasbled="disabled"></InputNumber>
+                </div>
+
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" @onclick="Nuevo" type="button">Nuevo</button>
+                <button class="btn btn-success" type="submit">Guardar</button>
+                <button class="btn btn-danger" @onclick="Borrar" type="button">Eliminar</button>
+            </div>
+        </EditForm>
+    </div>
+}
 
 
 @code {
@@ -79,7 +109,7 @@
 
     protected override void OnParametersSet()
     {
-        if(ProductoId > 0)
+        if (ProductoId > 0)
         {
             Producto.ProductoId = ProductoId;
             Buscar();
@@ -93,7 +123,7 @@
         {
             toastService.ShowSuccess("Producto Guardado");
             Producto = new Productos();
-        }        
+        }
         else
             toastService.ShowError("HUno un error");
 

@@ -5,120 +5,144 @@
 @using AgroVeterinariaSoft.Data;
 @using AgroVeterinariaSoft.Models;
 @using AgroVeterinariaSoft.Controllers;
-<h3 class="display-3 text-center">Registro de Compras</h3>
-<div class="container">
-    <EditForm Model="Compra" OnValidSubmit="Guardar">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="form-group">
-            <label>Id</label>
-            <div class="input-group">
-                <InputNumber @bind-Value="Compra.CompraId" class="form-control" />
-                <div class="input-group-append">
-                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
-                </div>
-            </div>
 
-        </div>
 
-        <div class="form-row">
-            <div class="col form-group">
-                <label>SuplidorId</label>
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+<AuthorizeView>
+
+
+    <NotAuthorized>
+        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+    </NotAuthorized>
+
+</AuthorizeView>
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <div class="container">
+
+        <h3 class="display-3 text-center">Registro de Compras</h3>
+
+        <EditForm Model="Compra" OnValidSubmit="Guardar">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <label>Id</label>
                 <div class="input-group">
-                    <InputNumber @bind-Value="Compra.SuplidorId" class="form-control" />
+                    <InputNumber @bind-Value="Compra.CompraId" class="form-control" />
                     <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" @onclick="BuscarSuplidor">Buscar</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col form-group">
-                <label>Suplidor</label>
-                <InputText @bind-Value="Suplidor.Nombre" class="form-control" />
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group col">
-                <label>Fecha</label>
-                <InputDate @bind-Value="Compra.Fecha" class="form-control" />
-            </div>
-
-        </div>
-
-        <div class="form-row">
-            <div class="form-group col">
-                <label>ProductoId</label>
-                <div class="input-group">
-                    <InputNumber @bind-Value="Producto.ProductoId" class="form-control" />
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-outline-primary" @onclick="BuscarProducto">Buscar</button>
+                        <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
                     </div>
                 </div>
 
             </div>
 
-            <div class="form-group col">
-                <label>Producto</label>
-                <InputText @bind-Value="Producto.Descripcion" class="form-control" />
-            </div>
-
-            <div class="form-group col">
-                <label>Cantidad</label>
-                <div class="input-group">
-                    <InputNumber @bind-Value="CantidadProducto" class="form-control" />
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>
+            <div class="form-row">
+                <div class="col form-group">
+                    <label>SuplidorId</label>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="Compra.SuplidorId" class="form-control" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-primary" @onclick="BuscarSuplidor">Buscar</button>
+                        </div>
                     </div>
                 </div>
 
+                <div class="col form-group">
+                    <label>Suplidor</label>
+                    <InputText @bind-Value="Suplidor.Nombre" class="form-control" />
+                </div>
             </div>
-        </div>
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Fecha</label>
+                    <InputDate @bind-Value="Compra.Fecha" class="form-control" />
+                </div>
+
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>ProductoId</label>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="Producto.ProductoId" class="form-control" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-outline-primary" @onclick="BuscarProducto">Buscar</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group col">
+                    <label>Producto</label>
+                    <InputText @bind-Value="Producto.Descripcion" class="form-control" />
+                </div>
+
+                <div class="form-group col">
+                    <label>Cantidad</label>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="CantidadProducto" class="form-control" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
 
-        <div>
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="row">Id</th>
-                        <th scope="row">Producto</th>
-                        <th scope="row">Precio</th>
-                        <th scope="row">Cantidad</th>
-                        <th scope="row">Importe</th>
-                        <th></th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach (var obj in Compra.ListaProductos)
-                    {
+            <div>
+                <table class="table">
+                    <thead class="thead-dark">
                         <tr>
-                            <td>@obj.ProductoId</td>
-                            <td>@obj.Descripcion</td>
-                            <td>@obj.Precio</td>
-                            <td>@obj.Cantidad</td>
-                            <td>@obj.Importe</td>
-                            <td><button type="button" class="btn btn-sm btn-danger " @onclick="(()=> Compra.ListaProductos.Remove(obj))">Eliminar</button></td>
+                            <th scope="row">Id</th>
+                            <th scope="row">Producto</th>
+                            <th scope="row">Precio</th>
+                            <th scope="row">Cantidad</th>
+                            <th scope="row">Importe</th>
+                            <th></th>
                         </tr>
-                    }
+                    </thead>
 
-                </tbody>
+                    <tbody>
+                        @foreach (var obj in Compra.ListaProductos)
+                        {
+                            <tr>
+                                <td>@obj.ProductoId</td>
+                                <td>@obj.Descripcion</td>
+                                <td>@obj.Precio</td>
+                                <td>@obj.Cantidad</td>
+                                <td>@obj.Importe</td>
+                                <td><button type="button" class="btn btn-sm btn-danger " @onclick="(()=> Compra.ListaProductos.Remove(obj))">Eliminar</button></td>
+                            </tr>
+                        }
 
-            </table>
-        </div>
-        <div class="form-group">
-            <label for="TotalNumber"> </label>
-            <InputNumber id="TotalNumber" @bind-Value="Compra.Total" class="form-control" />
+                    </tbody>
 
-        </div>
+                </table>
+            </div>
+            <div class="form-group">
+                <label for="TotalNumber"> </label>
+                <InputNumber id="TotalNumber" @bind-Value="Compra.Total" class="form-control" />
 
-        <div class="form-group">
-            <button type="button" class="btn btn-primary" @onclick="Nuevo">Limpiar</button>
-            <button type="submit" class="btn btn-success">Guardar</button>
-            <button type="button" class="btn btn-danger">Eliminar</button>
-        </div>
-    </EditForm>
-</div>
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" @onclick="Nuevo">Limpiar</button>
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <button type="button" class="btn btn-danger">Eliminar</button>
+            </div>
+        </EditForm>
+    </div>
+
+
+}
+
+
+
 
 
 
@@ -135,7 +159,7 @@
 
     protected override void OnParametersSet()
     {
-        if(CompraId > 0)
+        if (CompraId > 0)
         {
             Compra.CompraId = CompraId;
             Buscar();
