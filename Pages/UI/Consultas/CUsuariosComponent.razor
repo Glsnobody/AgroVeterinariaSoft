@@ -77,14 +77,15 @@
                     <tbody>
                         @foreach (var entity in ListaTemp)
                         {
-                            <tr>
-                                <td scope="row">@entity.UsuarioId</td>
-                                <td>@entity.Usuario</td>
-                                <td>@entity.Correo</td>
-                                <td>@entity.NivelAcceso</td>
-                                <td>@entity.Fecha.ToShortDateString()</td>
-                                <td><a class="btn btn-sm btn-outline-primary" href="/RUsuarios/@entity.UsuarioId">Ver</a></td>
-                            </tr>
+                        <tr>
+                            <td scope="row">@entity.UsuarioId</td>
+                            <td>@entity.Nombres</td>
+                            <td>@entity.Usuario</td>
+                            <td>@entity.Correo</td>
+                            <td>@entity.NivelAcceso</td>
+                            <td>@entity.Fecha.ToShortDateString()</td>
+                            <td><a class="btn btn-sm btn-outline-primary" href="/RUsuarios/@entity.UsuarioId">Ver</a></td>
+                        </tr>
                         }
 
                     </tbody>
