@@ -1,6 +1,6 @@
 ﻿@page "/CCompras"
 
-<div class="container">
+<div class="container-fluid">
 
     <h3 class="display-3 text-center">Consulta de Ventas</h3>
 
@@ -61,39 +61,42 @@
 
 
                 </div>
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Suplidor</th>
-                            <th scope="col">Fecha </th>
-                            <th scope="col">Cant. Productos</th>
-                            <th scope="col">Total</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var entity in ListaTemp)
-                        {
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead class="thead-dark">
                             <tr>
-                                <td scope="row">@entity.CompraId</td>
-                                <td>@SuplidoresController.GetNombre(entity.SuplidorId)</td>
-                                <td>@entity.Fecha.ToShortDateString()</td>
-                                <td>@entity.ListaProductos.Count</td>
-                                <td>@entity.Total</td>
-                                <td><a class="btn btn-sm btn-outline-primary" href="/RCompras/@entity.CompraId">Ver</a></td>
+                                <th scope="col">Id</th>
+                                <th scope="col">Suplidor</th>
+                                <th scope="col">Fecha </th>
+                                <th scope="col">Cant. Productos</th>
+                                <th scope="col">Total</th>
+                                <th></th>
                             </tr>
-                        }
+                        </thead>
+                        <tbody>
+                            @foreach (var entity in ListaTemp)
+                            {
+                                <tr>
+                                    <td scope="row">@entity.CompraId</td>
+                                    <td>@SuplidoresController.GetNombre(entity.SuplidorId)</td>
+                                    <td>@entity.Fecha.ToShortDateString()</td>
+                                    <td>@entity.ListaProductos.Count</td>
+                                    <td>@entity.Total</td>
+                                    <td><a class="btn btn-sm btn-outline-primary" href="/RCompras/@entity.CompraId">Ver</a></td>
+                                </tr>
+                            }
 
-                    </tbody>
+                        </tbody>
 
-                </table>
-            }
-        }
+                    </table>
+                </div>
+                   
+                    }
+                    }
 
-    </div>
+                </div>
 
-</div>
+            </div>
 
 
 @code {

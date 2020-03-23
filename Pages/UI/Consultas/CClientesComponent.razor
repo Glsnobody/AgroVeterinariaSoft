@@ -1,8 +1,11 @@
 ﻿@page "/CClientes"
 
-<div class="container">
+<div class="container-fluid">
 
     <h3 class="display-3 text-center">Consulta de Clientes</h3>
+    <div cl>
+
+    </div>
 
     <div>
         @if (ListaClientes == null)
@@ -21,13 +24,13 @@
             else
             {
 
-                <div class="form-row" >
-                    <div class="col form-group">
+                <div class="form-row">
+                    <div class="col form-group ">
                         <div>
                             <label>Desde</label>
-                            <input type="checkbox" @bind-value="FiltrarPorFecha"/> Filtrar Fecha
+                            <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
                         </div>
-                        
+
                         <input type="date" @bind-value="DesdeFecha" class="form-control" />
                     </div>
 
@@ -62,42 +65,44 @@
 
 
                 </div>
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Nombres</th>
-                            <th scope="col">Fecha Nacimiento</th>
-                            <th scope="col">Telefono</th>
-                            <th scope="col">Cedula</th>
-                            <th scope="col">Balance</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var entity in ListaClientesTemp)
-                        {
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
                             <tr>
-                                <td scope="row">@entity.ClienteId</td>
-                                <td>@entity.Nombres</td>
-                                <td>@entity.FechaNacimiento.ToShortDateString()</td>
-                                <td>@entity.Telefono</td>
-                                <td>@entity.Cedula</td>
-                                <td>@entity.Balance</td>
-                                <td><a class="btn btn-sm btn-outline-primary" href="/RClientes/@entity.ClienteId" >Ver</a></td>
+                                <th scope="col">Id</th>
+                                <th scope="col">Nombres</th>
+                                <th scope="col">Fecha Nacimiento</th>
+                                <th scope="col">Telefono</th>
+                                <th scope="col">Cedula</th>
+                                <th scope="col">Balance</th>
+                                <th></th>
                             </tr>
-                        }
+                        </thead>
+                        <tbody>
+                            @foreach (var entity in ListaClientesTemp)
+                            {
+                                <tr>
+                                    <td scope="row">@entity.ClienteId</td>
+                                    <td>@entity.Nombres</td>
+                                    <td>@entity.FechaNacimiento.ToShortDateString()</td>
+                                    <td>@entity.Telefono</td>
+                                    <td>@entity.Cedula</td>
+                                    <td>@entity.Balance</td>
+                                    <td><a class="btn btn-sm btn-outline-primary" href="/RClientes/@entity.ClienteId">Ver</a></td>
+                                </tr>
+                            }
 
-                    </tbody>
+                        </tbody>
 
-                </table>
-                @*<div class="form-group">
-                    <button type="button" class="btn btn-secondary" @onclick="AnteriorPagina">Ant</button>
-                    <button type="button" class="btn btn-secondary" @onclick="SiguientePagina">Sig</button>
-                </div>*@
+                    </table>
+                </div>
+                   
+                    @*<div class="form-group">
+                        <button type="button" class="btn btn-secondary" @onclick="AnteriorPagina">Ant</button>
+                        <button type="button" class="btn btn-secondary" @onclick="SiguientePagina">Sig</button>
+                    </div>*@
             }
         }
-
     </div>
 
 </div>

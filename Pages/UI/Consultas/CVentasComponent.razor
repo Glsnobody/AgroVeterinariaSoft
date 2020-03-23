@@ -1,6 +1,6 @@
 ﻿@page "/CVentas"
 
-<div class="container">
+<div class="container-fluid">
 
     <h3 class="display-3 text-center">Consulta de Ventas</h3>
 
@@ -62,38 +62,39 @@
 
 
                 </div>
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Cliente</th>
-                            <th scope="col">Fecha </th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Observacion</th>
-                            <th scope="col">Cant. Productos</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var entity in ListaVentasTemp)
-                        {
-                        <tr>
-                            <td scope="row">@entity.ClienteId</td>
-                            <td>@ClientesController.GetNombre(entity.ClienteId)</td>
-                            <td>@entity.Fecha.ToShortDateString()</td>
-                            <td>@entity.Total</td>
-                            <td>@entity.Observacion</td>
-                            <td>@entity.Productos.Count</td>
-                            <td><a class="btn btn-sm btn-outline-primary" href="/RVenta/@entity.VentaId">Ver</a></td>
-                        </tr>
-                        }
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Fecha </th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Observacion</th>
+                                <th scope="col">Cant. Productos</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var entity in ListaVentasTemp)
+                            {
+                                <tr>
+                                    <td scope="row">@entity.ClienteId</td>
+                                    <td>@ClientesController.GetNombre(entity.ClienteId)</td>
+                                    <td>@entity.Fecha.ToShortDateString()</td>
+                                    <td>@entity.Total</td>
+                                    <td>@entity.Observacion</td>
+                                    <td>@entity.Productos.Count</td>
+                                    <td><a class="btn btn-sm btn-outline-primary" href="/RVenta/@entity.VentaId">Ver</a></td>
+                                </tr>
+                            }
 
-                    </tbody>
+                        </tbody>
 
-                </table>
+                    </table>
+                </div>
             }
         }
-
     </div>
 
 </div>

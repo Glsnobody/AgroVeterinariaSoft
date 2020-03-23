@@ -1,6 +1,6 @@
 ﻿@page "/CSuplidores"
 
-<div class="container">
+<div class="container-fluid">
 
     <h3 class="display-3 text-center">Consulta de Suplidores</h3>
 
@@ -61,43 +61,46 @@
 
 
                 </div>
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Nombres</th>
-                            <th scope="col">Telefono</th>
-                            <th scope="col">RNC</th>
-                            <th scope="col">Fecha</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var entity in ListaTemp)
-                        {
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
                             <tr>
-                                <td scope="row">@entity.SuplidorId</td>
-                                <td>@entity.Nombre</td>
-                                <td>@entity.Telefono</td>
-                                <td>@entity.RNC</td>
-                                <td>@entity.FechaCreacion.ToShortDateString()</td>
-                                <td><a class="btn btn-sm btn-outline-primary" href="/RSuplidores/@entity.SuplidorId">Ver</a></td>
+                                <th scope="col">Id</th>
+                                <th scope="col">Nombres</th>
+                                <th scope="col">Telefono</th>
+                                <th scope="col">RNC</th>
+                                <th scope="col">Fecha</th>
+                                <th></th>
                             </tr>
-                        }
+                        </thead>
+                        <tbody>
+                            @foreach (var entity in ListaTemp)
+                            {
+                                <tr>
+                                    <td scope="row">@entity.SuplidorId</td>
+                                    <td>@entity.Nombre</td>
+                                    <td>@entity.Telefono</td>
+                                    <td>@entity.RNC</td>
+                                    <td>@entity.FechaCreacion.ToShortDateString()</td>
+                                    <td><a class="btn btn-sm btn-outline-primary" href="/RSuplidores/@entity.SuplidorId">Ver</a></td>
+                                </tr>
+                            }
 
-                    </tbody>
+                        </tbody>
 
-                </table>
-                @*<div class="form-group">
+                    </table>
+                </div>
+                    
+                    @*<div class="form-group">
                         <button type="button" class="btn btn-secondary" @onclick="AnteriorPagina">Ant</button>
                         <button type="button" class="btn btn-secondary" @onclick="SiguientePagina">Sig</button>
                     </div>*@
-            }
-        }
+                    }
+                    }
 
-    </div>
+                </div>
 
-</div>
+            </div>
 
 
 @code {
