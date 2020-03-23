@@ -209,5 +209,30 @@ namespace AgroVeterinariaSoft.Controllers
 
             return paso;
         }
+
+        public static List<Suplidores> Paginacion(Paginacion paginacion)
+        {
+            Contexto db = new Contexto();
+            List<Suplidores> lista = new List<Suplidores>();
+            try
+            {
+                paginacion.TotalRegistro = db.Suplidores.Where(A => true).Count();
+                paginacion.TotalPaginas = paginacion.TotalRegistro / paginacion.RegistroPorPagina;
+                lista = db.Suplidores.Skip((paginacion.PaginaActual - 1) * paginacion.RegistroPorPagina)
+                     .Take(paginacion.RegistroPorPagina).ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+
+            return lista;
+
+        }
     }
 }

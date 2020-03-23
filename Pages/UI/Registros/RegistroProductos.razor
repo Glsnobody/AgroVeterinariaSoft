@@ -93,6 +93,8 @@
                 <button class="btn btn-primary" @onclick="Nuevo" type="button">Nuevo</button>
                 <button class="btn btn-success" type="submit">Guardar</button>
                 <button class="btn btn-danger" @onclick="Borrar" type="button">Eliminar</button>
+
+                <button type="button" class="btn btn-secondary" @onclick="Agregar100">Agregar100</button>
             </div>
         </EditForm>
     </div>
@@ -165,5 +167,26 @@
     {
         decimal val = Producto.Ganancia / 100;
         Producto.Precio = (Producto.Costo * val) + Producto.Costo;
+    }
+
+    private void Agregar100()
+    {
+        try
+        {
+            if (ClientesController.Insertar100())
+            {
+                toastService.ShowSuccess("Se agregaron 100");
+            }
+            else
+            {
+                toastService.ShowSuccess("NO Se agregaron 100");
+            }
+        }
+
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
 }

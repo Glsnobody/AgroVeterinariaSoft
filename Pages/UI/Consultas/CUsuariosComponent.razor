@@ -91,10 +91,8 @@
                     </tbody>
 
                 </table>
-                @*<div class="form-group">
-                        <button type="button" class="btn btn-secondary" @onclick="AnteriorPagina">Ant</button>
-                        <button type="button" class="btn btn-secondary" @onclick="SiguientePagina">Sig</button>
-                    </div>*@
+
+                <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
             }
         }
 
@@ -116,10 +114,10 @@
 
     public Usuarios Usuario { get; set; }
 
-    //public Paginacion<Productos> Paginacion { get; set; }
+    public Paginacion Paginacion { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => { CargarLista(); Inicialzar(); });
+        await Task.Run(() => {Inicialzar(); });
     }
 
     private void Inicialzar()
@@ -128,18 +126,19 @@
         HastaFecha = DateTime.Now;
         Usuario = new Usuarios();
 
-        ListaTemp = Lista;
+        ListaTemp = new List<Usuarios>();
         FiltrarPorFecha = false;
         Filtro = "0";
-        //Paginacion = new Paginacion<Clientes>();
+        Paginacion = new Paginacion();
+        CargarLista();
     }
 
     private void CargarLista()
     {
         try
         {
-            Lista = UsuariosController.GetList(A => true);
-            //ListaClientes = ClientesController.Paginacion(Paginacion);
+            Lista = UsuariosController.Paginacion(Paginacion);
+            ListaTemp = Lista;
         }
         catch (Exception)
         {
