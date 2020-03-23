@@ -1,63 +1,87 @@
 ﻿@page "/CSuplidores"
 
-<div class="container-fluid">
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-    <h3 class="display-3 text-center">Consulta de Suplidores</h3>
 
-    <div>
-        @if (Lista == null)
+<AuthorizeView>
+
+
+    <NotAuthorized>
+        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+
+    </NotAuthorized>
+
+    <Authorized>
+        @if (NivelUsuario)
         {
-            <div class="text-center">
-                <div class="spinner-border">
-                    <span class="sr-only">Loading....</span>
-                </div>
-            </div>}
-        else
-        {
-            if (Lista.Count <= 0)
+            <p class="display-3 text-center">Usted no tiene el nivel necesario para acceder a esta pagina</p>
+        }
+    </Authorized>
+
+</AuthorizeView>
+
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated
+&& !NivelUsuario)
+{
+    <div class="container">
+
+        <h3 class="display-3 text-center">Consulta de Suplidores</h3>
+
+        <div>
+            @if (Lista == null)
             {
-                <h3 class="display-3 text-center">No hay datos que mostrar</h3>
-            }
+                <div class="text-center">
+                    <div class="spinner-border">
+                        <span class="sr-only">Loading....</span>
+                    </div>
+                </div>}
             else
             {
+                if (Lista.Count <= 0)
+                {
+                    <h3 class="display-3 text-center">No hay datos que mostrar</h3>
+                }
+                else
+                {
 
-                <div class="form-row">
-                    <div class="col form-group">
-                        <div>
-                            <label>Desde</label>
-                            <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
-                        </div>
-
-                        <input type="date" @bind-value="DesdeFecha" class="form-control" />
-                    </div>
-
-                    <div class="col form-group">
-                        <label>Hasta</label>
-                        <input type="date" @bind-value="HastaFecha" class="form-control" />
-                    </div>
-
-                    <div class="col form-group">
-                        <label>Criterio</label>
-                        <input type="text" @bind-value="Criterio" class="form-control" />
-                    </div>
-                    <EditForm Model="Suplidore">
+                    <div class="form-row">
                         <div class="col form-group">
-                            <label>Filtrar por</label>
-                            <div class="input-group">
-                                <InputSelect @bind-Value="Filtro" class="form-control">
-                                    <option selected value="0">Todo</option>
-                                    <option value="1">Id</option>
-                                    <option value="2">Nombre</option>
-                                    <option value="3">Telefono</option>
-                                    <option value="4">RNC</option>
-                                </InputSelect>
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
-                                </div>
+                            <div>
+                                <label>Desde</label>
+                                <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
                             </div>
 
+                            <input type="date" @bind-value="DesdeFecha" class="form-control" />
                         </div>
-                    </EditForm>
+
+                        <div class="col form-group">
+                            <label>Hasta</label>
+                            <input type="date" @bind-value="HastaFecha" class="form-control" />
+                        </div>
+
+                        <div class="col form-group">
+                            <label>Criterio</label>
+                            <input type="text" @bind-value="Criterio" class="form-control" />
+                        </div>
+                        <EditForm Model="Suplidore">
+                            <div class="col form-group">
+                                <label>Filtrar por</label>
+                                <div class="input-group">
+                                    <InputSelect @bind-Value="Filtro" class="form-control">
+                                        <option selected value="0">Todo</option>
+                                        <option value="1">Id</option>
+                                        <option value="2">Nombre</option>
+                                        <option value="3">Telefono</option>
+                                        <option value="4">RNC</option>
+                                    </InputSelect>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </EditForm>
 
 
                 </div>
@@ -89,18 +113,17 @@
                         </tbody>
 
                     </table>
-                </div>
-                    
-                    @*<div class="form-group">
-                        <button type="button" class="btn btn-secondary" @onclick="AnteriorPagina">Ant</button>
-                        <button type="button" class="btn btn-secondary" @onclick="SiguientePagina">Sig</button>
-                    </div>*@
-                    }
-                    }
 
-                </div>
+                    <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
+                }
+            }
 
-            </div>
+        </div>
+
+    </div>
+}
+
+
 
 
 @code {
@@ -116,14 +139,16 @@
 
     public Suplidores Suplidore { get; set; }
 
-    //public Paginacion<Productos> Paginacion { get; set; }
+    public Paginacion Paginacion { get; set; }
+    public bool NivelUsuario;
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => { CargarLista(); Inicialzar(); });
+        await Task.Run(() => { Inicialzar(); });
     }
 
     private void Inicialzar()
     {
+        NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
         DesdeFecha = DateTime.Now;
         HastaFecha = DateTime.Now;
         Suplidore = new Suplidores();
@@ -131,14 +156,16 @@
         ListaTemp = Lista;
         FiltrarPorFecha = false;
         Filtro = "0";
-        //Paginacion = new Paginacion<Clientes>();
+        Paginacion = new Paginacion();
+        CargarLista();
     }
 
     private void CargarLista()
     {
         try
         {
-            Lista = SuplidoresController.GetList(A => true);
+            Lista = SuplidoresController.Paginacion(Paginacion);
+            ListaTemp = Lista;
             //ListaClientes = ClientesController.Paginacion(Paginacion);
         }
         catch (Exception)

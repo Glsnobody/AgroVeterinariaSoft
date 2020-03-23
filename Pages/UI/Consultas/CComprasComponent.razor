@@ -1,63 +1,87 @@
 ﻿@page "/CCompras"
 
-<div class="container-fluid">
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-    <h3 class="display-3 text-center">Consulta de Ventas</h3>
 
-    <div>
-        @if (Lista == null)
+<AuthorizeView>
+
+
+    <NotAuthorized>
+        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+
+    </NotAuthorized>
+
+    <Authorized>
+        @if (NivelUsuario)
         {
-            <div class="text-center">
-                <div class="spinner-border">
-                    <span class="sr-only">Loading....</span>
-                </div>
-            </div>}
-        else
-        {
-            if (Lista.Count <= 0)
+            <p class="display-3 text-center">Usted no tiene el nivel necesario para acceder a esta pagina</p>
+        }
+    </Authorized>
+
+</AuthorizeView>
+
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated
+&& !NivelUsuario)
+{
+    <div class="container">
+
+        <h3 class="display-3 text-center">Consulta de Compras</h3>
+
+        <div>
+            @if (Lista == null)
             {
-                <h3 class="display-3 text-center">No hay datos que mostrar</h3>
-            }
+                <div class="text-center">
+                    <div class="spinner-border">
+                        <span class="sr-only">Loading....</span>
+                    </div>
+                </div>}
             else
             {
+                if (Lista.Count <= 0)
+                {
+                    <h3 class="display-3 text-center">No hay datos que mostrar</h3>
+                }
+                else
+                {
 
-                <div class="form-row">
-                    <div class="col form-group">
-                        <div>
-                            <label>Desde</label>
-                            <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
-                        </div>
-
-                        <input type="date" @bind-value="DesdeFecha" class="form-control" />
-                    </div>
-
-                    <div class="col form-group">
-                        <label>Hasta</label>
-                        <input type="date" @bind-value="HastaFecha" class="form-control" />
-                    </div>
-
-                    <div class="col form-group">
-                        <label>Criterio</label>
-                        <input type="text" @bind-value="Criterio" class="form-control" />
-                    </div>
-                    <EditForm Model="Compra">
+                    <div class="form-row">
                         <div class="col form-group">
-                            <label>Filtrar por</label>
-                            <div class="input-group">
-                                <InputSelect @bind-Value="Filtro" class="form-control">
-                                    <option selected value="0">Todo</option>
-                                    <option value="1">Id</option>
-                                    <option value="2">Suplidor</option>
-                                    <option value="3">Cant. Productos</option>
-                                    <option value="4">Total</option>
-                                </InputSelect>
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
-                                </div>
+                            <div>
+                                <label>Desde</label>
+                                <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
                             </div>
 
+                            <input type="date" @bind-value="DesdeFecha" class="form-control" />
                         </div>
-                    </EditForm>
+
+                        <div class="col form-group">
+                            <label>Hasta</label>
+                            <input type="date" @bind-value="HastaFecha" class="form-control" />
+                        </div>
+
+                        <div class="col form-group">
+                            <label>Criterio</label>
+                            <input type="text" @bind-value="Criterio" class="form-control" />
+                        </div>
+                        <EditForm Model="Compra">
+                            <div class="col form-group">
+                                <label>Filtrar por</label>
+                                <div class="input-group">
+                                    <InputSelect @bind-Value="Filtro" class="form-control">
+                                        <option selected value="0">Todo</option>
+                                        <option value="1">Id</option>
+                                        <option value="2">Suplidor</option>
+                                        <option value="3">Cant. Productos</option>
+                                        <option value="4">Total</option>
+                                    </InputSelect>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </EditForm>
 
 
                 </div>
@@ -86,17 +110,21 @@
                                 </tr>
                             }
 
+
                         </tbody>
 
                     </table>
-                </div>
-                   
-                    }
-                    }
 
-                </div>
+                    <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
+                }
+            }
 
-            </div>
+        </div>
+
+    </div>
+}
+
+
 
 
 @code {
@@ -111,8 +139,10 @@
     public bool FiltrarPorFecha { get; set; }
 
 
-
+    public bool NivelUsuario;
     public Compras Compra { get; set; }
+
+    public Paginacion Paginacion { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -121,19 +151,24 @@
 
     private void Inicialzar()
     {
+        NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
         DesdeFecha = DateTime.Now;
         HastaFecha = DateTime.Now;
         Compra = new Compras();
-        ListaTemp = Lista;
         FiltrarPorFecha = false;
         Filtro = "0";
+        Paginacion = new Paginacion();
+        ListaTemp = new List<Compras>();
+        filtrar();
+        
     }
 
     private void CargarLista()
     {
         try
         {
-            Lista = ComprasController.GetList(A => true);
+            Lista = ComprasController.Paginacion(Paginacion);
+            ListaTemp = Lista;
         }
         catch (Exception)
         {
@@ -172,7 +207,7 @@
                     ListaTemp = Lista.Where(A => A.Total == decimal.Parse(Criterio)).ToList();
                     break;
 
-                
+
                 default:
                     ListaTemp = Lista;
                     break;

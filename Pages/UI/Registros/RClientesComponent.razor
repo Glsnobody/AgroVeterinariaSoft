@@ -5,20 +5,21 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
-
-
 <AuthorizeView>
 
 
     <NotAuthorized>
         <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+
     </NotAuthorized>
+
+    
 
 </AuthorizeView>
 
+
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
-   
 
     <div class="container">
         <h3 class="display-3 text-center">Registro de Clientes</h3>
@@ -49,7 +50,7 @@
                     <InputDate @bind-Value="Cliente.FechaNacimiento" class="form-control" />
                 </div>
             </div>
-           
+
             <div class="form-row">
                 <div class="form-group col">
                     <label>Cedula</label>
@@ -62,7 +63,7 @@
                 </div>
 
             </div>
-            
+
             <div class="form-row">
                 <div class="form-group col">
                     <label>Direccion</label>
@@ -75,12 +76,13 @@
                 </div>
             </div>
 
-            
+
 
             <ValidationSummary />
             <button type="button" class="btn btn-primary" @onclick="Limpiar">Limpiar</button>
             <button type="submit" class="btn btn-success">Guardar</button>
             <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+            <button type="button" class="btn btn-secondary" @onclick="Agregar100">Agregar100</button>
 
         </EditForm>
 
@@ -98,13 +100,14 @@
     public int ClienteId { get; set; }
 
     public bool Autorizado { get; set; }
+    public bool NivelUsuario;
 
     protected override void OnInitialized()
     {
         Cliente = new Clientes();
         Autorizado = false;
 
-
+        
     }
 
     protected override void OnParametersSet()
@@ -188,4 +191,30 @@
     {
         Cliente = new Clientes();
     }
+
+    private void Agregar100()
+    {
+        try
+        {
+            if (ClientesController.Insertar100())
+            {
+                toastService.ShowSuccess("Se agregaron 100");
+            }
+            else
+            {
+                toastService.ShowSuccess("NO Se agregaron 100");
+            }
+        }
+
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+
+
+
+}
 }
