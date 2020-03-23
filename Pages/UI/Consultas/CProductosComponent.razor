@@ -1,112 +1,133 @@
 ﻿@page "/CProductos"
 
-<div class="container">
 
-    <h3 class="display-3 text-center">Consulta de Productos</h3>
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-    <div>
-        @if (Lista == null)
-        {
-            <div class="text-center">
-                <div class="spinner-border">
-                    <span class="sr-only">Loading....</span>
-                </div>
-            </div>}
-        else
-        {
-            if (Lista.Count <= 0)
+
+<AuthorizeView>
+
+
+    <NotAuthorized>
+        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+
+    </NotAuthorized>
+
+
+</AuthorizeView>
+
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <div class="container">
+
+        <h3 class="display-3 text-center">Consulta de Productos</h3>
+
+        <div>
+            @if (Lista == null)
             {
-                <h3 class="display-3 text-center">No hay datos que mostrar</h3>
-            }
+                <div class="text-center">
+                    <div class="spinner-border">
+                        <span class="sr-only">Loading....</span>
+                    </div>
+                </div>}
             else
             {
+                if (Lista.Count <= 0)
+                {
+                    <h3 class="display-3 text-center">No hay datos que mostrar</h3>
+                }
+                else
+                {
 
-                <div class="form-row">
-                    <div class="col form-group">
-                        <div>
-                            <label>Desde</label>
-                            <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
-                        </div>
-
-                        <input type="date" @bind-value="DesdeFecha" class="form-control" />
-                    </div>
-
-                    <div class="col form-group">
-                        <label>Hasta</label>
-                        <input type="date" @bind-value="HastaFecha" class="form-control" />
-                    </div>
-
-                    <div class="col form-group">
-                        <label>Criterio</label>
-                        <input type="text" @bind-value="Criterio" class="form-control" />
-                    </div>
-                    <EditForm Model="Producto">
+                    <div class="form-row">
                         <div class="col form-group">
-                            <label>Filtrar por</label>
-                            <div class="input-group">
-                                <InputSelect @bind-Value="Filtro" class="form-control">
-                                    <option selected value="0">Todo</option>
-                                    <option value="1">Id</option>
-                                    <option value="2">Descripcion</option>
-                                    <option value="3">Cantidad</option>
-                                    <option value="4">Unidad</option>
-                                    <option value="5">Costo</option>
-                                    <option value="6">Precio</option>
-                                </InputSelect>
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
-                                </div>
+                            <div>
+                                <label>Desde</label>
+                                <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
                             </div>
 
+                            <input type="date" @bind-value="DesdeFecha" class="form-control" />
                         </div>
-                    </EditForm>
+
+                        <div class="col form-group">
+                            <label>Hasta</label>
+                            <input type="date" @bind-value="HastaFecha" class="form-control" />
+                        </div>
+
+                        <div class="col form-group">
+                            <label>Criterio</label>
+                            <input type="text" @bind-value="Criterio" class="form-control" />
+                        </div>
+                        <EditForm Model="Producto">
+                            <div class="col form-group">
+                                <label>Filtrar por</label>
+                                <div class="input-group">
+                                    <InputSelect @bind-Value="Filtro" class="form-control">
+                                        <option selected value="0">Todo</option>
+                                        <option value="1">Id</option>
+                                        <option value="2">Descripcion</option>
+                                        <option value="3">Cantidad</option>
+                                        <option value="4">Unidad</option>
+                                        <option value="5">Costo</option>
+                                        <option value="6">Precio</option>
+                                    </InputSelect>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </EditForm>
 
 
-                </div>
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Descripcion</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Unidad</th>
-                            <th scope="col">Fecha</th>
-                            <th scope="col">Costo</th>
-                            <th scope="col">Precio</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                        @foreach (var entity in ListaTemp)
-                        {
+                    </div>
+                    <table class="table">
+                        <thead class="thead-dark">
                             <tr>
-                                <td scope="row">@entity.ProductoId</td>
-                                <td>@entity.Descripcion</td>
-                                <td>@entity.Cantidad</td>
-                                <td>@entity.Unidad</td>
-                                <td>@entity.Fecha.ToShortDateString()</td>
-                                <td>@entity.Costo</td>
-                                <td>@entity.Precio</td>
-                                <td><a class="btn btn-sm btn-outline-primary" href="/RProductos/@entity.ProductoId">Ver</a></td>
+                                <th scope="col">Id</th>
+                                <th scope="col">Descripcion</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Unidad</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Costo</th>
+                                <th scope="col">Precio</th>
+                                <th></th>
                             </tr>
-                        }
+                        </thead>
+                        <tbody>
 
-                    </tbody>
+                            @foreach (var entity in ListaTemp)
+                            {
+                                <tr>
+                                    <td scope="row">@entity.ProductoId</td>
+                                    <td>@entity.Descripcion</td>
+                                    <td>@entity.Cantidad</td>
+                                    <td>@entity.Unidad</td>
+                                    <td>@entity.Fecha.ToShortDateString()</td>
+                                    <td>@entity.Costo</td>
+                                    <td>@entity.Precio</td>
+                                    <td><a class="btn btn-sm btn-outline-primary" href="/RProductos/@entity.ProductoId">Ver</a></td>
+                                </tr>
+                            }
 
-                </table>
-                @*<div class="form-group">
-                    <button type="button" class="btn btn-secondary" @onclick="AnteriorPagina">Ant</button>
-                    <button type="button" class="btn btn-secondary" @onclick="SiguientePagina">Sig</button>
-                </div>*@
+                        </tbody>
 
-                <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
+                    </table>
+                    @*<div class="form-group">
+                            <button type="button" class="btn btn-secondary" @onclick="AnteriorPagina">Ant</button>
+                            <button type="button" class="btn btn-secondary" @onclick="SiguientePagina">Sig</button>
+                        </div>*@
+
+                    <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
+                }
             }
-        }
+
+        </div>
 
     </div>
+}
 
-</div>
+
 
 
 @code {
@@ -122,26 +143,27 @@
 
     public Productos Producto { get; set; }
 
-     public Paginacion Paginacion { get; set; }
+    public Paginacion Paginacion { get; set; }
+    public bool NivelUsuario;
 
-    //public Paginacion<Productos> Paginacion { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => { Inicialzar(); CargarLista();  });
+        await Task.Run(() => { Inicialzar(); CargarLista(); });
     }
 
     private void Inicialzar()
     {
+        NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
         DesdeFecha = DateTime.Now;
         HastaFecha = DateTime.Now;
-        
+
         ListaTemp = new List<Productos>();
         Producto = new Productos();
 
         ListaTemp = Lista;
         FiltrarPorFecha = false;
         Filtro = "0";
-        
+
         Paginacion = new Paginacion();
         //Paginacion = new Paginacion<Clientes>();
     }
@@ -161,7 +183,7 @@
         }
 
     }
-   
+
 
     private void filtrar()
     {
@@ -194,7 +216,7 @@
                     ListaTemp = Lista.Where(A => A.Costo == int.Parse(Criterio)).ToList();
                     break;
 
-                    case "6":
+                case "6":
                     ListaTemp = Lista.Where(A => A.Precio == int.Parse(Criterio)).ToList();
                     break;
 

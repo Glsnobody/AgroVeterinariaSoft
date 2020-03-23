@@ -1,107 +1,134 @@
 ﻿@page "/CClientes"
 
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<div class="container">
 
-    <h3 class="display-3 text-center">Consulta de Clientes</h3>
+<AuthorizeView>
 
-    <div>
-        @if (ListaClientes == null)
+
+    <NotAuthorized>
+        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+
+    </NotAuthorized>
+
+    <Authorized>
+        @if (NivelUsuario)
         {
-            <div class="text-center">
-                <div class="spinner-border">
-                    <span class="sr-only">Loading....</span>
-                </div>
-            </div>}
-        else
-        {
-            if (ListaClientes.Count <= 0)
+            <p class="display-3 text-center">Usted no tiene el nivel necesario para acceder a esta pagina</p>
+        }
+    </Authorized>
+
+</AuthorizeView>
+
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated
+&& !NivelUsuario)
+{
+    <div class="container">
+
+        <h3 class="display-3 text-center">Consulta de Clientes</h3>
+
+        <div>
+            @if (ListaClientes == null)
             {
-                <h3 class="display-3 text-center">No hay datos que mostrar</h3>
-            }
+                <div class="text-center">
+                    <div class="spinner-border">
+                        <span class="sr-only">Loading....</span>
+                    </div>
+                </div>}
             else
             {
+                if (ListaClientes.Count <= 0)
+                {
+                    <h3 class="display-3 text-center">No hay datos que mostrar</h3>
+                }
+                else
+                {
 
-                <div class="form-row">
-                    <div class="col form-group">
-                        <div>
-                            <label>Desde</label>
-                            <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
-                        </div>
-
-                        <input type="date" @bind-value="DesdeFecha" class="form-control" />
-                    </div>
-
-                    <div class="col form-group">
-                        <label>Hasta</label>
-                        <input type="date" @bind-value="HastaFecha" class="form-control" />
-                    </div>
-
-                    <div class="col form-group">
-                        <label>Criterio</label>
-                        <input type="text" @bind-value="Criterio" class="form-control" />
-                    </div>
-                    <EditForm Model="Cliente">
+                    <div class="form-row">
                         <div class="col form-group">
-                            <label>Filtrar por</label>
-                            <div class="input-group">
-                                <InputSelect @bind-Value="Filtro" class="form-control">
-                                    <option selected value="0">Todo</option>
-                                    <option value="1">Id</option>
-                                    <option value="2">Nombres</option>
-                                    <option value="3">Cedula</option>
-                                    <option value="4">Balance</option>
-                                    <option value="5">Fecha de Nacimiento</option>
-                                </InputSelect>
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
-                                </div>
+                            <div>
+                                <label>Desde</label>
+                                <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
                             </div>
 
+                            <input type="date" @bind-value="DesdeFecha" class="form-control" />
                         </div>
-                    </EditForm>
+
+                        <div class="col form-group">
+                            <label>Hasta</label>
+                            <input type="date" @bind-value="HastaFecha" class="form-control" />
+                        </div>
+
+                        <div class="col form-group">
+                            <label>Criterio</label>
+                            <input type="text" @bind-value="Criterio" class="form-control" />
+                        </div>
+                        <EditForm Model="Cliente">
+                            <div class="col form-group">
+                                <label>Filtrar por</label>
+                                <div class="input-group">
+                                    <InputSelect @bind-Value="Filtro" class="form-control">
+                                        <option selected value="0">Todo</option>
+                                        <option value="1">Id</option>
+                                        <option value="2">Nombres</option>
+                                        <option value="3">Cedula</option>
+                                        <option value="4">Balance</option>
+                                        <option value="5">Fecha de Nacimiento</option>
+                                    </InputSelect>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </EditForm>
 
 
-                </div>
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Nombres</th>
-                            <th scope="col">Fecha Nacimiento</th>
-                            <th scope="col">Telefono</th>
-                            <th scope="col">Cedula</th>
-                            <th scope="col">Balance</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var entity in ListaClientesTemp)
-                        {
+                    </div>
+                    <table class="table">
+                        <thead class="thead-dark">
                             <tr>
-                                <td scope="row">@entity.ClienteId</td>
-                                <td>@entity.Nombres</td>
-                                <td>@entity.FechaNacimiento.ToShortDateString()</td>
-                                <td>@entity.Telefono</td>
-                                <td>@entity.Cedula</td>
-                                <td>@entity.Balance</td>
-                                <td><a class="btn btn-sm btn-outline-primary" href="/RClientes/@entity.ClienteId">Ver</a></td>
+                                <th scope="col">Id</th>
+                                <th scope="col">Nombres</th>
+                                <th scope="col">Fecha Nacimiento</th>
+                                <th scope="col">Telefono</th>
+                                <th scope="col">Cedula</th>
+                                <th scope="col">Balance</th>
+                                <th></th>
                             </tr>
-                        }
+                        </thead>
+                        <tbody>
+                            @foreach (var entity in ListaClientesTemp)
+                            {
+                                <tr>
+                                    <td scope="row">@entity.ClienteId</td>
+                                    <td>@entity.Nombres</td>
+                                    <td>@entity.FechaNacimiento.ToShortDateString()</td>
+                                    <td>@entity.Telefono</td>
+                                    <td>@entity.Cedula</td>
+                                    <td>@entity.Balance</td>
+                                    <td><a class="btn btn-sm btn-outline-primary" href="/RClientes/@entity.ClienteId">Ver</a></td>
+                                </tr>
+                            }
 
-                    </tbody>
+                        </tbody>
 
-                </table>
+                    </table>
 
-                <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
+                    <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
 
+                }
             }
-        }
+
+        </div>
 
     </div>
+}
 
-</div>
+
+
 
 
 @code {
@@ -117,7 +144,7 @@
 
     public Clientes Cliente { get; set; }
 
-
+    public bool NivelUsuario;
     public Paginacion Paginacion { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -136,7 +163,7 @@
         Filtro = "0";
         Paginacion = new Paginacion();
         Paginacion.Radio = 3;
-
+        NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
     }
 
     private void CargarLista()

@@ -34,10 +34,11 @@ namespace AgroVeterinariaSoft
 
             if (UsuariosController.InicioSesion(paramUsername, paramPassword))
             {
+                
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, paramUsername),
-                    new Claim(ClaimTypes.Role, "Administrator"),
+                    new Claim(ClaimTypes.Role, UsuariosController.GetRol(paramUsername))
 
                 };
                 var claimsIdentity = new ClaimsIdentity(

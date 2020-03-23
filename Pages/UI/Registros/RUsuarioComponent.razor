@@ -6,18 +6,28 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
-<AuthorizeView>
+    <AuthorizeView>
 
 
-    <NotAuthorized>
-        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
-    </NotAuthorized>
+        <NotAuthorized>
+            <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
 
-</AuthorizeView>
+        </NotAuthorized>
+
+        <Authorized>
+            @if (!NivelUsuario)
+            {
+                <p class="display-3 text-center">Usted no tiene el nivel necesario para acceder a esta pagina</p>
+            }
+        </Authorized>
+
+    </AuthorizeView>
 
 
-@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated 
+    && NivelUsuario)
 {
+   
 
     <div class="container mb-4">
 
@@ -71,8 +81,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Nivel de Usuario</label>
-                    <InputText @bind-Value="Usuario.NivelAcceso" class="form-control" />
+                    <label>Acceso</label>
+                    <InputSelect @bind-Value="Usuario.NivelAcceso" class="form-control">
+                        <option selected value="Bajo">Bajo</option>
+                        <option value="Medio">Medio</option>
+                        <option value="Alto">Alto</option>
+
+                    </InputSelect>
+
+                    
                 </div>
 
                 <ValidationSummary />
@@ -99,10 +116,13 @@
 
     public string Mensaje = string.Empty;
 
+    public bool NivelUsuario = false;
+
     protected override void OnInitialized()
     {
         Usuario = new Usuarios();
         RePsw = string.Empty;
+        NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Alto");
     }
 
     protected override void OnParametersSet()
