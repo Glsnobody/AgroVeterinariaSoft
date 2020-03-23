@@ -49,10 +49,10 @@ namespace AgroVeterinariaSoft.Migrations
                     ProductoId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Fecha = table.Column<DateTime>(nullable: false),
-                    Descripcion = table.Column<string>(nullable: true),
+                    Descripcion = table.Column<string>(maxLength: 40, nullable: false),
                     Cantidad = table.Column<int>(nullable: false),
                     Minimo = table.Column<int>(nullable: false),
-                    Unidad = table.Column<string>(nullable: true),
+                    Unidad = table.Column<string>(maxLength: 20, nullable: false),
                     Costo = table.Column<decimal>(nullable: false),
                     Precio = table.Column<decimal>(nullable: false),
                     Ganancia = table.Column<decimal>(nullable: false)
@@ -68,10 +68,10 @@ namespace AgroVeterinariaSoft.Migrations
                 {
                     SuplidorId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Nombre = table.Column<string>(nullable: true),
-                    Direccion = table.Column<string>(nullable: true),
-                    Telefono = table.Column<string>(nullable: true),
-                    RNC = table.Column<string>(nullable: true),
+                    Nombre = table.Column<string>(maxLength: 50, nullable: false),
+                    Direccion = table.Column<string>(maxLength: 50, nullable: false),
+                    Telefono = table.Column<string>(maxLength: 11, nullable: false),
+                    RNC = table.Column<string>(maxLength: 9, nullable: false),
                     FechaCreacion = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -86,11 +86,11 @@ namespace AgroVeterinariaSoft.Migrations
                     UsuarioId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Fecha = table.Column<DateTime>(nullable: false),
-                    Nombres = table.Column<string>(nullable: true),
-                    Usuario = table.Column<string>(nullable: true),
-                    Correo = table.Column<string>(nullable: true),
-                    Psw = table.Column<string>(nullable: true),
-                    NivelAcceso = table.Column<string>(nullable: true)
+                    Nombres = table.Column<string>(maxLength: 50, nullable: false),
+                    Usuario = table.Column<string>(maxLength: 30, nullable: false),
+                    Correo = table.Column<string>(maxLength: 80, nullable: false),
+                    Psw = table.Column<string>(maxLength: 15, nullable: false),
+                    NivelAcceso = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -122,7 +122,9 @@ namespace AgroVeterinariaSoft.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Descripcion")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(40);
 
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("TEXT");
@@ -137,7 +139,9 @@ namespace AgroVeterinariaSoft.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Unidad")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(20);
 
                     b.HasKey("ProductoId");
 
@@ -151,19 +155,27 @@ namespace AgroVeterinariaSoft.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Direccion")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(50);
 
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Nombre")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(50);
 
                     b.Property<string>("RNC")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(9);
 
                     b.Property<string>("Telefono")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(11);
 
                     b.HasKey("SuplidorId");
 
@@ -177,22 +189,31 @@ namespace AgroVeterinariaSoft.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Correo")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(80);
 
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NivelAcceso")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Nombres")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Psw")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(15);
 
                     b.Property<string>("Usuario")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(30);
 
                     b.HasKey("UsuarioId");
 

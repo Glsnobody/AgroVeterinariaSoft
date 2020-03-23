@@ -56,7 +56,7 @@
 
             <div class="btn-group">
                 <button class="btn btn-primary" @onclick="Nuevo" type="button">Nuevo</button>
-                <button class="btn btn-success" @onclick="Guardar" type="submit">Guardar</button>
+                <button class="btn btn-success" type="submit">Guardar</button>
                 <button class="btn btn-danger" @onclick="Eliminar" type="button">Eliminar</button>
             </div>
 
@@ -85,7 +85,10 @@
     private void Guardar()
     {
         if (SuplidoresController.Guardar(Suplidor))
+        {
+            Suplidor = new Suplidores();
             toastService.ShowSuccess("Suplidor Guardado");
+        }        
         else
             toastService.ShowError("HUno un error");
 

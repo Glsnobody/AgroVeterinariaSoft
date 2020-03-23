@@ -77,20 +77,22 @@
                     <tbody>
                         @foreach (var entity in ListaVentasTemp)
                         {
-                        <tr>
-                            <td scope="row">@entity.ClienteId</td>
-                            <td>@ClientesController.GetNombre(entity.ClienteId)</td>
-                            <td>@entity.Fecha.ToShortDateString()</td>
-                            <td>@entity.Total</td>
-                            <td>@entity.Observacion</td>
-                            <td>@entity.Productos.Count</td>
-                            <td><a class="btn btn-sm btn-outline-primary" href="/RVenta/@entity.VentaId">Ver</a></td>
-                        </tr>
+                            <tr>
+                                <td scope="row">@entity.ClienteId</td>
+                                <td>@ClientesController.GetNombre(entity.ClienteId)</td>
+                                <td>@entity.Fecha.ToShortDateString()</td>
+                                <td>@entity.Total</td>
+                                <td>@entity.Observacion</td>
+                                <td>@entity.Productos.Count</td>
+                                <td><a class="btn btn-sm btn-outline-primary" href="/RVenta/@entity.VentaId">Ver</a></td>
+                            </tr>
                         }
 
                     </tbody>
 
                 </table>
+
+                <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
             }
         }
 
@@ -111,11 +113,12 @@
     public bool FiltrarPorFecha { get; set; }
 
 
-
     public Ventas Venta { get; set; }
+    public Paginacion Paginacion { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => { CargarLista(); Inicialzar(); });
+        await Task.Run(() => { Inicialzar(); });
     }
 
     private void Inicialzar()
@@ -123,16 +126,19 @@
         DesdeFecha = DateTime.Now;
         HastaFecha = DateTime.Now;
         Venta = new Ventas();
-        ListaVentasTemp = ListaVentas;
+        ListaVentasTemp = new List<Ventas>();
         FiltrarPorFecha = false;
         Filtro = "0";
+        Paginacion = new Paginacion();
+        CargarLista();
     }
 
     private void CargarLista()
     {
         try
         {
-            ListaVentas = VentasController.GetList(A => true);
+            ListaVentas = VentasController.Paginacion(Paginacion);
+            ListaVentasTemp = ListaVentas;
         }
         catch (Exception)
         {
@@ -171,7 +177,7 @@
                     ListaVentasTemp = ListaVentas.Where(A => A.Total == decimal.Parse(Criterio)).ToList();
                     break;
 
-                    case "5":
+                case "5":
                     ListaVentasTemp = ListaVentas.Where(A=> A.Productos.Count == int.Parse(Criterio)).ToList();
                     break;
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgroVeterinariaSoft.Models
 {
-    public class Paginacion<T> where T : class
+    public class Paginacion
     {
 
         public int PaginaActual { get; set; }
@@ -13,8 +13,6 @@ namespace AgroVeterinariaSoft.Models
         public int TotalRegistro { get; set; }
         public int TotalPaginas { get; set; }
         public int Radio { get; set; }
-
-        public IEnumerable<T> Lista { get; set; }
 
         public Paginacion()
         {

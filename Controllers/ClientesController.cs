@@ -230,15 +230,15 @@ namespace AgroVeterinariaSoft.Controllers
             return paso;
         }
 
-        public static List<Clientes> Paginacion(Paginacion<Clientes> paginacion)
+        public static List<Clientes> Paginacion(Paginacion paginacion)
         {
             Contexto db = new Contexto();
             List<Clientes> lista = new List<Clientes>();
             try
             {
-                paginacion.TotalRegistro = db.Clientes.Count();
+                paginacion.TotalRegistro = db.Clientes.Where(A=> true).Count();
                 paginacion.TotalPaginas = paginacion.TotalRegistro / paginacion.RegistroPorPagina;
-                lista = db.Clientes.Skip((paginacion.PaginaActual-1) * paginacion.RegistroPorPagina)
+               lista = db.Clientes.Skip((paginacion.PaginaActual-1) * paginacion.RegistroPorPagina)
                     .Take(paginacion.RegistroPorPagina).ToList();
             }
             catch (Exception)
@@ -253,6 +253,47 @@ namespace AgroVeterinariaSoft.Controllers
 
             return lista;
             
+        }
+
+        public static bool Insertar100()
+        {
+            Contexto db = new Contexto();
+            bool paso = false;
+
+            try
+            {
+                for(int i = 0;i<=100;i++)
+                {
+                    db.Productos.Add(new Productos()
+                    {
+
+                        Descripcion = $"Producto{i}",
+                        Cantidad = 1,
+                        Costo = 5,
+                        Precio = 500,
+                        Fecha = DateTime.Now,
+                        Ganancia = 15,
+                        Minimo = 1,
+                        Unidad = "Botella"
+
+                    }) ;
+                }
+                
+                paso = db.SaveChanges() > 0;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+
+
+            return paso;
         }
     }
 }

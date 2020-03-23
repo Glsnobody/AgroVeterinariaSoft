@@ -1,5 +1,7 @@
 ﻿@page "/CClientes"
 
+
+
 <div class="container">
 
     <h3 class="display-3 text-center">Consulta de Clientes</h3>
@@ -21,13 +23,13 @@
             else
             {
 
-                <div class="form-row" >
+                <div class="form-row">
                     <div class="col form-group">
                         <div>
                             <label>Desde</label>
-                            <input type="checkbox" @bind-value="FiltrarPorFecha"/> Filtrar Fecha
+                            <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
                         </div>
-                        
+
                         <input type="date" @bind-value="DesdeFecha" class="form-control" />
                     </div>
 
@@ -84,17 +86,16 @@
                                 <td>@entity.Telefono</td>
                                 <td>@entity.Cedula</td>
                                 <td>@entity.Balance</td>
-                                <td><a class="btn btn-sm btn-outline-primary" href="/RClientes/@entity.ClienteId" >Ver</a></td>
+                                <td><a class="btn btn-sm btn-outline-primary" href="/RClientes/@entity.ClienteId">Ver</a></td>
                             </tr>
                         }
 
                     </tbody>
 
                 </table>
-                @*<div class="form-group">
-                    <button type="button" class="btn btn-secondary" @onclick="AnteriorPagina">Ant</button>
-                    <button type="button" class="btn btn-secondary" @onclick="SiguientePagina">Sig</button>
-                </div>*@
+
+                <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
+
             }
         }
 
@@ -117,10 +118,11 @@
     public Clientes Cliente { get; set; }
 
 
-    public Paginacion<Clientes> Paginacion { get; set; }
+    public Paginacion Paginacion { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => {   CargarLista(); Inicialzar();});
+        await Task.Run(() => { Inicialzar(); CargarLista(); });
     }
 
     private void Inicialzar()
@@ -129,17 +131,21 @@
         HastaFecha = DateTime.Now;
         Cliente = new Clientes();
 
-        ListaClientesTemp = ListaClientes;
+        ListaClientesTemp = new List<Clientes>();
         FiltrarPorFecha = false;
         Filtro = "0";
-        Paginacion = new Paginacion<Clientes>();
+        Paginacion = new Paginacion();
+        Paginacion.Radio = 3;
+
     }
 
     private void CargarLista()
     {
         try
         {
-            ListaClientes = ClientesController.GetList(A => true);
+            ListaClientes = ClientesController.Paginacion(Paginacion);
+            ListaClientesTemp = ListaClientes;
+            //CargarListaPaginas();
             //ListaClientes = ClientesController.Paginacion(Paginacion);
         }
         catch (Exception)
@@ -180,6 +186,39 @@
     //    }
     //}
 
+    //private void CargarListaPaginas()
+    //{
+
+    //    Paginas = new List<int>();
+
+    //    for(int i=1;i<Paginacion.TotalPaginas;i++)
+    //    {
+
+    //        if(i >= Paginacion.PaginaActual -Paginacion.Radio && i<= Paginacion.PaginaActual + Paginacion.Radio)
+    //        {
+    //            if(i > 0 && i<= Paginacion.TotalPaginas)
+    //            {
+    //                Paginas.Add(i);
+    //            }
+    //        }
+    //    }
+
+    //}
+
+    //private void IrAPagina(int i)
+    //{
+    //    try
+    //    {
+    //        Paginacion.PaginaActual = i;
+    //        CargarLista();
+    //    }
+    //    catch (Exception)
+    //    {
+
+    //        throw;
+    //    }
+    //}
+
     private void filtrar()
     {
         try
@@ -208,7 +247,7 @@
                     break;
 
                 case "5":
-                    ListaClientesTemp = ListaClientes.Where(A=> A.FechaNacimiento.Date >= DesdeFecha.Date && A.FechaNacimiento.Date <= HastaFecha.Date).ToList();
+                    ListaClientesTemp = ListaClientes.Where(A => A.FechaNacimiento.Date >= DesdeFecha.Date && A.FechaNacimiento.Date <= HastaFecha.Date).ToList();
                     break;
 
                 default:
@@ -216,8 +255,8 @@
                     break;
 
             }
-            if(FiltrarPorFecha == true && Filtro.Equals("5") == false)
-                ListaClientesTemp = ListaClientes.Where(A=> A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date).ToList();
+            if (FiltrarPorFecha == true && Filtro.Equals("5") == false)
+                ListaClientesTemp = ListaClientes.Where(A => A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date).ToList();
 
         }
         catch (Exception)

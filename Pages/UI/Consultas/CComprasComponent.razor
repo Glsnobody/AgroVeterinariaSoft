@@ -83,11 +83,15 @@
                                 <td>@entity.Total</td>
                                 <td><a class="btn btn-sm btn-outline-primary" href="/RCompras/@entity.CompraId">Ver</a></td>
                             </tr>
+
                         }
+
 
                     </tbody>
 
                 </table>
+
+                <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
             }
         }
 
@@ -111,6 +115,8 @@
 
     public Compras Compra { get; set; }
 
+    public Paginacion Paginacion { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await Task.Run(() => { CargarLista(); Inicialzar(); });
@@ -118,19 +124,24 @@
 
     private void Inicialzar()
     {
+        
         DesdeFecha = DateTime.Now;
         HastaFecha = DateTime.Now;
         Compra = new Compras();
-        ListaTemp = Lista;
         FiltrarPorFecha = false;
         Filtro = "0";
+        Paginacion = new Paginacion();
+        ListaTemp = new List<Compras>();
+        filtrar();
+
     }
 
     private void CargarLista()
     {
         try
         {
-            Lista = ComprasController.GetList(A => true);
+            Lista = ComprasController.Paginacion(Paginacion);
+            ListaTemp = Lista;
         }
         catch (Exception)
         {
@@ -169,7 +180,7 @@
                     ListaTemp = Lista.Where(A => A.Total == decimal.Parse(Criterio)).ToList();
                     break;
 
-                
+
                 default:
                     ListaTemp = Lista;
                     break;
