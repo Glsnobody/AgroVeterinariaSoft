@@ -15,11 +15,21 @@
 
     <NotAuthorized>
         <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+
     </NotAuthorized>
+
+    <Authorized>
+        @if (NivelUsuario)
+        {
+            <p class="display-3 text-center">Usted no tiene el nivel necesario para acceder a esta pagina</p>
+        }
+    </Authorized>
 
 </AuthorizeView>
 
-@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated
+ && !NivelUsuario)
 {
     <div class="container">
 
@@ -107,26 +117,26 @@
                         </tr>
                     </thead>
 
-                <tbody>
-                    @foreach (var obj in Compra.ListaProductos)
-                    {
-                        <tr>
-                            <td>@obj.ProductoId</td>
-                            <td>@obj.Descripcion</td>
-                            <td>@obj.Precio</td>
-                            <td>@obj.Cantidad</td>
-                            <td>@obj.Importe</td>
-                            <td><button type="button" class="btn btn-sm btn-danger " @onclick="(()=> Remover(obj))" >Eliminar</button></td>
-                        </tr>
-                    }
+                    <tbody>
+                        @foreach (var obj in Compra.ListaProductos)
+                        {
+                            <tr>
+                                <td>@obj.ProductoId</td>
+                                <td>@obj.Descripcion</td>
+                                <td>@obj.Precio</td>
+                                <td>@obj.Cantidad</td>
+                                <td>@obj.Importe</td>
+                                <td><button type="button" class="btn btn-sm btn-danger " @onclick="(()=> Remover(obj))">Eliminar</button></td>
+                            </tr>
+                        }
 
                     </tbody>
 
-            </table>
-        </div>
-        <div class="form-group">
-            <label for="TotalNumber">Total:  </label>
-            <InputNumber id="TotalNumber" @bind-Value="Compra.Total" class="form-control" />
+                </table>
+            </div>
+            <div class="form-group">
+                <label for="TotalNumber">Total:  </label>
+                <InputNumber id="TotalNumber" @bind-Value="Compra.Total" class="form-control" />
 
             </div>
 
@@ -156,7 +166,7 @@
     Productos Producto = new Productos();
 
     public int CantidadProducto { get; set; }
-
+     public bool NivelUsuario;
     protected override void OnParametersSet()
     {
         if (CompraId > 0)
@@ -166,11 +176,16 @@
         }
     }
 
-    public void Guardar()
+        protected override void OnInitialized()
+        {
+            NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
+        }
+
+        public void Guardar()
     {
         try
         {
-            if (SuplidoresController.Buscar(Compra.SuplidorId)==null)
+            if (SuplidoresController.Buscar(Compra.SuplidorId) == null)
             {
                 toastService.ShowWarning("El suplidor no existe");
                 return;
@@ -210,7 +225,7 @@
         try
         {
             Suplidores temp = SuplidoresController.Buscar(Compra.SuplidorId);
-            if(temp==null)
+            if (temp == null)
             {
                 toastService.ShowWarning("Debe agregar un Suplidor existente");
                 return;
@@ -234,27 +249,27 @@
 
     private void AgregarProducto()
     {
-        if(Producto.ProductoId==0)
+        if (Producto.ProductoId == 0)
         {
             toastService.ShowWarning("Debe agregar un producto");
-                return;
+            return;
         }
-        if(Producto==null)
+        if (Producto == null)
         {
             toastService.ShowWarning("Debe agregar un producto existente");
-                return;
+            return;
         }
-         if(CantidadProducto<=0)
+        if (CantidadProducto <= 0)
         {
             toastService.ShowWarning("Agregue una cantidad valida");
-                return;
+            return;
         }
-        if(Suplidor.SuplidorId==0)
+        if (Suplidor.SuplidorId == 0)
         {
             toastService.ShowWarning("Debe agregar un Suplidor");
             return;
         }
-        if(Suplidor==null)
+        if (Suplidor == null)
         {
             toastService.ShowWarning("Debe agregar un Suplidor existente");
             return;

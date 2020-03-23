@@ -249,5 +249,24 @@ namespace AgroVeterinariaSoft.Controllers
 
             return paso;
         }
+
+        public static string GetRol(string Usuario)
+        {
+            string nivel = "Bajo";
+            Contexto db = new Contexto();
+
+            try
+            {
+                nivel = db.Usuarios.Where(A => A.Usuario.Equals(Usuario)).Select(A => A.NivelAcceso).FirstOrDefault();
+               
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return nivel;
+        }
     }
 }

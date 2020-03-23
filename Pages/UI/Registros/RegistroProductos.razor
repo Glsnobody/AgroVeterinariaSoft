@@ -16,12 +16,21 @@
 
     <NotAuthorized>
         <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+
     </NotAuthorized>
+
+    <Authorized>
+        @if (NivelUsuario)
+        {
+            <p class="display-3 text-center">Usted no tiene el nivel necesario para acceder a esta pagina</p>
+        }
+    </Authorized>
 
 </AuthorizeView>
 
 
-@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated
+ && !NivelUsuario)
 {
 
     <div class="container">
@@ -108,7 +117,7 @@
     public int ProductoId { get; set; }
 
     protected string OkayDisabled { get; set; } = "disabled";
-
+     public bool NivelUsuario;
     protected override void OnParametersSet()
     {
         if (ProductoId > 0)
@@ -117,6 +126,11 @@
             Buscar();
         }
     }
+
+    protected override void OnInitialized()
+        {
+            NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
+        }
 
     private void Guardar()
     {

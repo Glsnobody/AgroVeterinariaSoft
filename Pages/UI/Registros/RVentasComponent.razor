@@ -13,9 +13,13 @@
 
     <NotAuthorized>
         <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+
     </NotAuthorized>
 
+   
+
 </AuthorizeView>
+
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
@@ -171,10 +175,10 @@
     public string TipoVentaSeleccionada { get; set; }
 
 
-
+     public bool NivelUsuario;
     protected override void OnInitialized()
     {
-
+        NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
         Limpiar();
     }
 

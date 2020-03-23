@@ -5,20 +5,21 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
-
-
 <AuthorizeView>
 
 
     <NotAuthorized>
         <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+
     </NotAuthorized>
+
+    
 
 </AuthorizeView>
 
+
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
-
 
     <div class="container">
         <h3 class="display-3 text-center">Registro de Clientes</h3>
@@ -99,13 +100,14 @@
     public int ClienteId { get; set; }
 
     public bool Autorizado { get; set; }
+    public bool NivelUsuario;
 
     protected override void OnInitialized()
     {
         Cliente = new Clientes();
         Autorizado = false;
 
-
+        
     }
 
     protected override void OnParametersSet()
