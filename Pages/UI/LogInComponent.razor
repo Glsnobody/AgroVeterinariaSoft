@@ -1,0 +1,87 @@
+﻿@page "/LogInPage"
+
+@inject NavigationManager NavigationManager
+@inject IToastService toastService
+
+@using System.Web
+
+<div class="container">
+
+
+    <div style="margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        max-width: 500px;
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+         box-shadow: 7px 13px 37px #000;
+         padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+        ">
+
+        <h1 class="display-3 text-center text-white">Inicio de Seccion</h1>
+        
+        <EditForm Model="Usuario">
+            <div class="form-group">
+                <label class="text-white">Usuario</label>
+                <InputText @bind-Value="Usuario.Usuario" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label class="text-white">Contraseña </label>
+                <input type="password" @bind-value="@Usuario.Psw" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <a class="btn btn-success btn-block"
+                   href="/login?paramUsername=@encode(Usuario.Usuario)&paramPassword=@encode(Usuario.Psw)"target="_top">Login</a>
+                
+                <a class="btn btn-danger btn-block" href="/">Volver al Home</a>
+            </div>
+        </EditForm>
+
+
+
+    </div>
+</div>
+
+@code {
+
+    public Usuarios Usuario { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        Usuario = new Usuarios();
+    }
+
+    private void InciarSecion()
+    {
+        try
+        {
+            if (UsuariosController.InicioSesion(Usuario.Usuario, Usuario.Psw))
+            {
+                NavigationManager.NavigateTo($"Login?paramUsername={encode(Usuario.Usuario)}&paramPassword={encode(Usuario.Psw)}");
+            }
+            else
+            {
+                toastService.ShowError("No se pudo iniciar secion");
+            }
+
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+
+    }
+
+    private string encode(string param)
+    {
+        return HttpUtility.UrlEncode(param);
+    }
+
+
+}

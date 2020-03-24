@@ -1,4 +1,6 @@
 ﻿@page "/loginControl"
+
+
 @using System.Web;
 <AuthorizeView>
     <Authorized>
@@ -8,16 +10,31 @@
            target="_top">Logout</a>
     </Authorized>
     <NotAuthorized>
-        <input type="text"
-               placeholder="User Name"
-               @bind="@Username" />
-        &nbsp;&nbsp;
-        <input type="password"
-               placeholder="Password"
-               @bind="@Password" />
-        <a class="ml-md-auto btn btn-primary"
+
+        @*<div class=" form-row mt-4">
+            <div class="col-4">
+                <input type="text"
+                       placeholder="User Name"
+                       @bind="@Username" class="form-control" />
+                &nbsp;&nbsp;
+            </div>
+
+            <div class="col-4">
+                <input type="password"
+                       placeholder="Password"
+                       @bind="@Password" class="form-control" />
+            </div>
+        </div>*@
+
+        @*<a class="ml-md-auto btn btn-primary"
            href="/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password)"
+           target="_top">Login</a>*@
+
+        <a class="ml-md-auto btn btn-primary"
+           href="/LogInPage"
            target="_top">Login</a>
+
+        
     </NotAuthorized>
 </AuthorizeView>
 @code {
