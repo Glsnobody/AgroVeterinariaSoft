@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using AgroVeterinariaSoft.Controllers;
 
+
 namespace AgroVeterinariaSoft
 {
     [AllowAnonymous]
@@ -61,6 +62,7 @@ namespace AgroVeterinariaSoft
                     string error = ex.Message;
                 }
             }
+            
 
 
             
