@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgroVeterinariaSoft", "AgroVeterinariaSoft.csproj", "{599DB37D-202E-4D93-87B1-84DB9903385D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgroVeterinariaSoft", "AgroVeterinariaSoft.csproj", "{599DB37D-202E-4D93-87B1-84DB9903385D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

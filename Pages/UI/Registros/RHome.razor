@@ -1,0 +1,100 @@
+﻿@page "/RHome"
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+<AuthorizeView>
+
+
+    <NotAuthorized>
+        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+    </NotAuthorized>
+
+</AuthorizeView>
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <div class="container">
+        <div class="form-group">
+            <div class=" form-row">
+
+                <div class="col-md-6 col-sm-12 col-lg-4">
+                    <!---Registro de clientes-->
+                    <div class="card" style="width: auto;">
+                        <div class="card-body">
+                            <h5 class="card-title">Registro de Clientes</h5>
+                            <p class="card-text">Registrar, Modificar, Eliminar y Buscar clientes .</p>
+                            <a href="RClientes" class="btn btn-primary">Ir al Registro</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-12  col-lg-4">
+                    <!---Registro de compras-->
+                    <div class="card" style="width: auto;">
+                        <div class="card-body">
+                            <h5 class="card-title">Registro de Compras</h5>
+                            <p class="card-text">Registrar, Modificar, Eliminar y Buscar compras .</p>
+                            <a href="RCompras" class="btn btn-primary">Ir al Registro</a>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="col-md-6 col-sm-12  col-lg-4">
+                    <!---Registro de productos-->
+                    <div class="card" style="width: auto;">
+                        <div class="card-body">
+                            <h5 class="card-title">Registro de Productos</h5>
+                            <p class="card-text">Registrar, Modificar, Eliminar y Buscar productos .</p>
+                            <a href="RProductos" class="btn btn-primary">Ir al Registro</a>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6 col-sm-12  col-lg-4">
+                    <!---Registro de suplidores-->
+                    <div class="card" style="width: auto;">
+                        <div class="card-body">
+                            <h5 class="card-title">Registro de Suplidores</h5>
+                            <p class="card-text">Registrar, Modificar, Eliminar y Buscar suplidores .</p>
+                            <a href="RSuplidores" class="btn btn-primary">Ir al Registro</a>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="col-md-6 col-sm-12  col-lg-4">
+                    <!---Registro de usuarios-->
+                    <div class="card" style="width: auto;">
+                        <div class="card-body">
+                            <h5 class="card-title">Registro de Usuarios</h5>
+                            <p class="card-text">Registrar, Modificar, Eliminar y Buscar usuarios .</p>
+                            <a href="RUsuarios" class="btn btn-primary">Ir al Registro</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-12  col-lg-4">
+                    <!---Registro de ventas-->
+                    <div class="card" style="width: auto;">
+                        <div class="card-body">
+                            <h5 class="card-title">Registro de Ventas</h5>
+                            <p class="card-text">Registrar, Modificar, Eliminar y Buscar ventas .</p>
+                            <a href="RVentas" class="btn btn-primary">Ir al Registro</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        
+    </div>
+}
+
+
+
+@code {
+
+}

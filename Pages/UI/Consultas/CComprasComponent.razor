@@ -1,0 +1,192 @@
+﻿@page "/CCompras"
+
+<div class="container-fluid">
+
+    <h3 class="display-3 text-center">Consulta de Ventas</h3>
+
+    <div>
+        @if (Lista == null)
+        {
+            <div class="text-center">
+                <div class="spinner-border">
+                    <span class="sr-only">Loading....</span>
+                </div>
+            </div>}
+        else
+        {
+            if (Lista.Count <= 0)
+            {
+                <h3 class="display-3 text-center">No hay datos que mostrar</h3>
+            }
+            else
+            {
+
+                <div class="form-row">
+                    <div class="col form-group">
+                        <div>
+                            <label>Desde</label>
+                            <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
+                        </div>
+
+                        <input type="date" @bind-value="DesdeFecha" class="form-control" />
+                    </div>
+
+                    <div class="col form-group">
+                        <label>Hasta</label>
+                        <input type="date" @bind-value="HastaFecha" class="form-control" />
+                    </div>
+
+                    <div class="col form-group">
+                        <label>Criterio</label>
+                        <input type="text" @bind-value="Criterio" class="form-control" />
+                    </div>
+                    <EditForm Model="Compra">
+                        <div class="col form-group">
+                            <label>Filtrar por</label>
+                            <div class="input-group">
+                                <InputSelect @bind-Value="Filtro" class="form-control">
+                                    <option selected value="0">Todo</option>
+                                    <option value="1">Id</option>
+                                    <option value="2">Suplidor</option>
+                                    <option value="3">Cant. Productos</option>
+                                    <option value="4">Total</option>
+                                </InputSelect>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </EditForm>
+
+
+                </div>
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Suplidor</th>
+                                <th scope="col">Fecha </th>
+                                <th scope="col">Cant. Productos</th>
+                                <th scope="col">Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var entity in ListaTemp)
+                            {
+                                <tr>
+                                    <td scope="row">@entity.CompraId</td>
+                                    <td>@SuplidoresController.GetNombre(entity.SuplidorId)</td>
+                                    <td>@entity.Fecha.ToShortDateString()</td>
+                                    <td>@entity.ListaProductos.Count</td>
+                                    <td>@entity.Total</td>
+                                    <td><a class="btn btn-sm btn-outline-primary" href="/RCompras/@entity.CompraId">Ver</a></td>
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+                </div>
+                   
+                    }
+                    }
+
+                </div>
+
+            </div>
+
+
+@code {
+
+    public List<Compras> Lista { get; set; }
+    public List<Compras> ListaTemp { get; set; }
+
+    public DateTime DesdeFecha { get; set; }
+    public DateTime HastaFecha { get; set; }
+    public string Criterio { get; set; }
+    public string Filtro { get; set; }
+    public bool FiltrarPorFecha { get; set; }
+
+
+
+    public Compras Compra { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Run(() => { CargarLista(); Inicialzar(); });
+    }
+
+    private void Inicialzar()
+    {
+        DesdeFecha = DateTime.Now;
+        HastaFecha = DateTime.Now;
+        Compra = new Compras();
+        ListaTemp = Lista;
+        FiltrarPorFecha = false;
+        Filtro = "0";
+    }
+
+    private void CargarLista()
+    {
+        try
+        {
+            Lista = ComprasController.GetList(A => true);
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+
+    }
+
+    private void filtrar()
+    {
+        try
+        {
+            switch (Filtro)
+            {
+                case "0":
+                    ListaTemp = Lista;
+                    break;
+
+                case "1":
+                    ListaTemp = Lista.Where(A => A.CompraId == int.Parse(Criterio)).ToList();
+                    break;
+
+                case "2":
+                    ListaTemp = Lista.Where(A => SuplidoresController.ExisteNombre(A.SuplidorId, Criterio)).ToList();
+                    break;
+
+
+                case "3":
+                    ListaTemp = Lista.Where(A => A.ListaProductos.Count == int.Parse(Criterio)).ToList();
+                    break;
+
+
+
+                case "4":
+                    ListaTemp = Lista.Where(A => A.Total == decimal.Parse(Criterio)).ToList();
+                    break;
+
+                
+                default:
+                    ListaTemp = Lista;
+                    break;
+
+            }
+            if (FiltrarPorFecha)
+                ListaTemp = Lista.Where(A => A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date).ToList();
+
+        }
+        catch (Exception)
+        {
+
+
+        }
+    }
+
+}

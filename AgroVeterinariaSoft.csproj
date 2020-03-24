@@ -2,10 +2,46 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartWorkingDirectory>$(MSBuildProjectDirectory)</StartWorkingDirectory>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\fotos\fondo.jpg" />
+    <None Remove="wwwroot\scss\css\agency.css" />
+    <None Remove="wwwroot\scss\css\agency.min.css" />
+    <None Remove="wwwroot\scss\img\about\1.jpg" />
+    <None Remove="wwwroot\scss\img\about\2.jpg" />
+    <None Remove="wwwroot\scss\img\about\3.jpg" />
+    <None Remove="wwwroot\scss\img\about\4.jpg" />
+    <None Remove="wwwroot\scss\img\header-bg.jpg" />
+    <None Remove="wwwroot\scss\img\logos\creative-market.jpg" />
+    <None Remove="wwwroot\scss\img\logos\designmodo.jpg" />
+    <None Remove="wwwroot\scss\img\logos\envato.jpg" />
+    <None Remove="wwwroot\scss\img\logos\themeforest.jpg" />
+    <None Remove="wwwroot\scss\img\map-image.png" />
+    <None Remove="wwwroot\scss\img\portfolio\01-full.jpg" />
+    <None Remove="wwwroot\scss\img\portfolio\01-thumbnail.jpg" />
+    <None Remove="wwwroot\scss\img\portfolio\02-full.jpg" />
+    <None Remove="wwwroot\scss\img\portfolio\02-thumbnail.jpg" />
+    <None Remove="wwwroot\scss\img\portfolio\03-full.jpg" />
+    <None Remove="wwwroot\scss\img\portfolio\03-thumbnail.jpg" />
+    <None Remove="wwwroot\scss\img\portfolio\04-full.jpg" />
+    <None Remove="wwwroot\scss\img\portfolio\04-thumbnail.jpg" />
+    <None Remove="wwwroot\scss\img\portfolio\05-full.jpg" />
+    <None Remove="wwwroot\scss\img\portfolio\05-thumbnail.jpg" />
+    <None Remove="wwwroot\scss\img\portfolio\06-full.jpg" />
+    <None Remove="wwwroot\scss\img\portfolio\06-thumbnail.jpg" />
+    <None Remove="wwwroot\scss\img\team\1.jpg" />
+    <None Remove="wwwroot\scss\img\team\2.jpg" />
+    <None Remove="wwwroot\scss\img\team\3.jpg" />
+    <None Remove="wwwroot\scss\js\agency.js" />
+    <None Remove="wwwroot\scss\js\agency.min.js" />
+    <None Remove="wwwroot\scss\js\contact_me.js" />
+    <None Remove="wwwroot\scss\js\jqBootstrapValidation.js" />
+    <None Remove="wwwroot\scss\mail\contact_me.php" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Prueba\README.md" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,10 +52,129 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.2" />
     <PackageReference Include="Microsoft.entityframeworkcore.sqlite" Version="3.1.2" />
-    <PackageReference Include="Microsoft.entityframeworkcore.tools" Version="3.1.2">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Database\" />
+    <Folder Include="Prueba\css\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\.browserslistrc" />
+    <None Include="wwwroot\.gitignore" />
+    <None Include="wwwroot\.travis.yml" />
+    <None Include="wwwroot\01-full.jpg" />
+    <None Include="wwwroot\css\agency.css" />
+    <None Include="wwwroot\css\agency.min.css" />
+    <None Include="wwwroot\gulpfile.js" />
+    <None Include="wwwroot\img\about\1.jpg" />
+    <None Include="wwwroot\img\about\2.jpg" />
+    <None Include="wwwroot\img\about\3.jpg" />
+    <None Include="wwwroot\img\about\4.jpg" />
+    <None Include="wwwroot\img\header-bg.jpg" />
+    <None Include="wwwroot\img\logos\creative-market.jpg" />
+    <None Include="wwwroot\img\logos\designmodo.jpg" />
+    <None Include="wwwroot\img\logos\envato.jpg" />
+    <None Include="wwwroot\img\logos\themeforest.jpg" />
+    <None Include="wwwroot\img\map-image.png" />
+    <None Include="wwwroot\img\portfolio\01-full.jpg" />
+    <None Include="wwwroot\img\portfolio\01-thumbnail.jpg" />
+    <None Include="wwwroot\img\portfolio\02-full.jpg" />
+    <None Include="wwwroot\img\portfolio\02-thumbnail.jpg" />
+    <None Include="wwwroot\img\portfolio\03-full.jpg" />
+    <None Include="wwwroot\img\portfolio\03-thumbnail.jpg" />
+    <None Include="wwwroot\img\portfolio\04-full.jpg" />
+    <None Include="wwwroot\img\portfolio\04-thumbnail.jpg" />
+    <None Include="wwwroot\img\portfolio\05-full.jpg" />
+    <None Include="wwwroot\img\portfolio\05-thumbnail.jpg" />
+    <None Include="wwwroot\img\portfolio\06-full.jpg" />
+    <None Include="wwwroot\img\portfolio\06-thumbnail.jpg" />
+    <None Include="wwwroot\img\team\1.jpg" />
+    <None Include="wwwroot\img\team\2.jpg" />
+    <None Include="wwwroot\img\team\3.jpg" />
+    <None Include="wwwroot\index.html" />
+    <None Include="wwwroot\js\agency.js" />
+    <None Include="wwwroot\js\agency.min.js" />
+    <None Include="wwwroot\js\contact_me.js" />
+    <None Include="wwwroot\js\jqBootstrapValidation.js" />
+    <None Include="wwwroot\LICENSE" />
+    <None Include="wwwroot\mail\contact_me.php" />
+    <None Include="wwwroot\scss\agency.scss" />
+    <None Include="wwwroot\scss\base\_mixins.scss" />
+    <None Include="wwwroot\scss\base\_page.scss" />
+    <None Include="wwwroot\scss\base\_variables.scss" />
+    <None Include="wwwroot\scss\components\_buttons.scss" />
+    <None Include="wwwroot\scss\components\_navbar.scss" />
+    <None Include="wwwroot\scss\layout\_contact.scss" />
+    <None Include="wwwroot\scss\layout\_footer.scss" />
+    <None Include="wwwroot\scss\layout\_masthead.scss" />
+    <None Include="wwwroot\scss\layout\_portfolio.scss" />
+    <None Include="wwwroot\scss\layout\_services.scss" />
+    <None Include="wwwroot\scss\layout\_team.scss" />
+    <None Include="wwwroot\scss\layout\_timeline.scss" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap-grid.css" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap-grid.min.css" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap-reboot.css" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap-reboot.min.css" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap.css" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap.css.map" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap.min.css" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\vendor\bootstrap\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\vendor\bootstrap\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\vendor\bootstrap\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\vendor\bootstrap\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\vendor\bootstrap\js\bootstrap.js" />
+    <None Include="wwwroot\vendor\bootstrap\js\bootstrap.js.map" />
+    <None Include="wwwroot\vendor\bootstrap\js\bootstrap.min.js" />
+    <None Include="wwwroot\vendor\bootstrap\js\bootstrap.min.js.map" />
+    <None Include="wwwroot\vendor\fontawesome-free\css\all.css" />
+    <None Include="wwwroot\vendor\fontawesome-free\css\all.min.css" />
+    <None Include="wwwroot\vendor\fontawesome-free\css\brands.css" />
+    <None Include="wwwroot\vendor\fontawesome-free\css\brands.min.css" />
+    <None Include="wwwroot\vendor\fontawesome-free\css\fontawesome.css" />
+    <None Include="wwwroot\vendor\fontawesome-free\css\fontawesome.min.css" />
+    <None Include="wwwroot\vendor\fontawesome-free\css\regular.css" />
+    <None Include="wwwroot\vendor\fontawesome-free\css\regular.min.css" />
+    <None Include="wwwroot\vendor\fontawesome-free\css\solid.css" />
+    <None Include="wwwroot\vendor\fontawesome-free\css\solid.min.css" />
+    <None Include="wwwroot\vendor\fontawesome-free\css\svg-with-js.css" />
+    <None Include="wwwroot\vendor\fontawesome-free\css\svg-with-js.min.css" />
+    <None Include="wwwroot\vendor\fontawesome-free\css\v4-shims.css" />
+    <None Include="wwwroot\vendor\fontawesome-free\css\v4-shims.min.css" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-brands-400.eot" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-brands-400.svg" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-brands-400.ttf" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-brands-400.woff" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-regular-400.eot" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-regular-400.svg" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-regular-400.ttf" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-regular-400.woff" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-solid-900.eot" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-solid-900.svg" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-solid-900.ttf" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-solid-900.woff" />
+    <None Include="wwwroot\vendor\fontawesome-free\webfonts\fa-solid-900.woff2" />
+    <None Include="wwwroot\vendor\jquery-easing\jquery.easing.compatibility.js" />
+    <None Include="wwwroot\vendor\jquery-easing\jquery.easing.js" />
+    <None Include="wwwroot\vendor\jquery-easing\jquery.easing.min.js" />
+    <None Include="wwwroot\vendor\jquery\jquery.js" />
+    <None Include="wwwroot\vendor\jquery\jquery.min.js" />
+    <None Include="wwwroot\vendor\jquery\jquery.min.map" />
+    <None Include="wwwroot\vendor\jquery\jquery.slim.js" />
+    <None Include="wwwroot\vendor\jquery\jquery.slim.min.js" />
+    <None Include="wwwroot\vendor\jquery\jquery.slim.min.map" />
   </ItemGroup>
 
 </Project>

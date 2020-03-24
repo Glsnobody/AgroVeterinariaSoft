@@ -1,0 +1,199 @@
+﻿@page "/RUsuarios"
+@page "/RUsuarios/{UsuarioId:int}"
+@inject IToastService toastService
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+<AuthorizeView>
+
+
+    <NotAuthorized>
+        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+    </NotAuthorized>
+
+</AuthorizeView>
+
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+
+    <div class="container mb-4">
+
+        <h3 class="display-3 text-center">Registro de Usuarios</h3>
+
+        <div>
+            <EditForm Model="Usuario" OnValidSubmit="Guardar">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label>Id</label>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="Usuario.UsuarioId" class="form-control" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Nombres</label>
+                    <InputText @bind-Value="Usuario.Nombres" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label>Fecha de Creacion</label>
+                    <InputDate @bind-Value="Usuario.Fecha" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label>Usuario</label>
+                    <InputText @bind-Value="Usuario.Usuario" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" @bind-value="Usuario.Psw" class="form-control" />
+                    <ValidationMessage For="@(() => Usuario.Psw)" />
+                </div>
+
+                <div class="form-group">
+                    <label>Repita su Contraseña</label>
+                    <input type="password" @bind-value="RePsw" class="form-control" />
+                    <small class="text-muted">@Mensaje</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Correo</label>
+                    <InputText @bind-Value="Usuario.Correo" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label>Nivel de Usuario</label>
+                    <InputText @bind-Value="Usuario.NivelAcceso" class="form-control" />
+                </div>
+
+                <ValidationSummary />
+                <button type="button" class="btn btn-primary" @onclick="Limpiar">Limpiar</button>
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+
+            </EditForm>
+        </div>
+
+    </div>
+
+}
+
+
+
+@code {
+
+    public Usuarios Usuario { get; set; }
+    [Parameter]
+    public int UsuarioId { get; set; }
+
+    public string RePsw { get; set; }
+
+    public string Mensaje = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        Usuario = new Usuarios();
+        RePsw = string.Empty;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (UsuarioId > 0)
+        {
+            Usuario.UsuarioId = UsuarioId;
+            Buscar();
+        }
+    }
+
+    private void Guardar()
+    {
+        if (RePsw.Equals(Usuario.Psw))
+        {
+            try
+            {
+                if (UsuariosController.Guardar(Usuario))
+                {
+                    Usuario = new Usuarios();
+                    toastService.ShowSuccess("Guardado correctamente");
+                }
+                else
+                {
+                    toastService.ShowError("No se pudo guardar");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        else
+        {
+            Mensaje = "Las Contraseñas no son iguales";
+        }
+
+    }
+
+    private void Buscar()
+    {
+        try
+        {
+            Usuarios temp = UsuariosController.Buscar(Usuario.UsuarioId);
+
+            if (temp != null)
+            {
+                Usuario = temp;
+            }
+            else
+            {
+                toastService.ShowError("No se pudo encontrar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void Eliminar()
+    {
+        try
+        {
+
+
+            if (UsuariosController.Existe(Usuario.UsuarioId))
+            {
+                if (UsuariosController.Eliminar(Usuario.UsuarioId))
+                {
+                    toastService.ShowSuccess("Eliminado correctamente");
+                    Usuario = new Usuarios();
+                }
+            }
+            else
+            {
+                toastService.ShowInfo("No se pudo encontrar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void Limpiar()
+    {
+        Usuario = new Usuarios();
+        Mensaje = string.Empty;
+    }
+}
