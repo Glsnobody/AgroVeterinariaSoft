@@ -66,12 +66,7 @@ namespace AgroVeterinariaSoft
             }
             app.UseStaticFiles();
 
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-               Path.Combine(Directory.GetCurrentDirectory(), "Prueba" )),
-                RequestPath = "/Archivos"
-    });
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
