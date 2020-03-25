@@ -49,8 +49,12 @@ namespace AgroVeterinariaSoft.Controllers
 
             try
             {
-                db.Usuarios.Add(entity);
-                paso = db.SaveChanges() > 0;
+                if(ExisteUsuario(entity.Usuario))
+                {
+                    db.Usuarios.Add(entity);
+                    paso = db.SaveChanges() > 0;
+                }
+               
 
             }
             catch (Exception)
@@ -196,6 +200,25 @@ namespace AgroVeterinariaSoft.Controllers
             try
             {
                 paso = db.Clientes.Where(A => A.ClienteId == id).Any(A => A.Nombres.Contains(nombre));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return paso;
+        }
+
+        public static bool ExisteUsuario( string nombre)
+        {
+            bool paso = false;
+            Contexto db = new Contexto();
+
+
+            try
+            {
+                paso = db.Clientes.Any(A => A.Nombres.Contains(nombre));
             }
             catch (Exception)
             {
