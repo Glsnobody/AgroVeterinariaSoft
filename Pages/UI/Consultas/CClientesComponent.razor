@@ -1,5 +1,8 @@
 ﻿@page "/CClientes"
 
+@using System.Collections.Generic
+@using System.Linq
+@using System.Linq.Expressions
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -147,6 +150,8 @@
     public bool NivelUsuario;
     public Paginacion Paginacion { get; set; }
 
+    public Expression<Func<Clientes, bool>> expression { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await Task.Run(() => { Inicialzar(); CargarLista(); });
@@ -164,13 +169,15 @@
         Paginacion = new Paginacion();
         Paginacion.Radio = 3;
         NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
+        expression = A => true;
+        CargarLista();
     }
 
     private void CargarLista()
     {
         try
         {
-            ListaClientes = ClientesController.Paginacion(Paginacion);
+            ListaClientes = ClientesController.Paginacion(Paginacion, expression);
             ListaClientesTemp = ListaClientes;
             //CargarListaPaginas();
             //ListaClientes = ClientesController.Paginacion(Paginacion);
@@ -253,32 +260,48 @@
             switch (Filtro)
             {
                 case "0":
-                    ListaClientesTemp = ListaClientes;
+                    expression = A => true;
+                    Paginacion.PaginaActual = 1;
+                    CargarLista();
                     break;
 
                 case "1":
-                    ListaClientesTemp = ListaClientes.Where(A => A.ClienteId == int.Parse(Criterio)).ToList();
+                    expression = A => A.ClienteId == int.Parse(Criterio);
+                    Paginacion.PaginaActual = 1;
+                    CargarLista();
                     break;
 
                 case "2":
-                    ListaClientesTemp = ListaClientes.Where(A => A.Nombres.Contains(Criterio)).ToList();
+                    expression = A => A.Nombres.Contains(Criterio);
+                    Paginacion.PaginaActual = 1;
+                    CargarLista();
+
                     break;
 
                 case "3":
-                    ListaClientesTemp = ListaClientes.Where(A => A.Cedula.Contains(Criterio)).ToList();
+                    expression = A => A.Cedula.Contains(Criterio);
+                    Paginacion.PaginaActual = 1;
+                    CargarLista();
                     break;
 
 
                 case "4":
-                    ListaClientesTemp = ListaClientes.Where(A => A.Balance == decimal.Parse(Criterio)).ToList();
+                    expression = A => A.Balance == decimal.Parse(Criterio);
+                    Paginacion.PaginaActual = 1;
+                    CargarLista();
                     break;
 
                 case "5":
-                    ListaClientesTemp = ListaClientes.Where(A => A.FechaNacimiento.Date >= DesdeFecha.Date && A.FechaNacimiento.Date <= HastaFecha.Date).ToList();
+
+                    expression = A => A.FechaNacimiento.Date >= DesdeFecha.Date && A.FechaNacimiento.Date <= HastaFecha.Date;
+                    Paginacion.PaginaActual = 1;
+                    CargarLista();
                     break;
 
                 default:
-                    ListaClientesTemp = ListaClientes;
+                    expression = A => true;
+                    Paginacion.PaginaActual = 1;
+                    CargarLista();
                     break;
 
             }
