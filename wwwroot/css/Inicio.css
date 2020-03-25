@@ -1,0 +1,12 @@
+﻿body {
+}
+
+#imagenF1 {
+    background-image: url("/Imagenes/imagen1.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+
+    height:25%;
+}
