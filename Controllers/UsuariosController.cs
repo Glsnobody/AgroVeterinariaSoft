@@ -49,7 +49,7 @@ namespace AgroVeterinariaSoft.Controllers
 
             try
             {
-                if(ExisteUsuario(entity.Usuario))
+                if(!ExisteUsuario(entity.Usuario))
                 {
                     db.Usuarios.Add(entity);
                     paso = db.SaveChanges() > 0;
