@@ -84,7 +84,8 @@
                         </EditForm>
 
 
-                    </div>
+                </div>
+                <div class="table-responsive text-nowrap">
                     <table class="table">
                         <thead class="thead-dark">
                             <tr>
@@ -107,15 +108,14 @@
                                     <td>@entity.Total</td>
                                     <td><a class="btn btn-sm btn-outline-primary" href="/RCompras/@entity.CompraId">Ver</a></td>
                                 </tr>
-
                             }
 
 
                         </tbody>
 
                     </table>
-
-                    <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
+                </div>
+            <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
                 }
             }
 
