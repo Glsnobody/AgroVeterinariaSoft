@@ -51,6 +51,11 @@
 
     }
 
+    protected override void OnParametersSet()
+    {
+        CargarListaPaginas();
+    }
+
 
 
     private async Task SiguientePagina()
@@ -71,7 +76,7 @@
         {
             Paginacion.PaginaActual--;
             CargarListaPaginas();
-             await Evento.InvokeAsync(Paginacion.PaginaActual);
+            await Evento.InvokeAsync(Paginacion.PaginaActual);
         }
     }
 
@@ -82,7 +87,7 @@
             Paginacion.PaginaActual = i;
             CargarListaPaginas();
 
-             await Evento.InvokeAsync(Paginacion.PaginaActual);
+            await Evento.InvokeAsync(Paginacion.PaginaActual);
         }
         catch (Exception)
         {
