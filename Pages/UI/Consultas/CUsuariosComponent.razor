@@ -1,107 +1,108 @@
 ﻿@page "/CUsuarios"
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
 <div class="container">
 
-        <h3 class="display-3 text-center">Consulta de Usuarios</h3>
+    <h3 class="display-3 text-center">Consulta de Usuarios</h3>
 
-        <div>
-            @if (Lista == null)
+    <div>
+        @if (Lista == null)
+        {
+            <div class="text-center">
+                <div class="spinner-border">
+                    <span class="sr-only">Loading....</span>
+                </div>
+            </div>}
+        else
+        {
+            if (Lista.Count <= 0)
             {
-                <div class="text-center">
-                    <div class="spinner-border">
-                        <span class="sr-only">Loading....</span>
-                    </div>
-                </div>}
+                <h3 class="display-3 text-center">No hay datos que mostrar</h3>
+            }
             else
             {
-                if (Lista.Count <= 0)
-                {
-                    <h3 class="display-3 text-center">No hay datos que mostrar</h3>
-                }
-                else
-                {
 
-                    <div class="form-row">
-                        <div class="col form-group">
-                            <div>
-                                <label>Desde</label>
-                                <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
-                            </div>
-
-                            <input type="date" @bind-value="DesdeFecha" class="form-control" />
+                <div class="form-row">
+                    <div class="col form-group">
+                        <div>
+                            <label>Desde</label>
+                            <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
                         </div>
 
-                        <div class="col form-group">
-                            <label>Hasta</label>
-                            <input type="date" @bind-value="HastaFecha" class="form-control" />
-                        </div>
+                        <input type="date" @bind-value="DesdeFecha" class="form-control" />
+                    </div>
 
+                    <div class="col form-group">
+                        <label>Hasta</label>
+                        <input type="date" @bind-value="HastaFecha" class="form-control" />
+                    </div>
+
+                    <div class="col form-group">
+                        <label>Criterio</label>
+                        <input type="text" @bind-value="Criterio" class="form-control" />
+                    </div>
+                    <EditForm Model="Usuario">
                         <div class="col form-group">
-                            <label>Criterio</label>
-                            <input type="text" @bind-value="Criterio" class="form-control" />
-                        </div>
-                        <EditForm Model="Usuario">
-                            <div class="col form-group">
-                                <label>Filtrar por</label>
-                                <div class="input-group">
-                                    <InputSelect @bind-Value="Filtro" class="form-control">
-                                        <option selected value="0">Todo</option>
-                                        <option value="1">Id</option>
-                                        <option value="2">Nombre</option>
-                                        <option value="3">Usuario</option>
-                                        <option value="3">Correo</option>
-                                        <option value="4">Nivel de Acceso</option>
-                                    </InputSelect>
-                                    <div class="input-group-append">
-                                        <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
-                                    </div>
+                            <label>Filtrar por</label>
+                            <div class="input-group">
+                                <InputSelect @bind-Value="Filtro" class="form-control">
+                                    <option selected value="0">Todo</option>
+                                    <option value="1">Id</option>
+                                    <option value="2">Nombre</option>
+                                    <option value="3">Usuario</option>
+                                    <option value="3">Correo</option>
+                                    <option value="4">Nivel de Acceso</option>
+                                </InputSelect>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
                                 </div>
-
                             </div>
-                        </EditForm>
+
+                        </div>
+                    </EditForm>
 
 
                 </div>
-                    <div class="table-responsive text-nowrap">
-                        <table class="table table-striped">
-                            <thead class="thead-dark">
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Nombres</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Nivel de Acceso</th>
+                                <th scope="col">Fecha</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var entity in ListaTemp)
+                            {
                                 <tr>
-                                    <th scope="col">Id</th>
-                                    <th scope="col">Nombres</th>
-                                    <th scope="col">Usuario</th>
-                                    <th scope="col">Correo</th>
-                                    <th scope="col">Nivel de Acceso</th>
-                                    <th scope="col">Fecha</th>
-                                    <th></th>
+                                    <td scope="row">@entity.UsuarioId</td>
+                                    <td>@entity.Nombres</td>
+                                    <td>@entity.Usuario</td>
+                                    <td>@entity.Correo</td>
+                                    <td>@entity.NivelAcceso</td>
+                                    <td>@entity.Fecha.ToShortDateString()</td>
+                                    <td><a class="btn btn-sm btn-outline-primary" href="/RUsuarios/@entity.UsuarioId">Ver</a></td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var entity in ListaTemp)
-                                {
-                                    <tr>
-                                        <td scope="row">@entity.UsuarioId</td>
-                                        <td>@entity.Nombres</td>
-                                        <td>@entity.Usuario</td>
-                                        <td>@entity.Correo</td>
-                                        <td>@entity.NivelAcceso</td>
-                                        <td>@entity.Fecha.ToShortDateString()</td>
-                                        <td><a class="btn btn-sm btn-outline-primary" href="/RUsuarios/@entity.UsuarioId">Ver</a></td>
-                                    </tr>
-                                }
+                            }
 
-                            </tbody>
+                        </tbody>
 
-                        </table>
-                    </div>
-                        
-                        @*<div class="form-group">
-            <button type="button" class="btn btn-secondary" @onclick="AnteriorPagina">Ant</button>
-            <button type="button" class="btn btn-secondary" @onclick="SiguientePagina">Sig</button>
-        </div>*@
-                        }
-                        }
+                    </table>
+                </div>
 
-                    </div>
+                @*<div class="form-group">
+                        <button type="button" class="btn btn-secondary" @onclick="AnteriorPagina">Ant</button>
+                        <button type="button" class="btn btn-secondary" @onclick="SiguientePagina">Sig</button>
+                    </div>*@
+            }
+        }
+
+    </div>
 
 </div>
 
