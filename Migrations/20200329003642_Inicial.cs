@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AgroVeterinariaSoft.Migrations
 {
-    public partial class inicial : Migration
+    public partial class Inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,7 +18,7 @@ namespace AgroVeterinariaSoft.Migrations
                     Telefono = table.Column<string>(maxLength: 10, nullable: false),
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     FechaNacimiento = table.Column<DateTime>(nullable: false),
-                    Cedula = table.Column<string>(maxLength: 13, nullable: false),
+                    Cedula = table.Column<string>(nullable: false),
                     Balance = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
@@ -52,7 +52,7 @@ namespace AgroVeterinariaSoft.Migrations
                     Descripcion = table.Column<string>(maxLength: 40, nullable: false),
                     Cantidad = table.Column<int>(nullable: false),
                     Minimo = table.Column<int>(nullable: false),
-                    Unidad = table.Column<string>(maxLength: 20, nullable: false),
+                    Unidad = table.Column<int>(nullable: false),
                     Costo = table.Column<decimal>(nullable: false),
                     Precio = table.Column<decimal>(nullable: false),
                     Ganancia = table.Column<decimal>(nullable: false)
@@ -77,6 +77,19 @@ namespace AgroVeterinariaSoft.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Suplidores", x => x.SuplidorId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Unidades",
+                columns: table => new
+                {
+                    UnidadId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Descripcion = table.Column<string>(maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Unidades", x => x.UnidadId);
                 });
 
             migrationBuilder.CreateTable(
@@ -186,6 +199,9 @@ namespace AgroVeterinariaSoft.Migrations
 
             migrationBuilder.DropTable(
                 name: "Suplidores");
+
+            migrationBuilder.DropTable(
+                name: "Unidades");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");

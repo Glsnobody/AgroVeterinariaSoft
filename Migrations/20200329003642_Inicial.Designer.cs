@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgroVeterinariaSoft.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200320145616_inicial")]
-    partial class inicial
+    [Migration("20200329003642_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,8 +29,7 @@ namespace AgroVeterinariaSoft.Migrations
 
                     b.Property<string>("Cedula")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(13);
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Direccion")
                         .IsRequired()
@@ -140,10 +139,8 @@ namespace AgroVeterinariaSoft.Migrations
                     b.Property<decimal>("Precio")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Unidad")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(20);
+                    b.Property<int>("Unidad")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ProductoId");
 
@@ -182,6 +179,22 @@ namespace AgroVeterinariaSoft.Migrations
                     b.HasKey("SuplidorId");
 
                     b.ToTable("Suplidores");
+                });
+
+            modelBuilder.Entity("AgroVeterinariaSoft.Models.Unidades", b =>
+                {
+                    b.Property<int>("UnidadId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(50);
+
+                    b.HasKey("UnidadId");
+
+                    b.ToTable("Unidades");
                 });
 
             modelBuilder.Entity("AgroVeterinariaSoft.Models.Usuarios", b =>

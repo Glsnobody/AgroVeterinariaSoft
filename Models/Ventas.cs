@@ -15,6 +15,7 @@ namespace AgroVeterinariaSoft.Models
         public int ClienteId { get; set; }
         [Required(ErrorMessage = "Es necesario establecer una fecha")]
         [Range(typeof(DateTime),minimum:"1/1/2018",maximum:"1/1/2025",ErrorMessage ="La fecha esta fuera de rango")]
+        [DisplayFormat(DataFormatString = "{0:dd,mm, yyyy}")]
         public DateTime Fecha { get; set; }
         [StringLength(maximumLength:100,ErrorMessage ="La observacion es muy larga")]
         public string Observacion { get; set; }

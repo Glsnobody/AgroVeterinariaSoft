@@ -22,6 +22,7 @@ namespace AgroVeterinariaSoft.Models
         public string Usuario { get; set; }
         [Required(ErrorMessage = "Es necesario introducir un correo")]
         [StringLength(maximumLength: 80, ErrorMessage = "El correo es muy largo")]
+        [RegularExpression(@"^[^@]+@[^@]+\.[a-zA-Z]{2,}$", ErrorMessage = "Por favor ingrese un correo electronico valido")]
         public string Correo { get; set; }
         [Required(ErrorMessage = "Es necesario introducir una Contraseña")]
         [StringLength(maximumLength: 15, ErrorMessage = "La Contraseña es muy larga")]

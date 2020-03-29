@@ -17,15 +17,18 @@ namespace AgroVeterinariaSoft.Models
         public string Direccion { get; set; }
         [Required(ErrorMessage = "Es necesario introducir un telefono")]
         [StringLength(maximumLength: 10, ErrorMessage = "El telefono esta fuera de rango")]
+        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Por favor ingrese un No. de telefono valido")]
         public string Telefono { get; set; }
         [Required(ErrorMessage = "Es necesario introducir una fecha de creacion")]
         [Range(typeof(DateTime), minimum: "1/1/2000", maximum: "1/1/2030", ErrorMessage = "La fecha de creacion esta fuera de rango")]
+        [DisplayFormat(DataFormatString = "{0:dd,mm, yyyy}")]
         public DateTime FechaCreacion { get; set; }
         [Required(ErrorMessage = "Es necesario introducir una fecha de nacimiento")]
         [Range(typeof(DateTime), minimum: "1/1/1990", maximum: "1/1/2030", ErrorMessage = "La fecha de nacimiento esta fuera de rango")]
+        [DisplayFormat(DataFormatString = "{0:dd,mm, yyyy}")]
         public DateTime FechaNacimiento { get; set; }
-        [Required(ErrorMessage = "Es necesario introducir una cedula")]
-        [StringLength(maximumLength:13,MinimumLength =13,ErrorMessage ="La cedula es muy pequena o muy grande")]
+        [Required(ErrorMessage = "Es necesario introducir una cedula")]            
+        [RegularExpression("^\\d{3}\\D?\\d{7}\\D?\\d$", ErrorMessage = "Por favor ingrese una cedula valida")]
         public string Cedula { get; set; }
         public decimal Balance { get; set; }
 

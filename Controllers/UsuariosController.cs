@@ -291,5 +291,31 @@ namespace AgroVeterinariaSoft.Controllers
 
             return nivel;
         }
+
+
+        public static bool InicializarUsuarios()
+        {
+            Contexto db = new Contexto();
+            bool paso = false;
+            try
+            {
+                if(db.Usuarios.Count() == 0)
+                {
+                    db.Usuarios.Add(new Usuarios() { Usuario = "Admin",Psw="12345",NivelAcceso="Alto"});
+                   paso = db.SaveChanges() > 0;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+
+            return paso;
+        }
     }
 }

@@ -73,7 +73,18 @@
             <div class="form-row">
                 <div class="form-group col">
                     <label for="UnidadText">Unidad: </label>
-                    <InputText id="UnidadText" @bind-Value="Producto.Unidad" class="form-control"></InputText>
+
+                    <InputSelect @bind-Value="unidadSeleccionada" @onclick="agregarUnidad" class="form-control">
+
+                        @foreach (var unidad in ListaUnidades)
+                            {
+                                 <option value="@unidad.UnidadId ">@unidad.Descripcion</option>
+                            }
+
+
+                    </InputSelect>
+                    <ValidationMessage For="(()=> Producto.Unidad) "/>
+                   
                 </div>
 
                 <div class="form-group col">
@@ -112,12 +123,14 @@
 
 @code {
     Productos Producto = new Productos();
+    public List<Unidades> ListaUnidades { get; set; }
+    string unidadSeleccionada = "0";
 
     [Parameter]
     public int ProductoId { get; set; }
 
     protected string OkayDisabled { get; set; } = "disabled";
-     public bool NivelUsuario;
+    public bool NivelUsuario;
     protected override void OnParametersSet()
     {
         if (ProductoId > 0)
@@ -128,9 +141,12 @@
     }
 
     protected override void OnInitialized()
-        {
-            NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
-        }
+    {
+        NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
+        ListaUnidades = UnidadController.GetList(A => true);
+    }
+
+    
 
     private void Guardar()
     {
@@ -138,7 +154,7 @@
         if (ProductosController.Guardar(Producto))
         {
             toastService.ShowSuccess("Producto Guardado");
-            Producto = new Productos();
+            Nuevo();
         }
         else
             toastService.ShowError("HUno un error");
@@ -175,6 +191,7 @@
     private void Nuevo()
     {
         Producto = new Productos();
+        unidadSeleccionada = "0";
     }
 
     private void Calcular()
@@ -182,6 +199,19 @@
         decimal val = Producto.Ganancia / 100;
         Producto.Precio = (Producto.Costo * val) + Producto.Costo;
     }
+
+    private void agregarUnidad()
+    {
+        try
+        {
+            Producto.Unidad = int.Parse(unidadSeleccionada);
+        }
+        catch (Exception)
+        {
+
+        }
+    }
+
 
     private void Agregar100()
     {
