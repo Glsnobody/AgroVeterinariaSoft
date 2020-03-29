@@ -262,21 +262,20 @@ namespace AgroVeterinariaSoft.Controllers
 
             try
             {
-                for(int i = 0;i<=100;i++)
+                for(int i = 1;i<=100;i++)
                 {
-                    db.Productos.Add(new Productos()
+                    db.Clientes.Add(new Clientes()
                     {
 
-                        Descripcion = $"Producto{i}",
-                        Cantidad = 1,
-                        Costo = 5,
-                        Precio = 500,
-                        Fecha = DateTime.Now,
-                        Ganancia = 15,
-                        Minimo = 1,
-                        Unidad = "Botella"
+                        Nombres = $"Cliente{i}",
+                        Balance = 0,
+                        Direccion = $"Direccion{i}",
+                        Cedula = "12345678912",
+                        FechaCreacion = DateTime.Now.AddMonths(i),
+                        FechaNacimiento = DateTime.Now.AddMonths(i),
+                        Telefono = "1234567891"
 
-                    }) ;
+                    }); ;
                 }
                 
                 paso = db.SaveChanges() > 0;

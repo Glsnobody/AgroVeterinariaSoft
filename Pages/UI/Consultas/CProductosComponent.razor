@@ -210,7 +210,7 @@
 
 
                 case "4":
-                    ListaTemp = Lista.Where(A => A.Unidad.Contains(Criterio)).ToList();
+                    ListaTemp = Lista.Where(A => UnidadController.ExisteNombre(A.Unidad, Criterio)).ToList();
                     break;
 
                 case "5":

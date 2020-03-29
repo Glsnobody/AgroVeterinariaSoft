@@ -179,8 +179,6 @@
         {
             ListaClientes = ClientesController.Paginacion(Paginacion, expression);
             ListaClientesTemp = ListaClientes;
-            //CargarListaPaginas();
-            //ListaClientes = ClientesController.Paginacion(Paginacion);
         }
         catch (Exception)
         {
@@ -190,68 +188,6 @@
 
     }
 
-    //private void SiguientePagina()
-    //{
-    //    if (Paginacion.PaginaActual < Paginacion.TotalPaginas)
-    //    {
-    //        Paginacion.PaginaActual++;
-    //        CargarLista();
-
-    //    }
-    //    else
-    //    {
-
-    //        return;
-    //    }
-    //}
-
-    //private void AnteriorPagina()
-    //{
-    //    if (Paginacion.PaginaActual > 0)
-    //    {
-    //        Paginacion.PaginaActual--;
-    //        CargarLista();
-
-    //    }
-    //    else
-    //    {
-    //        return;
-
-    //    }
-    //}
-
-    //private void CargarListaPaginas()
-    //{
-
-    //    Paginas = new List<int>();
-
-    //    for(int i=1;i<Paginacion.TotalPaginas;i++)
-    //    {
-
-    //        if(i >= Paginacion.PaginaActual -Paginacion.Radio && i<= Paginacion.PaginaActual + Paginacion.Radio)
-    //        {
-    //            if(i > 0 && i<= Paginacion.TotalPaginas)
-    //            {
-    //                Paginas.Add(i);
-    //            }
-    //        }
-    //    }
-
-    //}
-
-    //private void IrAPagina(int i)
-    //{
-    //    try
-    //    {
-    //        Paginacion.PaginaActual = i;
-    //        CargarLista();
-    //    }
-    //    catch (Exception)
-    //    {
-
-    //        throw;
-    //    }
-    //}
 
     private void filtrar()
     {

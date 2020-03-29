@@ -1,0 +1,160 @@
+﻿@page "/RUnidades"
+@page "/RUnidades/{UnidadId:int}"
+
+@inject IToastService toastService
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+<AuthorizeView>
+
+
+    <NotAuthorized>
+        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+
+    </NotAuthorized>
+
+
+</AuthorizeView>
+
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+
+
+    <div class="container mb-4">
+
+        <h3 class="display-3 text-center">Registro de Usuarios</h3>
+
+        <div>
+            <EditForm Model="Unidad" OnValidSubmit="Guardar">
+                <DataAnnotationsValidator />
+
+                <div class="form-group">
+                    <label>Id</label>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="Unidad.UnidadId" class="form-control" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Descripcion</label>
+                    <InputText @bind-Value="Unidad.Descripcion" class="form-control" />
+                </div>
+
+
+                <ValidationSummary />
+                <button type="button" class="btn btn-primary" @onclick="Limpiar">Limpiar</button>
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+
+            </EditForm>
+        </div>
+
+    </div>
+
+}
+
+
+
+@code {
+
+    public Unidades Unidad { get; set; }
+    [Parameter]
+    public int UnidadId { get; set; }
+
+    public bool NivelUsuario = false;
+
+    protected override void OnInitialized()
+    {
+        Unidad = new Unidades();
+       
+        NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (UnidadId > 0)
+        {
+            Unidad.UnidadId = UnidadId;
+            Buscar();
+        }
+    }
+
+    private void Guardar()
+    {
+            try
+            {
+
+                if (UnidadController.Guardar(Unidad))
+                {
+                    Unidad = new Unidades();
+                    toastService.ShowSuccess("Guardado correctamente");
+                }
+                else
+                {
+                    toastService.ShowError("No se pudo guardar");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        
+    }
+
+    private void Buscar()
+    {
+        try
+        {
+            Unidades temp = UnidadController.Buscar(Unidad.UnidadId);
+
+            if (temp != null)
+            {
+                Unidad = temp;
+            }
+            else
+            {
+                toastService.ShowError("No se pudo encontrar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void Eliminar()
+    {
+        try
+        {
+                if (UnidadController.Eliminar(Unidad.UnidadId))
+                {
+                    toastService.ShowSuccess("Eliminado correctamente");
+                    Unidad = new Unidades();
+                }
+            
+            else
+            {
+                toastService.ShowInfo("No se pudo encontrar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void Limpiar()
+    {
+        Unidad = new Unidades();
+    }
+}

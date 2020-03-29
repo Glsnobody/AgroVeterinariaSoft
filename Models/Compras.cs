@@ -18,6 +18,7 @@ namespace AgroVeterinariaSoft.Models
 
         [Required(ErrorMessage = "Es necesario introducir la fecha actual")]
         [Range(typeof(DateTime), minimum: "1/1/1990", maximum: "1/1/2030", ErrorMessage = "La fecha de compra esta fuera de rango")]
+        [DisplayFormat(DataFormatString = "{0:dd,mm, yyyy}")]
         public DateTime Fecha { get; set; }
 
         //[Required(ErrorMessage = "Es necesario Agregar ")]
