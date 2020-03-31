@@ -1,4 +1,6 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@inject AuthenticationStateProvider authenticationStateProvider
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">AgroVeterinariaSoft</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -26,9 +28,19 @@
         </li>
 
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/LogInPage">
-                <span class="oi oi-person" aria-hidden="true"></span> Login/Logout
-            </NavLink>
+            @if (authenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+            {
+                <NavLink class="nav-link"href="/logout?returnUrl=/" target="_top">
+                    <span class="oi oi-person" aria-hidden="true"></span> Logout
+                </NavLink>
+            }
+            else
+            {
+                <NavLink class="nav-link" href="/LogInPage">
+                    <span class="oi oi-person" aria-hidden="true"></span> Login
+                </NavLink>
+            }
+
         </li>
 
 
