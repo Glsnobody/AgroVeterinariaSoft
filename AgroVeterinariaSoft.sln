@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgroVeterinariaSoft", "AgroVeterinariaSoft.csproj", "{599DB37D-202E-4D93-87B1-84DB9903385D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgroVeterinariaSoftTests", "..\AgroVeterinariaSoftTests\AgroVeterinariaSoftTests.csproj", "{5533EB71-F8BC-4772-A1A2-C4409E5CF1B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgroVeterinariaSoftTests1", "..\AgroVeterinariaSoftTests1\AgroVeterinariaSoftTests1.csproj", "{DF61331F-A3A4-4A21-8F88-045FC282E2DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{599DB37D-202E-4D93-87B1-84DB9903385D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{599DB37D-202E-4D93-87B1-84DB9903385D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{599DB37D-202E-4D93-87B1-84DB9903385D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5533EB71-F8BC-4772-A1A2-C4409E5CF1B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5533EB71-F8BC-4772-A1A2-C4409E5CF1B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5533EB71-F8BC-4772-A1A2-C4409E5CF1B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5533EB71-F8BC-4772-A1A2-C4409E5CF1B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF61331F-A3A4-4A21-8F88-045FC282E2DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF61331F-A3A4-4A21-8F88-045FC282E2DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF61331F-A3A4-4A21-8F88-045FC282E2DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF61331F-A3A4-4A21-8F88-045FC282E2DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

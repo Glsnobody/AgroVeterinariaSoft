@@ -20,7 +20,7 @@ namespace AgroVeterinariaSoft.Data
         public DbSet<PagosDetalle> PagosDetalles { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(@"Data Source=Database/Data.db");
+            optionsBuilder.UseSqlServer(@"Server = .\SqlExpress; Database= AgroVeterinaria_db; Trusted_Connection = True; ");
 
         }
     }

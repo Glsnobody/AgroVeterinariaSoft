@@ -218,7 +218,7 @@ namespace AgroVeterinariaSoft.Controllers
 
             try
             {
-                paso = db.Clientes.Any(A => A.Nombres.Contains(nombre));
+                paso = db.Usuarios.Any(A => A.Usuario.Contains(nombre));
             }
             catch (Exception)
             {

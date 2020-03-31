@@ -12,7 +12,7 @@ namespace AgroVeterinariaSoft.Migrations
                 columns: table => new
                 {
                     ClienteId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Nombres = table.Column<string>(nullable: false),
                     Direccion = table.Column<string>(maxLength: 100, nullable: false),
                     Telefono = table.Column<string>(maxLength: 10, nullable: false),
@@ -31,7 +31,7 @@ namespace AgroVeterinariaSoft.Migrations
                 columns: table => new
                 {
                     CompraId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     SuplidorId = table.Column<int>(nullable: false),
                     NombreSuplidor = table.Column<string>(nullable: true),
                     Fecha = table.Column<DateTime>(nullable: false),
@@ -50,7 +50,7 @@ namespace AgroVeterinariaSoft.Migrations
                 columns: table => new
                 {
                     PagoId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Fecha = table.Column<DateTime>(nullable: false),
                     Valor = table.Column<decimal>(nullable: false)
                 },
@@ -64,7 +64,7 @@ namespace AgroVeterinariaSoft.Migrations
                 columns: table => new
                 {
                     ProductoId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Fecha = table.Column<DateTime>(nullable: false),
                     Descripcion = table.Column<string>(maxLength: 40, nullable: false),
                     Cantidad = table.Column<int>(nullable: false),
@@ -85,7 +85,7 @@ namespace AgroVeterinariaSoft.Migrations
                 columns: table => new
                 {
                     SuplidorId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(maxLength: 50, nullable: false),
                     Direccion = table.Column<string>(maxLength: 50, nullable: false),
                     Telefono = table.Column<string>(maxLength: 11, nullable: false),
@@ -102,7 +102,7 @@ namespace AgroVeterinariaSoft.Migrations
                 columns: table => new
                 {
                     UnidadId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Descripcion = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -115,7 +115,7 @@ namespace AgroVeterinariaSoft.Migrations
                 columns: table => new
                 {
                     UsuarioId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Fecha = table.Column<DateTime>(nullable: false),
                     Nombres = table.Column<string>(maxLength: 50, nullable: false),
                     Usuario = table.Column<string>(maxLength: 30, nullable: false),
@@ -133,7 +133,7 @@ namespace AgroVeterinariaSoft.Migrations
                 columns: table => new
                 {
                     VentaId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ClienteId = table.Column<int>(nullable: false),
                     NombreCliente = table.Column<string>(nullable: true),
                     Fecha = table.Column<DateTime>(nullable: false),
@@ -152,7 +152,7 @@ namespace AgroVeterinariaSoft.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CompraId = table.Column<int>(nullable: false),
                     ProductoId = table.Column<int>(nullable: false),
                     Descripcion = table.Column<string>(nullable: true),
@@ -176,7 +176,7 @@ namespace AgroVeterinariaSoft.Migrations
                 columns: table => new
                 {
                     PagoDetalleId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     PagoId = table.Column<int>(nullable: false),
                     CompraId = table.Column<int>(nullable: false),
                     FechaPago = table.Column<DateTime>(nullable: false),
@@ -198,7 +198,7 @@ namespace AgroVeterinariaSoft.Migrations
                 columns: table => new
                 {
                     VentaDetalleID = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     VentaId = table.Column<int>(nullable: false),
                     ProductoId = table.Column<int>(nullable: false),
                     Descripcion = table.Column<string>(nullable: true),
