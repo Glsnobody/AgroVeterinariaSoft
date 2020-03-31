@@ -100,7 +100,7 @@
                                         <td scope="row">@entity.ProductoId</td>
                                         <td>@entity.Descripcion</td>
                                         <td>@entity.Cantidad</td>
-                                        <td>@entity.Unidad</td>
+                                        <td>@entity.UnidadDescripcion</td>
                                         <td>@entity.Fecha.ToShortDateString()</td>
                                         <td>@entity.Costo</td>
                                         <td>@entity.Precio</td>
@@ -206,11 +206,11 @@
                         break;
 
 
-                    //case "4":
-                    //    expression = A => UnidadController.ExisteNombre(A.Unidad, Criterio);
-                    //    Paginacion.PaginaActual = 1;
-                    //    CargarLista();
-                    //    break;
+                    case "4":
+                        expression = A => A.UnidadDescripcion.Contains(Criterio);
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
                     case "5":
                         expression = A => A.Costo == int.Parse(Criterio);
@@ -265,12 +265,12 @@
                         break;
 
 
-                    //case "4":
-                    //    expression = A => UnidadController.ExisteNombre(A.Unidad, Criterio)
-                    //  && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
-                    //    Paginacion.PaginaActual = 1;
-                    //    CargarLista();
-                    //    break;
+                    case "4":
+                        expression = A => A.UnidadDescripcion.Contains(Criterio)
+                        && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
                     case "5":
                         expression = A => A.Costo == int.Parse(Criterio)

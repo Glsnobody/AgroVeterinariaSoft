@@ -16,6 +16,8 @@ namespace AgroVeterinariaSoft.Models
         [Range(typeof(int), minimum: "1", maximum: "100000", ErrorMessage = "El suplidorId esta fuera de rango")]
         public int SuplidorId { get; set; }
 
+        public string NombreSuplidor { get; set; }
+
         [Required(ErrorMessage = "Es necesario introducir la fecha actual")]
         [Range(typeof(DateTime), minimum: "1/1/1990", maximum: "1/1/2030", ErrorMessage = "La fecha de compra esta fuera de rango")]
         [DisplayFormat(DataFormatString = "{0:dd,mm, yyyy}")]
@@ -49,6 +51,7 @@ namespace AgroVeterinariaSoft.Models
             ListaProductos = new List<DetalleProductos>();
             Total = 0;
             Balance = 0;
+            NombreSuplidor = string.Empty;
         }
     }
 }
