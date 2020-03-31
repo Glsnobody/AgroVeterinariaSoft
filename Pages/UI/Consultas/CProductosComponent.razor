@@ -32,93 +32,86 @@
                 </div>}
             else
             {
+                <div class="form-row">
+                    <div class="col form-group">
+                        <div>
+                            <label>Desde</label>
+                            <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
+                        </div>
+
+                        <input type="date" @bind-value="DesdeFecha" class="form-control" />
+                    </div>
+
+                    <div class="col form-group">
+                        <label>Hasta</label>
+                        <input type="date" @bind-value="HastaFecha" class="form-control" />
+                    </div>
+
+                    <div class="col form-group">
+                        <label>Criterio</label>
+                        <input type="text" @bind-value="Criterio" class="form-control" />
+                    </div>
+                    <EditForm Model="Producto">
+                        <div class="col form-group">
+                            <label>Filtrar por</label>
+                            <div class="input-group">
+                                <InputSelect @bind-Value="Filtro" class="form-control">
+                                    <option selected value="0">Todo</option>
+                                    <option value="1">Id</option>
+                                    <option value="2">Descripcion</option>
+                                    <option value="3">Cantidad</option>
+                                    <option value="4">Unidad</option>
+                                    <option value="5">Costo</option>
+                                    <option value="6">Precio</option>
+                                </InputSelect>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </EditForm>
+                </div>
+
                 if (Lista.Count <= 0)
                 {
                     <h3 class="display-3 text-center">No hay datos que mostrar</h3>
                 }
                 else
                 {
-
-                    <div class="form-row">
-                        <div class="col form-group">
-                            <div>
-                                <label>Desde</label>
-                                <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
-                            </div>
-
-                            <input type="date" @bind-value="DesdeFecha" class="form-control" />
-                        </div>
-
-                        <div class="col form-group">
-                            <label>Hasta</label>
-                            <input type="date" @bind-value="HastaFecha" class="form-control" />
-                        </div>
-
-                        <div class="col form-group">
-                            <label>Criterio</label>
-                            <input type="text" @bind-value="Criterio" class="form-control" />
-                        </div>
-                        <EditForm Model="Producto">
-                            <div class="col form-group">
-                                <label>Filtrar por</label>
-                                <div class="input-group">
-                                    <InputSelect @bind-Value="Filtro" class="form-control">
-                                        <option selected value="0">Todo</option>
-                                        <option value="1">Id</option>
-                                        <option value="2">Descripcion</option>
-                                        <option value="3">Cantidad</option>
-                                        <option value="4">Unidad</option>
-                                        <option value="5">Costo</option>
-                                        <option value="6">Precio</option>
-                                    </InputSelect>
-                                    <div class="input-group-append">
-                                        <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </EditForm>
-
-
-                </div>
-                <div class="table-responsive text-nowrap">
-                    <table class="table table-striped">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Descripcion</th>
-                                <th scope="col">Cantidad</th>
-                                <th scope="col">Unidad</th>
-                                <th scope="col">Fecha</th>
-                                <th scope="col">Costo</th>
-                                <th scope="col">Precio</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var entity in ListaTemp)
-                            {
+                    <div class="table-responsive text-nowrap">
+                        <table class="table table-striped">
+                            <thead class="thead-dark">
                                 <tr>
-                                    <td scope="row">@entity.ProductoId</td>
-                                    <td>@entity.Descripcion</td>
-                                    <td>@entity.Cantidad</td>
-                                    <td>@entity.Unidad</td>
-                                    <td>@entity.Fecha.ToShortDateString()</td>
-                                    <td>@entity.Costo</td>
-                                    <td>@entity.Precio</td>
-                                    <td><a class="btn btn-sm btn-outline-primary" href="/RProductos/@entity.ProductoId">Ver</a></td>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Descripcion</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Unidad</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Costo</th>
+                                    <th scope="col">Precio</th>
+                                    <th></th>
                                 </tr>
-                            }
+                            </thead>
+                            <tbody>
+                                @foreach (var entity in Lista)
+                                {
+                                    <tr>
+                                        <td scope="row">@entity.ProductoId</td>
+                                        <td>@entity.Descripcion</td>
+                                        <td>@entity.Cantidad</td>
+                                        <td>@entity.Unidad</td>
+                                        <td>@entity.Fecha.ToShortDateString()</td>
+                                        <td>@entity.Costo</td>
+                                        <td>@entity.Precio</td>
+                                        <td><a class="btn btn-sm btn-outline-primary" href="/RProductos/@entity.ProductoId">Ver</a></td>
+                                    </tr>
+                                }
 
-                        </tbody>
+                            </tbody>
 
-                    </table>
+                        </table>
                     </div>
-                    @*<div class="form-group">
-                            <button type="button" class="btn btn-secondary" @onclick="AnteriorPagina">Ant</button>
-                            <button type="button" class="btn btn-secondary" @onclick="SiguientePagina">Sig</button>
-                        </div>*@
-
                     <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
                 }
             }
@@ -134,7 +127,6 @@
 @code {
 
     public List<Productos> Lista { get; set; }
-    public List<Productos> ListaTemp { get; set; }
 
     public DateTime DesdeFecha { get; set; }
     public DateTime HastaFecha { get; set; }
@@ -146,10 +138,10 @@
 
     public Paginacion Paginacion { get; set; }
     public bool NivelUsuario;
-
+    public Expression<Func<Productos, bool>> expression { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => { Inicialzar(); CargarLista(); });
+        await Task.Run(() => { Inicialzar(); });
     }
 
     private void Inicialzar()
@@ -157,25 +149,20 @@
         NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
         DesdeFecha = DateTime.Now;
         HastaFecha = DateTime.Now;
-
-        ListaTemp = new List<Productos>();
         Producto = new Productos();
-
-        ListaTemp = Lista;
         FiltrarPorFecha = false;
         Filtro = "0";
 
         Paginacion = new Paginacion();
-        //Paginacion = new Paginacion<Clientes>();
+        filtrar();
     }
 
     private void CargarLista()
     {
         try
         {
-            Lista = ProductosController.Paginacion(Paginacion);
-            ListaTemp = Lista;
-            //ListaClientes = ClientesController.Paginacion(Paginacion);
+            Lista = ProductosController.Paginacion(Paginacion, expression);
+
         }
         catch (Exception)
         {
@@ -190,44 +177,126 @@
     {
         try
         {
-            switch (Filtro)
+            if (!FiltrarPorFecha == true)
             {
-                case "0":
-                    ListaTemp = Lista;
-                    break;
+                switch (Filtro)
+                {
+                    case "0":
+                        expression = A => true;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
-                case "1":
-                    ListaTemp = Lista.Where(A => A.ProductoId == int.Parse(Criterio)).ToList();
-                    break;
+                    case "1":
+                        expression = A => A.ProductoId == int.Parse(Criterio);
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
-                case "2":
-                    ListaTemp = Lista.Where(A => A.Descripcion.Contains(Criterio)).ToList();
-                    break;
+                    case "2":
+                        expression = A => A.Descripcion.Contains(Criterio);
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
-                case "3":
-                    ListaTemp = Lista.Where(A => A.Cantidad == int.Parse(Criterio)).ToList();
-                    break;
+                    case "3":
+                        expression = A => A.Cantidad == int.Parse(Criterio);
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
 
-                case "4":
-                    ListaTemp = Lista.Where(A => UnidadController.ExisteNombre(A.Unidad, Criterio)).ToList();
-                    break;
+                    //case "4":
+                    //    expression = A => UnidadController.ExisteNombre(A.Unidad, Criterio);
+                    //    Paginacion.PaginaActual = 1;
+                    //    CargarLista();
+                    //    break;
 
-                case "5":
-                    ListaTemp = Lista.Where(A => A.Costo == int.Parse(Criterio)).ToList();
-                    break;
+                    case "5":
+                        expression = A => A.Costo == int.Parse(Criterio);
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
-                case "6":
-                    ListaTemp = Lista.Where(A => A.Precio == int.Parse(Criterio)).ToList();
-                    break;
+                    case "6":
+                        expression = A => A.Precio == int.Parse(Criterio);
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
-                default:
-                    ListaTemp = Lista;
-                    break;
+                    default:
+                        expression = A => true;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
+                }
             }
-            if (FiltrarPorFecha == true && Filtro.Equals("5") == false)
-                ListaTemp = Lista.Where(A => A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date).ToList();
+            else
+            {
+                switch (Filtro)
+                {
+                    case "0":
+                        expression = A => true
+                        && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
+
+                    case "1":
+                        expression = A => A.ProductoId == int.Parse(Criterio)
+                        && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
+
+                    case "2":
+                        expression = A => A.Descripcion.Contains(Criterio)
+                        && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
+
+                    case "3":
+                        expression = A => A.Cantidad == int.Parse(Criterio)
+                        && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
+
+
+                    //case "4":
+                    //    expression = A => UnidadController.ExisteNombre(A.Unidad, Criterio)
+                    //  && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
+                    //    Paginacion.PaginaActual = 1;
+                    //    CargarLista();
+                    //    break;
+
+                    case "5":
+                        expression = A => A.Costo == int.Parse(Criterio)
+                        && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
+
+                    case "6":
+                        expression = A => A.Precio == int.Parse(Criterio)
+                        && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
+
+                    default:
+                        expression = A => true;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
+
+                }
+            }
+
+
+
 
         }
         catch (Exception)

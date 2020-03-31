@@ -22,5 +22,14 @@ namespace AgroVeterinariaSoft.Models
             TotalPaginas = 0;
             Radio = 3;
         }
+
+        public void CalcularPaginas()
+        {
+           TotalPaginas = TotalRegistro /RegistroPorPagina;
+            if(RegistroPorPagina * TotalPaginas != TotalRegistro )
+            {
+                TotalPaginas++;
+            }
+        }
     }
 }

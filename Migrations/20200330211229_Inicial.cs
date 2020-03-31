@@ -34,12 +34,28 @@ namespace AgroVeterinariaSoft.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     SuplidorId = table.Column<int>(nullable: false),
                     Fecha = table.Column<DateTime>(nullable: false),
+                    FechaVencimiento = table.Column<DateTime>(nullable: false),
                     Impuesto = table.Column<decimal>(nullable: false),
-                    Total = table.Column<decimal>(nullable: false)
+                    Total = table.Column<decimal>(nullable: false),
+                    Balance = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Compras", x => x.CompraId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Pagos",
+                columns: table => new
+                {
+                    PagoId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Fecha = table.Column<DateTime>(nullable: false),
+                    Valor = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pagos", x => x.PagoId);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,6 +169,28 @@ namespace AgroVeterinariaSoft.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PagosDetalles",
+                columns: table => new
+                {
+                    PagoDetalleId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PagoId = table.Column<int>(nullable: false),
+                    CompraId = table.Column<int>(nullable: false),
+                    FechaPago = table.Column<DateTime>(nullable: false),
+                    ValorPagado = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PagosDetalles", x => x.PagoDetalleId);
+                    table.ForeignKey(
+                        name: "FK_PagosDetalles_Pagos_PagoId",
+                        column: x => x.PagoId,
+                        principalTable: "Pagos",
+                        principalColumn: "PagoId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "VentasDetalle",
                 columns: table => new
                 {
@@ -181,6 +219,11 @@ namespace AgroVeterinariaSoft.Migrations
                 column: "CompraId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PagosDetalles_PagoId",
+                table: "PagosDetalles",
+                column: "PagoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_VentasDetalle_VentaId",
                 table: "VentasDetalle",
                 column: "VentaId");
@@ -193,6 +236,9 @@ namespace AgroVeterinariaSoft.Migrations
 
             migrationBuilder.DropTable(
                 name: "DetalleProductos");
+
+            migrationBuilder.DropTable(
+                name: "PagosDetalles");
 
             migrationBuilder.DropTable(
                 name: "Productos");
@@ -211,6 +257,9 @@ namespace AgroVeterinariaSoft.Migrations
 
             migrationBuilder.DropTable(
                 name: "Compras");
+
+            migrationBuilder.DropTable(
+                name: "Pagos");
 
             migrationBuilder.DropTable(
                 name: "Ventas");

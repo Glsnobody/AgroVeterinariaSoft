@@ -236,16 +236,16 @@ namespace AgroVeterinariaSoft.Controllers
             return paso;
         }
 
-        public static List<Ventas> Paginacion(Paginacion paginacion)
+        public static List<Ventas> Paginacion(Paginacion paginacion, Expression<Func<Ventas, bool>> expression)
         {
             Contexto db = new Contexto();
             List<Ventas> lista = new List<Ventas>();
             try
             {
-                paginacion.TotalRegistro = db.Ventas.Where(A => true).Count();
-                paginacion.TotalPaginas = paginacion.TotalRegistro / paginacion.RegistroPorPagina;
-                lista = db.Ventas.Skip((paginacion.PaginaActual - 1) * paginacion.RegistroPorPagina)
-                     .Take(paginacion.RegistroPorPagina).Include(A => A.Productos).ToList();
+                paginacion.TotalRegistro = db.Ventas.Where(expression).Count();
+                paginacion.CalcularPaginas();
+                lista = db.Ventas.Where(expression).Skip((paginacion.PaginaActual - 1) * paginacion.RegistroPorPagina)
+                     .Take(paginacion.RegistroPorPagina).ToList();
             }
             catch (Exception)
             {

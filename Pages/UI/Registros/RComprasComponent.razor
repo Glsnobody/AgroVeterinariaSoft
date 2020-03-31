@@ -31,7 +31,7 @@
 
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated
- && !NivelUsuario)
+&& !NivelUsuario)
 {
     <div class="container">
 
@@ -136,16 +136,23 @@
 
                 </table>
             </div>
-            <div class="form-group">
-                <label for="TotalNumber">Total:  </label>
-                <InputNumber id="TotalNumber" @bind-Value="Compra.Total" class="form-control" />
 
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="TotalNumber">Total:  </label>
+                    <InputNumber id="TotalNumber" @bind-Value="Compra.Total" ReadOnly="true" class="form-control" />
+                </div>
+                <div class="form-group col">
+                    <label for="TotalNumber">Balance:  </label>
+                    <InputNumber id="TotalNumber" @bind-Value="Compra.Balance" ReadOnly="true" class="form-control" />
+                </div>
             </div>
+
 
             <div class="form-group">
                 <button type="button" class="btn btn-primary" @onclick="Nuevo">Limpiar</button>
                 <button type="submit" class="btn btn-success">Guardar</button>
-                <button type="button" class="btn btn-danger">Eliminar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
             </div>
         </EditForm>
     </div>
@@ -168,7 +175,7 @@
     Productos Producto = new Productos();
 
     public int CantidadProducto { get; set; }
-     public bool NivelUsuario;
+    public bool NivelUsuario;
     protected override void OnParametersSet()
     {
         if (CompraId > 0)
@@ -178,27 +185,49 @@
         }
     }
 
-        protected override void OnInitialized()
+    protected override void OnInitialized()
+    {
+        NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
+        Nuevo();
+
+    }
+
+    private bool ValidarGuardar()
+    {
+        bool paso = true;
+
+        if (ComprasController.SaberEstado(Compra.CompraId))
         {
-            NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
+            toastService.ShowInfo("Esta compra esta en proceso de pago o fue pagada, No se puede modificar o eliminar");
+            paso = false ;
         }
 
-        public void Guardar()
+        if (SuplidoresController.Buscar(Compra.SuplidorId) == null)
+        {
+            toastService.ShowWarning("El suplidor no existe");
+            paso = false ;
+        }
+
+        if (Compra.ListaProductos.Count <= 0)
+        {
+            toastService.ShowWarning("Debe agregar productos");
+            paso = false ;
+        }
+
+        return paso;
+    }
+
+    public void Guardar()
     {
         try
         {
-            if (SuplidoresController.Buscar(Compra.SuplidorId) == null)
+            if(!ValidarGuardar())
             {
-                toastService.ShowWarning("El suplidor no existe");
                 return;
             }
 
-            if (Compra.ListaProductos.Count <= 0)
-            {
-                toastService.ShowWarning("Debe agregar productos");
-                return;
-            }
             CalcularTotal();
+            Compra.Balance = Compra.Total;
             if (ComprasController.Guardar(Compra))
             {
                 Compra = new Compras();
@@ -329,6 +358,7 @@
     private void CalcularTotal()
     {
         Compra.Total = Compra.ListaProductos.Sum(p => p.Importe);
+
     }
 
     public void Buscar()
@@ -339,7 +369,10 @@
 
             if (temp != null)
             {
+
                 Compra = temp;
+
+
                 BuscarSuplidor();
                 CalcularTotal();
             }
@@ -357,6 +390,33 @@
 
     public void Eliminar()
     {
+        if (ComprasController.SaberEstado(Compra.CompraId))
+        {
+            toastService.ShowInfo("Esta compra esta en proceso de pago o fue pagada, No se puede modificar o eliminar");
+            return;
+        }
 
+        try
+        {
+
+
+            if (ComprasController.Existe(Compra.CompraId))
+            {
+                if (ComprasController.Eliminar(Compra.CompraId))
+                {
+                    Nuevo();
+                    toastService.ShowSuccess("Elliminado Correctamente");
+                }
+            }
+            else
+            {
+                toastService.ShowInfo("No se pudo encontrar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
 }

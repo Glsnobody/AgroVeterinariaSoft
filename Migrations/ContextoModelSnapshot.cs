@@ -60,7 +60,13 @@ namespace AgroVeterinariaSoft.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("FechaVencimiento")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Impuesto")
@@ -106,6 +112,48 @@ namespace AgroVeterinariaSoft.Migrations
                     b.HasIndex("CompraId");
 
                     b.ToTable("DetalleProductos");
+                });
+
+            modelBuilder.Entity("AgroVeterinariaSoft.Models.Pagos", b =>
+                {
+                    b.Property<int>("PagoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PagoId");
+
+                    b.ToTable("Pagos");
+                });
+
+            modelBuilder.Entity("AgroVeterinariaSoft.Models.PagosDetalle", b =>
+                {
+                    b.Property<int>("PagoDetalleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CompraId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("FechaPago")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PagoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("ValorPagado")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PagoDetalleId");
+
+                    b.HasIndex("PagoId");
+
+                    b.ToTable("PagosDetalles");
                 });
 
             modelBuilder.Entity("AgroVeterinariaSoft.Models.Productos", b =>
@@ -296,6 +344,15 @@ namespace AgroVeterinariaSoft.Migrations
                     b.HasOne("AgroVeterinariaSoft.Models.Compras", null)
                         .WithMany("ListaProductos")
                         .HasForeignKey("CompraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AgroVeterinariaSoft.Models.PagosDetalle", b =>
+                {
+                    b.HasOne("AgroVeterinariaSoft.Models.Pagos", null)
+                        .WithMany("Detalle")
+                        .HasForeignKey("PagoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

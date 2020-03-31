@@ -38,82 +38,80 @@
                 </div>}
             else
             {
+                <div class="form-row">
+                    <div class="col form-group">
+                        <div>
+                            <label>Desde</label>
+                            <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
+                        </div>
+
+                        <input type="date" @bind-value="DesdeFecha" class="form-control" />
+                    </div>
+
+                    <div class="col form-group">
+                        <label>Hasta</label>
+                        <input type="date" @bind-value="HastaFecha" class="form-control" />
+                    </div>
+
+                    <div class="col form-group">
+                        <label>Criterio</label>
+                        <input type="text" @bind-value="Criterio" class="form-control" />
+                    </div>
+                    <EditForm Model="Suplidore">
+                        <div class="col form-group">
+                            <label>Filtrar por</label>
+                            <div class="input-group">
+                                <InputSelect @bind-Value="Filtro" class="form-control">
+                                    <option selected value="0">Todo</option>
+                                    <option value="1">Id</option>
+                                    <option value="2">Nombre</option>
+                                    <option value="3">Telefono</option>
+                                    <option value="4">RNC</option>
+                                </InputSelect>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </EditForm>
+                </div>
+
                 if (Lista.Count <= 0)
                 {
                     <h3 class="display-3 text-center">No hay datos que mostrar</h3>
                 }
                 else
                 {
-
-                    <div class="form-row">
-                        <div class="col form-group">
-                            <div>
-                                <label>Desde</label>
-                                <input type="checkbox" @bind-value="FiltrarPorFecha" /> Filtrar Fecha
-                            </div>
-
-                            <input type="date" @bind-value="DesdeFecha" class="form-control" />
-                        </div>
-
-                        <div class="col form-group">
-                            <label>Hasta</label>
-                            <input type="date" @bind-value="HastaFecha" class="form-control" />
-                        </div>
-
-                        <div class="col form-group">
-                            <label>Criterio</label>
-                            <input type="text" @bind-value="Criterio" class="form-control" />
-                        </div>
-                        <EditForm Model="Suplidore">
-                            <div class="col form-group">
-                                <label>Filtrar por</label>
-                                <div class="input-group">
-                                    <InputSelect @bind-Value="Filtro" class="form-control">
-                                        <option selected value="0">Todo</option>
-                                        <option value="1">Id</option>
-                                        <option value="2">Nombre</option>
-                                        <option value="3">Telefono</option>
-                                        <option value="4">RNC</option>
-                                    </InputSelect>
-                                    <div class="input-group-append">
-                                        <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </EditForm>
-
-
-                </div>
-                <div class="table-responsive text-nowrap">
-                    <table class="table table-striped">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Nombres</th>
-                                <th scope="col">Telefono</th>
-                                <th scope="col">RNC</th>
-                                <th scope="col">Fecha</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var entity in ListaTemp)
-                            {
+                    <div class="table-responsive text-nowrap">
+                        <table class="table table-striped">
+                            <thead class="thead-dark">
                                 <tr>
-                                    <td scope="row">@entity.SuplidorId</td>
-                                    <td>@entity.Nombre</td>
-                                    <td>@entity.Telefono</td>
-                                    <td>@entity.RNC</td>
-                                    <td>@entity.FechaCreacion.ToShortDateString()</td>
-                                    <td><a class="btn btn-sm btn-outline-primary" href="/RSuplidores/@entity.SuplidorId">Ver</a></td>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Nombres</th>
+                                    <th scope="col">Telefono</th>
+                                    <th scope="col">RNC</th>
+                                    <th scope="col">Fecha</th>
+                                    <th></th>
                                 </tr>
-                            }
+                            </thead>
+                            <tbody>
+                                @foreach (var entity in Lista)
+                                {
+                                    <tr>
+                                        <td scope="row">@entity.SuplidorId</td>
+                                        <td>@entity.Nombre</td>
+                                        <td>@entity.Telefono</td>
+                                        <td>@entity.RNC</td>
+                                        <td>@entity.FechaCreacion.ToShortDateString()</td>
+                                        <td><a class="btn btn-sm btn-outline-primary" href="/RSuplidores/@entity.SuplidorId">Ver</a></td>
+                                    </tr>
+                                }
 
-                        </tbody>
+                            </tbody>
 
-                    </table>
-                </div>
+                        </table>
+                    </div>
                     <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
                 }
             }
@@ -129,7 +127,6 @@
 @code {
 
     public List<Suplidores> Lista { get; set; }
-    public List<Suplidores> ListaTemp { get; set; }
 
     public DateTime DesdeFecha { get; set; }
     public DateTime HastaFecha { get; set; }
@@ -138,6 +135,7 @@
     public bool FiltrarPorFecha { get; set; }
 
     public Suplidores Suplidore { get; set; }
+    public Expression<Func<Suplidores, bool>> expression { get; set; }
 
     public Paginacion Paginacion { get; set; }
     public bool NivelUsuario;
@@ -152,21 +150,18 @@
         DesdeFecha = DateTime.Now;
         HastaFecha = DateTime.Now;
         Suplidore = new Suplidores();
-
-        ListaTemp = Lista;
         FiltrarPorFecha = false;
         Filtro = "0";
         Paginacion = new Paginacion();
-        CargarLista();
+        filtrar();
     }
 
     private void CargarLista()
     {
         try
         {
-            Lista = SuplidoresController.Paginacion(Paginacion);
-            ListaTemp = Lista;
-            //ListaClientes = ClientesController.Paginacion(Paginacion);
+            Lista = SuplidoresController.Paginacion(Paginacion, expression);
+
         }
         catch (Exception)
         {
@@ -181,36 +176,99 @@
     {
         try
         {
-            switch (Filtro)
+            if (!FiltrarPorFecha)
             {
-                case "0":
-                    ListaTemp = Lista;
-                    break;
+                switch (Filtro)
+                {
+                    case "0":
+                        expression = A => true;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
-                case "1":
-                    ListaTemp = Lista.Where(A => A.SuplidorId == int.Parse(Criterio)).ToList();
-                    break;
+                    case "1":
+                        expression = A => A.SuplidorId == int.Parse(Criterio);
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
-                case "2":
-                    ListaTemp = Lista.Where(A => A.Nombre.Contains(Criterio)).ToList();
-                    break;
+                    case "2":
+                        expression = A => A.Nombre.Contains(Criterio);
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
-                case "3":
-                    ListaTemp = Lista.Where(A => A.Telefono.Contains(Criterio)).ToList();
-                    break;
+                    case "3":
+                        expression = A => A.Telefono.Contains(Criterio);
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
-                case "4":
-                    ListaTemp = Lista.Where(A => A.RNC.Contains(Criterio)).ToList();
-                    break;
+                    case "4":
+                        expression = A => A.RNC.Contains(Criterio);
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
 
-                default:
-                    ListaTemp = Lista;
-                    break;
+                    default:
+                        expression = A => true;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
+                }
             }
-            if (FiltrarPorFecha)
-                ListaTemp = Lista.Where(A => A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date).ToList();
+            else
+            {
+                switch (Filtro)
+                {
+                    case "0":
+                        expression = A => true
+                        && A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
+
+                    case "1":
+                        expression = A => A.SuplidorId == int.Parse(Criterio)
+                        && A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
+
+                    case "2":
+                        expression = A => A.Nombre.Contains(Criterio)
+                        && A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
+
+                    case "3":
+                        expression = A => A.Telefono.Contains(Criterio)
+                        && A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
+
+                    case "4":
+                        expression = A => A.RNC.Contains(Criterio)
+                        && A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
+
+
+                    default:
+                        expression = A => true
+                        && A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
+
+                }
+            }
+
 
         }
         catch (Exception)
