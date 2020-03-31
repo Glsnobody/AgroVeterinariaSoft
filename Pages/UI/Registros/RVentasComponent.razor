@@ -211,7 +211,7 @@
                 toastService.ShowWarning("Debe agregar productos");
                 return;
             }
-
+            Venta.NombreCliente = Cliente.Nombres;
             if (VentasController.Guardar(Venta))
             {
                 Venta = new Ventas();
@@ -237,6 +237,7 @@
             if (temp != null)
             {
                 Producto = temp;
+               
             }
             else
             {
@@ -353,6 +354,7 @@
             if (temp != null)
             {
                 Cliente = temp;
+                
             }
             else
             {

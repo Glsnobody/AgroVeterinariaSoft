@@ -28,7 +28,8 @@ namespace AgroVeterinariaSoft.Models
 
         [Required(ErrorMessage = "Es necesario introducir una unidad")]
         [Range(typeof(int),maximum:"1000000",minimum:"1",ErrorMessage ="La unidad no es valida")]
-        public int Unidad { get; set;}
+        public int UnidadId { get; set;}
+        public string UnidadDescripcion { get; set; }
 
         [Required(ErrorMessage = "Es necesario especificar el costo de compra del producto")]
         [Range(typeof(decimal), minimum: "0", maximum: "1000000", ErrorMessage = "El costo esta fuera de rango")]
@@ -48,7 +49,8 @@ namespace AgroVeterinariaSoft.Models
             Descripcion = string.Empty;
             Cantidad = 0;
             Minimo = 0;
-            Unidad = 0;
+            UnidadId = 0;
+            UnidadDescripcion = string.Empty;
             Costo = 0;
             Precio = 0;
             Ganancia = 0;

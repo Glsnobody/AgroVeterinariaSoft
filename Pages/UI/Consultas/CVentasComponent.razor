@@ -100,8 +100,8 @@
                                 @foreach (var entity in ListaVentas)
                                 {
                                     <tr>
-                                        <td scope="row">@entity.ClienteId</td>
-                                        <td>@ClientesController.GetNombre(entity.ClienteId)</td>
+                                        <td scope="row">@entity.VentaId</td>
+                                        <td>@entity.NombreCliente</td>
                                         <td>@entity.Fecha.ToShortDateString()</td>
                                         <td>@entity.Total</td>
                                         <td>@entity.Observacion</td>
@@ -190,15 +190,15 @@
                         CargarLista();
                         break;
 
-                    //case "2":
-                    //    expression = A => ClientesController.ExisteNombre(A.ClienteId, Criterio);
-                    //    Paginacion.PaginaActual = 1;
-                    //    CargarLista();
-                    //    break;
+                    case "2":
+                        expression = A => A.NombreCliente.Contains(Criterio);
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
 
                     case "3":
-                        expression = A=> A.Observacion.Contains(Criterio);
+                        expression = A => A.Observacion.Contains(Criterio);
                         Paginacion.PaginaActual = 1;
                         CargarLista();
                         break;
@@ -243,16 +243,16 @@
                         CargarLista();
                         break;
 
-                    //case "2":
-                    //    expression = A => ClientesController.ExisteNombre(A.ClienteId, Criterio)
-                    //&& A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
-                    //    Paginacion.PaginaActual = 1;
-                    //    CargarLista();
-                    //    break;
+                    case "2":
+                        expression = A => A.NombreCliente.Contains(Criterio)
+                        && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
 
                     case "3":
-                        expression = A=> A.Observacion.Contains(Criterio)
+                        expression = A => A.Observacion.Contains(Criterio)
                         && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
                         Paginacion.PaginaActual = 1;
                         CargarLista();
