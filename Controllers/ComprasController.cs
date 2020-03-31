@@ -196,16 +196,15 @@ namespace AgroVeterinariaSoft.Controllers
             return Lista;
         }
 
-        public static List<Compras> Paginacion(Paginacion paginacion)
+        public static List<Compras> Paginacion(Paginacion paginacion, Expression<Func<Compras, bool>> expression)
         {
             Contexto db = new Contexto();
             List<Compras> lista = new List<Compras>();
-            paginacion = new Paginacion();
             try
             {
-                paginacion.TotalRegistro = db.Compras.Where(A => true).Count();
-                paginacion.TotalPaginas = paginacion.TotalRegistro / paginacion.RegistroPorPagina;
-                lista = db.Compras.Skip((paginacion.PaginaActual - 1) * paginacion.RegistroPorPagina)
+                paginacion.TotalRegistro = db.Compras.Where(expression).Count();
+                paginacion.CalcularPaginas();
+                lista = db.Compras.Where(expression).Skip((paginacion.PaginaActual - 1) * paginacion.RegistroPorPagina)
                      .Take(paginacion.RegistroPorPagina).Include(A=> A.ListaProductos).ToList();
             }
             catch (Exception)
@@ -220,6 +219,49 @@ namespace AgroVeterinariaSoft.Controllers
 
             return lista;
 
+        }
+
+        
+
+        public static bool SaberEstado(int id)
+        {
+            Contexto db = new Contexto();
+            bool paso = false;
+
+            try
+            {
+                paso = db.PagosDetalles.Any(A => A.CompraId == id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+
+            return paso;
+        }
+
+        public static bool Existe(int id)
+        {
+            bool paso = false;
+            Contexto db = new Contexto();
+
+
+            try
+            {
+                paso = db.Compras.Any(A => A.CompraId == id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return paso;
         }
 
     }

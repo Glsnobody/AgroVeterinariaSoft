@@ -237,7 +237,7 @@ namespace AgroVeterinariaSoft.Controllers
             try
             {
                 paginacion.TotalRegistro = db.Clientes.Where(expression).Count();
-                paginacion.TotalPaginas = paginacion.TotalRegistro / paginacion.RegistroPorPagina;
+                paginacion.CalcularPaginas();
                lista = db.Clientes.Where(expression).Skip((paginacion.PaginaActual-1) * paginacion.RegistroPorPagina)
                     .Take(paginacion.RegistroPorPagina).ToList();
             }
@@ -278,7 +278,7 @@ namespace AgroVeterinariaSoft.Controllers
                     }); ;
                 }
                 
-                paso = db.SaveChanges() > 0;
+                 paso = db.SaveChanges() > 0;
 
             }
             catch (Exception)

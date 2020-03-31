@@ -1,0 +1,368 @@
+﻿@attribute [Authorize]
+
+@page "/RPagos"
+@page "/RPagos/{PagoId:int}"
+
+@inject IToastService toastService
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+<AuthorizeView>
+
+
+    <NotAuthorized>
+        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+
+    </NotAuthorized>
+
+
+
+</AuthorizeView>
+
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <div class="container">
+
+        <h3 class="display-3 text-center">Registro de Pagos</h3>
+
+        <div>
+            <EditForm Model="Pago" OnValidSubmit="Guardar">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="form-group">
+                    <label>Id</label>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="Pago.PagoId" class="form-control" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <InputDate @bind-Value="Pago.Fecha" class="form-control" />
+                </div>
+
+                <!--Agregar Pago a la lista-->
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label>CompraId</label>
+                        <div class="input-group">
+                            <InputNumber @bind-Value="Compra.CompraId" class="form-control" />
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-primary" @onclick="BuscarCompra">Buscar</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col">
+                        <label>Suplidor</label>
+                        <InputText @bind-Value="nombreSuplidor" ReadOnly="true" class="form-control" />
+                    </div>
+
+                    <div class="form-group col">
+                        <label>Balance</label>
+                        <InputNumber @bind-Value="Compra.Balance" class="form-control" ReadOnly="true" />
+                    </div>
+
+                    <div class="form-group col">
+                        <label>Valor del Pago</label>
+                        <div class="input-group">
+                            <InputNumber @bind-Value="ValorPagar" class="form-control" />
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-primary" @onclick="AgregarPago">Agregar</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div>
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="row">FacturaId</th>
+                                <th scope="row">Valor Pagado</th>
+
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var obj in Pago.Detalle)
+                            {
+                                <tr>
+                                    <td>@obj.CompraId</td>
+                                    <td>@obj.ValorPagado</td>
+                                    <td><button type="button" class="btn btn-sm " @onclick="(()=> RemoverProducto(obj))">Eliminar</button></td>
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+
+                <div class="form-group">
+                    <label>Valor</label>
+                    <InputNumber @bind-Value="Pago.Valor" class="form-control" ReadOnly="true" />
+                </div>
+
+
+
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" @onclick="Limpiar">Limpiar</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+                </div>
+            </EditForm>
+        </div>
+
+    </div>
+}
+
+
+@code {
+
+    [Parameter]
+    public int PagoId { get; set; }
+
+    public Pagos Pago { get; set; }
+
+    public Compras Compra { get; set; }
+
+    public decimal ValorPagar;
+
+    string nombreSuplidor;
+
+    public bool NivelUsuario;
+    protected override void OnInitialized()
+    {
+        NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
+
+        Limpiar();
+    }
+
+    private void Limpiar()
+    {
+        Pago = new Pagos();
+        Compra = new Compras();
+        ValorPagar = 0;
+        nombreSuplidor = string.Empty;
+
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (PagoId > 0)
+        {
+            Pago.PagoId = PagoId;
+            Buscar();
+        }
+    }
+
+    //private void setTipoVenta()
+    //{
+    //    Pago.TipoVenta = int.Parse(TipoVentaSeleccionada);
+    //}
+
+    private void Guardar()
+    {
+        try
+        {
+            
+
+            if (Pago.Detalle.Count <= 0)
+            {
+                toastService.ShowWarning("Debe agregar pagos a facturas");
+                return;
+            }
+
+            if (PagosController.Guardar(Pago))
+            {
+                Pago = new Pagos();
+                toastService.ShowSuccess("Guardado correctamente");
+            }
+            else
+            {
+                toastService.ShowInfo("No se pudo guardar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void BuscarCompra()
+    {
+        try
+        {
+            Compras temp = ComprasController.Buscar(Compra.CompraId);
+            if (temp != null)
+            {
+                Compra = temp;
+                nombreSuplidor = SuplidoresController.GetNombre(Compra.SuplidorId);
+            }
+            else
+            {
+                toastService.ShowInfo("No se pudo encontrar la Compra");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void AgregarPago()
+    {
+        if (!ValidarAgregarPago())
+        {
+            return;
+        }
+
+        Pago.Detalle.Add(new PagosDetalle()
+        {
+            FechaPago = DateTime.Now,
+            ValorPagado = ValorPagar,
+            CompraId = Compra.CompraId
+
+        });
+
+        CalcularTotal();
+
+        Compra = new Compras();
+    }
+
+    private void CalcularTotal()
+    {
+        Pago.Valor = Pago.Detalle.Sum(A => A.ValorPagado);
+    }
+
+    private bool ValidarAgregarPago()
+    {
+        bool paso = true;
+
+        if (string.IsNullOrWhiteSpace(nombreSuplidor))
+        {
+            toastService.ShowInfo("Se debe buscar un suplidor");
+            paso = false;
+        }
+
+        if (ValorPagar <= 0)
+        {
+            toastService.ShowInfo("La cantidad del a pagar debe ser mayor a 0");
+            paso = false;
+        }
+
+        if (ValorPagar > Compra.Balance)
+        {
+            toastService.ShowInfo("El valor a pagar es mas que el balance");
+            paso = false;
+        }
+
+        if (Pago.Detalle.Any(A => A.CompraId == Compra.CompraId))
+        {
+            toastService.ShowInfo("No se puede agregar dos pagos a la misma compra");
+            paso = false;
+        }
+
+        return paso;
+    }
+
+    private void RemoverProducto(PagosDetalle entity)
+    {
+        Pago.Detalle.Remove(entity);
+        CalcularTotal();
+
+    }
+
+    private void Buscar()
+    {
+        try
+        {
+            Pagos temp = PagosController.Buscar(Pago.PagoId);
+
+            if (temp != null)
+            {
+                Pago = temp;
+                //BuscarCliente();
+            }
+            else
+            {
+                toastService.ShowInfo("No se pudo encontrar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+
+
+    //private void BuscarCliente()
+    //{
+    //    try
+    //    {
+    //        Clientes temp = ClientesController.Buscar(Pago.ClienteId);
+
+    //        if (temp != null)
+    //        {
+    //            Cliente = temp;
+    //        }
+    //        else
+    //        {
+    //            toastService.ShowInfo("No se encontro el cliente");
+    //        }
+    //    }
+    //    catch (Exception)
+    //    {
+
+    //        throw;
+    //    }
+    //}
+
+
+
+    private void Eliminar()
+    {
+        try
+        {
+
+
+            if (PagosController.Existe(Pago.PagoId))
+            {
+                if (PagosController.Eliminar(Pago.PagoId))
+                {
+                    Limpiar();
+                    toastService.ShowSuccess("Elliminado Correctamente");
+                }
+            }
+            else
+            {
+                toastService.ShowInfo("No se pudo encontrar");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+}

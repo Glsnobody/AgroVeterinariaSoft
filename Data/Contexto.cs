@@ -16,6 +16,8 @@ namespace AgroVeterinariaSoft.Data
         public DbSet<Ventas> Ventas { get; set; }
         public DbSet<Clientes> Clientes { get; set; }
         public DbSet<Unidades> Unidades { get; set; }
+        public DbSet<Pagos> Pagos { get; set; }
+        public DbSet<PagosDetalle> PagosDetalles { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite(@"Data Source=Database/Data.db");
