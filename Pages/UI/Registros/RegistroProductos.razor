@@ -83,7 +83,7 @@
 
 
                     </InputSelect>
-                    <ValidationMessage For="(()=> Producto.Unidad) "/>
+                    <ValidationMessage For="(()=> Producto.UnidadId) "/>
                    
                 </div>
 
@@ -151,6 +151,7 @@
     private void Guardar()
     {
         Calcular();
+       
         if (ProductosController.Guardar(Producto))
         {
             toastService.ShowSuccess("Producto Guardado");
@@ -204,7 +205,9 @@
     {
         try
         {
-            Producto.Unidad = int.Parse(unidadSeleccionada);
+            var unidad = UnidadController.Buscar(int.Parse(unidadSeleccionada));
+            Producto.UnidadId = unidad.UnidadId ;
+            Producto.UnidadDescripcion = unidad.Descripcion;
         }
         catch (Exception)
         {

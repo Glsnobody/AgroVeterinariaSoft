@@ -67,6 +67,7 @@
                                     <option value="2">Suplidor</option>
                                     <option value="3">Cant. Productos</option>
                                     <option value="4">Total</option>
+                                    <option value="5">Balance</option>
                                 </InputSelect>
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
@@ -101,7 +102,7 @@
                                 {
                                     <tr>
                                         <td scope="row">@entity.CompraId</td>
-                                        <td>@SuplidoresController.GetNombre(entity.SuplidorId)</td>
+                                        <td>@entity.NombreSuplidor</td>
                                         <td>@entity.Fecha.ToShortDateString()</td>
                                         <td>@entity.ListaProductos.Count</td>
                                         <td>@entity.Balance</td>
@@ -211,12 +212,12 @@
                         CargarLista();
                         break;
 
-                    //case "2":
-                    //    var suplidores = SuplidoresController.GetList(A => true);
-                    //    expression = A => suplidores.Any(E=> A.SuplidorId == E.SuplidorId && E.Nombre.Contains(Criterio));
-                    //    Paginacion.PaginaActual = 1;
-                    //    CargarLista();
-                    //    break;
+                    case "2":
+                        var suplidores = SuplidoresController.GetList(A => true);
+                        expression = A => A.NombreSuplidor.Contains(Criterio);
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
 
                     case "3":
@@ -229,6 +230,12 @@
 
                     case "4":
                         expression = A => A.Total == decimal.Parse(Criterio);
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
+
+                        case "5":
+                        expression = A => A.Balance == decimal.Parse(Criterio);
                         Paginacion.PaginaActual = 1;
                         CargarLista();
                         break;
@@ -259,12 +266,12 @@
                         CargarLista();
                         break;
 
-                    //case "2":
-                    //    expression = A => SuplidoresController.ExisteNombre(A.SuplidorId, Criterio)
-                    //    &&  A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
-                    //    Paginacion.PaginaActual = 1;
-                    //    CargarLista();
-                    //    break;
+                    case "2":
+                        expression = A =>A.NombreSuplidor.Contains(Criterio)
+                        && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
 
                     case "3":
@@ -283,6 +290,12 @@
                         CargarLista();
                         break;
 
+                        case "5":
+                        expression = A => A.Balance == decimal.Parse(Criterio) 
+                        && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
+                        Paginacion.PaginaActual = 1;
+                        CargarLista();
+                        break;
 
                     default:
                         expression = A => true
@@ -301,7 +314,6 @@
         catch (Exception)
         {
 
-            throw;
         }
     }
 

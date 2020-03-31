@@ -1,35 +1,36 @@
-﻿@page "/CClientes"
+﻿@page "/CPagos"
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
-<AuthorizeView>
+    <AuthorizeView>
 
 
-    <NotAuthorized>
-        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+        <NotAuthorized>
+            <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
 
-    </NotAuthorized>
+        </NotAuthorized>
 
-    <Authorized>
-        @if (NivelUsuario)
-        {
-            <p class="display-3 text-center">Usted no tiene el nivel necesario para acceder a esta pagina</p>
-        }
-    </Authorized>
+        <Authorized>
+            @if (NivelUsuario)
+            {
+                <p class="display-4 text-center">Usted no tiene el nivel necesario para acceder a esta pagina</p>
+            }
+        </Authorized>
 
-</AuthorizeView>
+
+    </AuthorizeView>
 
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated
-&& !NivelUsuario)
+    && !NivelUsuario)
 {
     <div class="container">
 
-        <h3 class="display-3 text-center">Consulta de Clientes</h3>
+        <h3 class="display-3 text-center">Consulta de Compras</h3>
 
         <div>
-            @if (ListaClientes == null)
+            @if (Lista == null)
             {
                 <div class="text-center">
                     <div class="spinner-border">
@@ -57,17 +58,15 @@
                         <label>Criterio</label>
                         <input type="text" @bind-value="Criterio" class="form-control" />
                     </div>
-                    <EditForm Model="Cliente">
+                    <EditForm Model="Pago">
                         <div class="col form-group">
                             <label>Filtrar por</label>
                             <div class="input-group">
                                 <InputSelect @bind-Value="Filtro" class="form-control">
                                     <option selected value="0">Todo</option>
                                     <option value="1">Id</option>
-                                    <option value="2">Nombres</option>
-                                    <option value="3">Cedula</option>
-                                    <option value="4">Balance</option>
-                                    <option value="5">Fecha de Nacimiento</option>
+                                    <option value="2">Valor</option>
+                                    <option value="3">Cant.Compras Pagadas</option>
                                 </InputSelect>
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary" @onclick="filtrar">Buscar</button>
@@ -77,46 +76,44 @@
                         </div>
                     </EditForm>
                 </div>
-                if (ListaClientes.Count <= 0)
+
+                if (Lista.Count <= 0)
                 {
                     <h3 class="display-3 text-center">No hay datos que mostrar</h3>
                 }
                 else
                 {
                     <div class="table-responsive text-nowrap">
-                        <table class="table table-striped">
+                        <table class="table">
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">Id</th>
-                                    <th scope="col">Nombres</th>
-                                    <th scope="col">Fecha Nacimiento</th>
-                                    <th scope="col">Telefono</th>
-                                    <th scope="col">Cedula</th>
-                                    <th scope="col">Balance</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Valor </th>
+                                    <th scope="col">Cant.Compras Pagadas </th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var entity in ListaClientes)
+                                @foreach (var entity in Lista)
                                 {
                                     <tr>
-                                        <td scope="row">@entity.ClienteId</td>
-                                        <td>@entity.Nombres</td>
-                                        <td>@entity.FechaNacimiento.ToShortDateString()</td>
-                                        <td>@entity.Telefono</td>
-                                        <td>@entity.Cedula</td>
-                                        <td>@entity.Balance</td>
-                                        <td><a class="btn btn-sm btn-outline-primary" href="/RClientes/@entity.ClienteId">Ver</a></td>
+                                        <td scope="row">@entity.PagoId</td>
+                                        <td>@entity.Fecha.ToShortDateString()</td>
+                                        <td>@entity.Valor</td>
+                                        <td>@entity.Detalle.Count</td>
+                                        <td><a class="btn btn-sm btn-outline-primary" href="/RPagos/@entity.PagoId">Ver</a></td>
                                     </tr>
                                 }
+
 
                             </tbody>
 
                         </table>
                     </div>
-
                     <PaginacionComponent Evento="(()=> CargarLista())" Paginacion="@Paginacion" />
                 }
+
 
             }
 
@@ -128,50 +125,45 @@
 
 
 
-
 @code {
 
-    public List<Clientes> ListaClientes { get; set; }
-    
+    public List<Pagos> Lista { get; set; }
 
     public DateTime DesdeFecha { get; set; }
     public DateTime HastaFecha { get; set; }
     public string Criterio { get; set; }
     public string Filtro { get; set; }
     public bool FiltrarPorFecha { get; set; }
-
-    public Clientes Cliente { get; set; }
+    public Expression<Func<Pagos, bool>> expression { get; set; }
 
     public bool NivelUsuario;
-    public Paginacion Paginacion { get; set; }
+    public Pagos Pago { get; set; }
 
-    public Expression<Func<Clientes, bool>> expression { get; set; }
+    public Paginacion Paginacion { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => { Inicialzar(); CargarLista(); });
+        await Task.Run(() => { Inicialzar(); });
     }
 
     private void Inicialzar()
     {
+        NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
         DesdeFecha = DateTime.Now;
         HastaFecha = DateTime.Now;
-        Cliente = new Clientes();
+        Pago = new Pagos();
         FiltrarPorFecha = false;
         Filtro = "0";
         Paginacion = new Paginacion();
-        Paginacion.Radio = 3;
-        NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
-        expression = A => true;
-        CargarLista();
+        filtrar();
+
     }
 
     private void CargarLista()
     {
         try
         {
-            ListaClientes = ClientesController.Paginacion(Paginacion, expression);
-           
+            Lista = PagosController.Paginacion(Paginacion, expression);
         }
         catch (Exception)
         {
@@ -181,6 +173,7 @@
 
     }
 
+   
 
     private void filtrar()
     {
@@ -197,34 +190,19 @@
                         break;
 
                     case "1":
-                        expression = A => A.ClienteId == int.Parse(Criterio);
+                        expression = A => A.PagoId == int.Parse(Criterio);
                         Paginacion.PaginaActual = 1;
                         CargarLista();
                         break;
 
-                    case "2":
-                        expression = A => A.Nombres.Contains(Criterio);
-                        Paginacion.PaginaActual = 1;
-                        CargarLista();
-
-                        break;
-
-                    case "3":
-                        expression = A => A.Cedula.Contains(Criterio);
+                    case "2":                       
+                        expression = A => A.Valor == decimal.Parse(Criterio);
                         Paginacion.PaginaActual = 1;
                         CargarLista();
                         break;
 
-
-                    case "4":
-                        expression = A => A.Balance == decimal.Parse(Criterio);
-                        Paginacion.PaginaActual = 1;
-                        CargarLista();
-                        break;
-
-                    case "5":
-
-                        expression = A => A.FechaNacimiento.Date >= DesdeFecha.Date && A.FechaNacimiento.Date <= HastaFecha.Date;
+                        case "3":                       
+                        expression = A => A.Detalle.Count == int.Parse(Criterio);
                         Paginacion.PaginaActual = 1;
                         CargarLista();
                         break;
@@ -242,50 +220,35 @@
                 switch (Filtro)
                 {
                     case "0":
-                        expression = A => true
-                        && A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date;
+                        expression = A => true && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
                         Paginacion.PaginaActual = 1;
                         CargarLista();
                         break;
 
                     case "1":
-                        expression = A => A.ClienteId == int.Parse(Criterio)
-                        && A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date;
+                        expression = A => A.PagoId == int.Parse(Criterio)
+                        && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
                         Paginacion.PaginaActual = 1;
                         CargarLista();
                         break;
 
-                    case "2":
-                        expression = A => A.Nombres.Contains(Criterio)
-                        && A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date;
+                    case "2":                       
+                        expression = A => A.Valor == decimal.Parse(Criterio)
+                        && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
                         Paginacion.PaginaActual = 1;
                         CargarLista();
                         break;
 
-                    case "3":
-                        expression = A => A.Cedula.Contains(Criterio)
-                        && A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date;
-                        Paginacion.PaginaActual = 1;
-                        CargarLista();
-                        break;
-
-
-                    case "4":
-                        expression = A => A.Balance == decimal.Parse(Criterio)
-                        && A.FechaCreacion.Date >= DesdeFecha.Date && A.FechaCreacion.Date <= HastaFecha.Date;
-                        Paginacion.PaginaActual = 1;
-                        CargarLista();
-                        break;
-
-                    case "5":
-
-                        expression = A => A.FechaNacimiento.Date >= DesdeFecha.Date && A.FechaNacimiento.Date <= HastaFecha.Date;
+                         case "3":                       
+                        expression = A => A.Detalle.Count == int.Parse(Criterio)
+                        && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
                         Paginacion.PaginaActual = 1;
                         CargarLista();
                         break;
 
                     default:
-                        expression = A => true;
+                        expression = A => true
+                        && A.Fecha.Date >= DesdeFecha.Date && A.Fecha.Date <= HastaFecha.Date;
                         Paginacion.PaginaActual = 1;
                         CargarLista();
                         break;
@@ -293,12 +256,12 @@
                 }
             }
 
-          
+
+
 
         }
         catch (Exception)
         {
-
 
         }
     }

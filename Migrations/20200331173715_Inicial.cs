@@ -33,6 +33,7 @@ namespace AgroVeterinariaSoft.Migrations
                     CompraId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     SuplidorId = table.Column<int>(nullable: false),
+                    NombreSuplidor = table.Column<string>(nullable: true),
                     Fecha = table.Column<DateTime>(nullable: false),
                     FechaVencimiento = table.Column<DateTime>(nullable: false),
                     Impuesto = table.Column<decimal>(nullable: false),
@@ -68,7 +69,8 @@ namespace AgroVeterinariaSoft.Migrations
                     Descripcion = table.Column<string>(maxLength: 40, nullable: false),
                     Cantidad = table.Column<int>(nullable: false),
                     Minimo = table.Column<int>(nullable: false),
-                    Unidad = table.Column<int>(nullable: false),
+                    UnidadId = table.Column<int>(nullable: false),
+                    UnidadDescripcion = table.Column<string>(nullable: true),
                     Costo = table.Column<decimal>(nullable: false),
                     Precio = table.Column<decimal>(nullable: false),
                     Ganancia = table.Column<decimal>(nullable: false)
@@ -133,6 +135,7 @@ namespace AgroVeterinariaSoft.Migrations
                     VentaId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ClienteId = table.Column<int>(nullable: false),
+                    NombreCliente = table.Column<string>(nullable: true),
                     Fecha = table.Column<DateTime>(nullable: false),
                     Observacion = table.Column<string>(maxLength: 100, nullable: true),
                     Total = table.Column<decimal>(nullable: false),

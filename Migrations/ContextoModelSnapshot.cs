@@ -72,6 +72,9 @@ namespace AgroVeterinariaSoft.Migrations
                     b.Property<decimal>("Impuesto")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("NombreSuplidor")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("SuplidorId")
                         .HasColumnType("INTEGER");
 
@@ -185,7 +188,10 @@ namespace AgroVeterinariaSoft.Migrations
                     b.Property<decimal>("Precio")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Unidad")
+                    b.Property<string>("UnidadDescripcion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UnidadId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ProductoId");
@@ -294,6 +300,9 @@ namespace AgroVeterinariaSoft.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Itbis")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NombreCliente")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Observacion")

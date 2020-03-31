@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgroVeterinariaSoft.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200330211229_Inicial")]
+    [Migration("20200331173715_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,6 +72,9 @@ namespace AgroVeterinariaSoft.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Impuesto")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NombreSuplidor")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("SuplidorId")
@@ -187,7 +190,10 @@ namespace AgroVeterinariaSoft.Migrations
                     b.Property<decimal>("Precio")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Unidad")
+                    b.Property<string>("UnidadDescripcion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UnidadId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ProductoId");
@@ -296,6 +302,9 @@ namespace AgroVeterinariaSoft.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Itbis")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NombreCliente")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Observacion")
