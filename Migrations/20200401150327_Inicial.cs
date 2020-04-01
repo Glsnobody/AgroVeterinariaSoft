@@ -120,7 +120,7 @@ namespace AgroVeterinariaSoft.Migrations
                     Nombres = table.Column<string>(maxLength: 50, nullable: false),
                     Usuario = table.Column<string>(maxLength: 30, nullable: false),
                     Correo = table.Column<string>(maxLength: 80, nullable: false),
-                    Psw = table.Column<string>(maxLength: 15, nullable: false),
+                    Psw = table.Column<string>(nullable: false),
                     NivelAcceso = table.Column<string>(nullable: false)
                 },
                 constraints: table =>

@@ -51,6 +51,7 @@ namespace AgroVeterinariaSoft.Controllers
             {
                 if(!ExisteUsuario(entity.Usuario))
                 {
+                    entity.Psw =Usuarios.Encriptar(entity.Psw);
                     db.Usuarios.Add(entity);
                     paso = db.SaveChanges() > 0;
                 }
@@ -77,6 +78,7 @@ namespace AgroVeterinariaSoft.Controllers
             bool paso = false;
             try
             {
+                entity.Psw = Usuarios.Encriptar(entity.Psw);
                 db.Entry(entity).State = EntityState.Modified;
                 paso = db.SaveChanges() > 0;
             }
@@ -103,6 +105,7 @@ namespace AgroVeterinariaSoft.Controllers
             try
             {
                 usuario = db.Usuarios.Where(A => A.UsuarioId == Id).FirstOrDefault();
+                usuario.Psw = Usuarios.DesEncriptar(usuario.Psw);
             }
             catch (Exception)
             {
@@ -191,24 +194,7 @@ namespace AgroVeterinariaSoft.Controllers
 
        
 
-        public static bool ExisteNombre(int id, string nombre)
-        {
-            bool paso = false;
-            Contexto db = new Contexto();
-
-
-            try
-            {
-                paso = db.Clientes.Where(A => A.ClienteId == id).Any(A => A.Nombres.Contains(nombre));
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            return paso;
-        }
+       
 
         public static bool ExisteUsuario( string nombre)
         {
@@ -261,8 +247,8 @@ namespace AgroVeterinariaSoft.Controllers
 
             try
             {
-                var lista = db.Usuarios.Where(A=> true).ToList();
-                paso = db.Usuarios.Any(A => A.Usuario.Equals(Usuario) && A.Psw.Equals(psw));
+
+                paso = db.Usuarios.Any(A => A.Usuario.Equals(Usuario) && A.Psw.Equals(Usuarios.Encriptar(psw)));
             }
             catch (Exception)
             {
@@ -301,8 +287,8 @@ namespace AgroVeterinariaSoft.Controllers
             {
                 if(db.Usuarios.Count() == 0)
                 {
-                    db.Usuarios.Add(new Usuarios() { Usuario = "Admin",Psw="12345",NivelAcceso="Alto"});
-                   paso = db.SaveChanges() > 0;
+                   paso = Insertar(new Usuarios() { Usuario = "Admin",Psw="12345",NivelAcceso="Alto"});
+                   
                 }
             }
             catch (Exception)

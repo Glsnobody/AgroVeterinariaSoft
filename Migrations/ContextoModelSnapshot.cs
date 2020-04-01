@@ -286,8 +286,7 @@ namespace AgroVeterinariaSoft.Migrations
 
                     b.Property<string>("Psw")
                         .IsRequired()
-                        .HasColumnType("nvarchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Usuario")
                         .IsRequired()

@@ -25,7 +25,6 @@ namespace AgroVeterinariaSoft.Models
         [RegularExpression(@"^[^@]+@[^@]+\.[a-zA-Z]{2,}$", ErrorMessage = "Por favor ingrese un correo electronico valido")]
         public string Correo { get; set; }
         [Required(ErrorMessage = "Es necesario introducir una Contraseña")]
-        [StringLength(maximumLength: 15, ErrorMessage = "La Contraseña es muy larga")]
         public string Psw { get; set; }
         [Required(ErrorMessage = "Es necesario introducir un nivel de acceso")]
         public string NivelAcceso { get; set; }
@@ -39,6 +38,24 @@ namespace AgroVeterinariaSoft.Models
             Correo = string.Empty;
             NivelAcceso = string.Empty;
             Fecha = DateTime.Now;
+        }
+
+        public static string Encriptar(string cadenaEncriptada)
+        {
+            string resultado = string.Empty;
+            byte[] encryted = Encoding.Unicode.GetBytes(cadenaEncriptada);
+            resultado = Convert.ToBase64String(encryted);
+
+            return resultado;
+        }
+
+        public static string DesEncriptar(string cadenaDesencriptada)
+        {
+            string resultado = string.Empty;
+            byte[] decryted = Convert.FromBase64String(cadenaDesencriptada);
+            resultado = System.Text.Encoding.Unicode.GetString(decryted);
+
+            return resultado;
         }
 
 

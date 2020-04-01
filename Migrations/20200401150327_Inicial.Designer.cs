@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgroVeterinariaSoft.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200401004257_Inicial")]
+    [Migration("20200401150327_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -288,8 +288,7 @@ namespace AgroVeterinariaSoft.Migrations
 
                     b.Property<string>("Psw")
                         .IsRequired()
-                        .HasColumnType("nvarchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Usuario")
                         .IsRequired()
