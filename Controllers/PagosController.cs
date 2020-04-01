@@ -189,7 +189,7 @@ namespace AgroVeterinariaSoft.Controllers
 
             try
             {
-                list = db.Pagos.Where(expression).Include(A => A.PagoId).ToList();
+                list = db.Pagos.Where(expression).Include(A => A.Detalle).ToList();
             }
             catch (Exception)
             {

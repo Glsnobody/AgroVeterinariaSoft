@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using AgroVeterinariaSoft.Controllers;
+using Blazored.Toast;
 
 
 namespace AgroVeterinariaSoft
@@ -17,6 +18,7 @@ namespace AgroVeterinariaSoft
     public class LoginModel : PageModel
     {
         public string ReturnUrl { get; set; }
+        public BlazoredToasts toast { get; set; }
         public async Task<IActionResult>
             OnGetAsync(string paramUsername, string paramPassword)
         {
@@ -62,7 +64,6 @@ namespace AgroVeterinariaSoft
                     string error = ex.Message;
                 }
             }
-            
 
 
             

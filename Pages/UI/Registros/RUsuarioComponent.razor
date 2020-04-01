@@ -140,7 +140,12 @@
         {
             try
             {
-                
+                if(UsuariosController.ExisteUsuario(Usuario.Usuario) && Usuario.UsuarioId == 0)
+                {
+                    toastService.ShowInfo("El Usuario no esta disponible");
+                    return;
+                }
+
                 if (UsuariosController.Guardar(Usuario))
                 {
                     Usuario = new Usuarios();
