@@ -53,7 +53,7 @@
 
             <div class="form-group">
                 <label class="text-white">Contraseña </label>
-                <input type="password" @bind-value="@Usuario.Psw" class="form-control" />
+                <input   type="password" class="form-control" @bind-value="Usuario.Psw"  />
             </div>
 
             <div class="form-group">
@@ -79,27 +79,7 @@
         Usuario = new Usuarios();
     }
 
-    private void InciarSecion()
-    {
-        try
-        {
-            if (UsuariosController.InicioSesion(Usuario.Usuario, Usuario.Psw))
-            {
-                NavigationManager.NavigateTo($"Login?paramUsername={encode(Usuario.Usuario)}&paramPassword={encode(Usuario.Psw)}");
-            }
-            else
-            {
-                toastService.ShowError("No se pudo iniciar secion");
-            }
-
-        }
-        catch (Exception)
-        {
-
-            throw;
-        }
-
-    }
+    
 
     private string encode(string param)
     {

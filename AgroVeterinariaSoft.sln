@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgroVeterinariaSoft", "AgroVeterinariaSoft.csproj", "{599DB37D-202E-4D93-87B1-84DB9903385D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgroVeterinariaSoftTests1", "..\AgroVeterinariaSoftTests1\AgroVeterinariaSoftTests1.csproj", "{DF61331F-A3A4-4A21-8F88-045FC282E2DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgroVeterinariaSoftTests1", "..\AgroVeterinariaSoftTests1\AgroVeterinariaSoftTests1.csproj", "{DF61331F-A3A4-4A21-8F88-045FC282E2DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -35,7 +35,7 @@
 
     <div class="container">
 
-        <h3 class="display-3 text-center">Registro de Productos</h3>
+        <h2 class=" text-center">Registro de Productos</h2>
 
         <EditForm Model="Producto" OnValidSubmit="Guardar">
             <DataAnnotationsValidator />
@@ -59,19 +59,19 @@
             </div>
 
             <div class="form-row">
-                <div class="form-group col">
+                <div class="form-group col-lg-6 col-sm-12 col-md-6">
                     <label for="CantidadNumber">Cantidad: </label>
                     <InputNumber id="CantidadNumber" @bind-Value="Producto.Cantidad" class="form-control"></InputNumber>
                 </div>
 
-                <div class="form-group col">
+                <div class="form-group col-lg-6 col-sm-12 col-md-6">
                     <label for="MinimoNumber">Minimo: </label>
                     <InputNumber id="MinimoNumber" @bind-Value="Producto.Minimo" class="form-control"></InputNumber>
                 </div>
             </div>
 
             <div class="form-row">
-                <div class="form-group col">
+                <div class="form-group col-lg-6 col-sm-12 col-md-6">
                     <label for="UnidadText">Unidad: </label>
 
                     <InputSelect @bind-Value="unidadSeleccionada" @onclick="agregarUnidad" class="form-control">
@@ -87,7 +87,7 @@
                    
                 </div>
 
-                <div class="form-group col">
+                <div class="form-group col-lg-6 col-sm-12 col-md-6">
                     <label for="CostoNumber">Costo: </label>
                     <InputNumber id="CostoNumber" @bind-Value="Producto.Costo" @onfocus="Calcular" @onfocusin="Calcular" @onfocusout="Calcular" @onchange="Calcular" class="form-control"></InputNumber>
 
@@ -97,24 +97,23 @@
 
             <div class="form-row">
 
-                <div class="form-group col">
+                <div class="form-group col-lg-6 col-sm-12 col-md-6">
                     <label for="GananciaNumber">Ganancia: </label>
                     <InputNumber id="GananciaNumber" @bind-Value="Producto.Ganancia" @onfocus="Calcular" @onfocusin="Calcular" @onfocusout="Calcular" @onchange="Calcular" class="form-control"></InputNumber>
                 </div>
 
-                <div class="form-group col">
+                <div class="form-groupcol-lg-6 col-sm-12 col-md-6">
                     <label for="PrecioNumber">Precio: </label>
                     <InputNumber id="PrecioNumber" ReadOnly="true"  @bind-Value="Producto.Precio" class="form-control" ></InputNumber>
                 </div>
 
             </div>
 
-            <div class="btn-group">
+            <div class="form-group mt-3">
                 <button class="btn btn-primary" @onclick="Nuevo" type="button">Nuevo</button>
                 <button class="btn btn-success" type="submit">Guardar</button>
                 <button class="btn btn-danger" @onclick="Borrar" type="button">Eliminar</button>
 
-                <button type="button" class="btn btn-secondary" @onclick="Agregar100">Agregar100</button>
             </div>
         </EditForm>
     </div>
@@ -170,6 +169,7 @@
         {
             toastService.ShowSuccess("Este Producto fue encontrado");
             Producto = ProductoBusqueda;
+            unidadSeleccionada = Producto.UnidadId.ToString();
 
         }
     }

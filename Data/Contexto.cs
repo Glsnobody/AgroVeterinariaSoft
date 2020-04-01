@@ -20,7 +20,7 @@ namespace AgroVeterinariaSoft.Data
         public DbSet<PagosDetalle> PagosDetalles { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server = .\SqlExpress; Database= AgroVeterinaria_db; Trusted_Connection = True; ");
+            optionsBuilder.UseSqlServer(@"Server = tcp:agroveterinariasoftdbserver.database.windows.net, 1433; Initial Catalog = AgroVeterinariaSoft_db; Persist Security Info = False; User ID = administrador; Password =Admin12345; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;");
 
         }
     }

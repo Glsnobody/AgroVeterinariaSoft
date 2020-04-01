@@ -6,32 +6,32 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
-    <AuthorizeView>
+<AuthorizeView>
 
 
-        <NotAuthorized>
-            <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+    <NotAuthorized>
+        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
 
-        </NotAuthorized>
+    </NotAuthorized>
 
-        <Authorized>
-            @if (!NivelUsuario)
-            {
-                <p class="display-3 text-center">Usted no tiene el nivel necesario para acceder a esta pagina</p>
-            }
-        </Authorized>
+    <Authorized>
+        @if (!NivelUsuario)
+        {
+            <p class="display-3 text-center">Usted no tiene el nivel necesario para acceder a esta pagina</p>
+        }
+    </Authorized>
 
-    </AuthorizeView>
+</AuthorizeView>
 
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated
-  && NivelUsuario)
+ && NivelUsuario)
 {
 
 
     <div class="container mb-4">
 
-        <h3 class="display-3 text-center">Registro de Usuarios</h3>
+        <h2 class=" text-center">Registro de Usuarios</h2>
 
         <div>
             <EditForm Model="Usuario" OnValidSubmit="Guardar">
@@ -89,7 +89,7 @@
 
                     </InputSelect>
 
-                    
+
                 </div>
 
                 <ValidationSummary />
@@ -134,17 +134,40 @@
         }
     }
 
+    private bool UsuarioEnUso(string NombreUsuario)
+    {
+        bool paso = false;
+        try
+        {
+            string usuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name;
+
+            if (NombreUsuario.Equals(usuario))
+            {
+                paso = true;
+            }
+        }
+        catch (Exception)
+        {
+
+            toastService.ShowError("Hubo un error");
+        }
+
+        return paso;
+    }
+
     private void Guardar()
     {
         if (RePsw.Equals(Usuario.Psw))
         {
             try
             {
-                if(UsuariosController.ExisteUsuario(Usuario.Usuario) && Usuario.UsuarioId == 0)
+                if (UsuariosController.ExisteUsuario(Usuario.Usuario) && Usuario.UsuarioId == 0)
                 {
                     toastService.ShowInfo("El Usuario no esta disponible");
                     return;
                 }
+
+
 
                 if (UsuariosController.Guardar(Usuario))
                 {
@@ -199,6 +222,12 @@
 
             if (UsuariosController.Existe(Usuario.UsuarioId))
             {
+                if (UsuarioEnUso(Usuario.Usuario))
+                {
+                    toastService.ShowInfo("No se puede eliminar, el usuario esta en uso actualmente");
+                    return;
+                }
+
                 if (UsuariosController.Eliminar(Usuario.UsuarioId))
                 {
                     toastService.ShowSuccess("Eliminado correctamente");

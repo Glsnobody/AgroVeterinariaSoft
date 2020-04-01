@@ -34,7 +34,7 @@
 {
     <div class="container">
 
-        <h3 class="display-3 text-center">Registro de Pagos</h3>
+        <h2 class=" text-center">Registro de Pagos</h2>
 
         <div>
             <EditForm Model="Pago" OnValidSubmit="Guardar">
@@ -111,7 +111,7 @@
                                 <tr>
                                     <td>@obj.CompraId</td>
                                     <td>@obj.ValorPagado</td>
-                                    <td><button type="button" class="btn btn-sm " @onclick="(()=> RemoverProducto(obj))">Eliminar</button></td>
+                                    <td><button type="button" class="btn btn-sm btn-danger " @onclick="(()=> RemoverProducto(obj))">Eliminar</button></td>
                                 </tr>
                             }
 
