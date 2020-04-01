@@ -56,9 +56,9 @@ Los Usuarios cuentan con tres niveles de Acceso:
 
 Es en este apartado donde el usuario a cargo podrá agregar las diferentes unidades de medidas que poseen nuestros productos.
 
-## Registro de productos.
+## Registro de Productos.
 
-   ![Imagen](Captures/Registros/RegsitroProductos.png)
+   ![Imagen](Captures/Registros/RegistroProductos.png)
    
 En este apartado se guardarán, buscaran y eliminaran productos que se utilizaran para abastecer el inventario y ser destinados a su venta.
 ## Registro de Suplidores
