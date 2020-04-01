@@ -322,9 +322,6 @@ namespace AgroVeterinariaSoft.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<int>("TipoVenta")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
 

@@ -19,11 +19,10 @@ namespace AgroVeterinariaSoft.Models
         [StringLength(maximumLength:40 ,ErrorMessage = "La descripcion esta fuera de rango")]
         public string Descripcion { get; set; }
         [Required(ErrorMessage = "Es necesario especificar la cantidad del producto")]
-        [Range(typeof(int), minimum: "0", maximum: "1000000", ErrorMessage = "Itbis esta fuera de rango")]
+        [Range(typeof(int), minimum: "1", maximum: "1000000", ErrorMessage = "Itbis esta fuera de rango")]
         public int Cantidad { get; set; }
         [Required(ErrorMessage = "Es necesario especificar el minimo de la cantidad del producto")]
         [Range(typeof(int), minimum: "0", maximum: "1000000", ErrorMessage = "Itbis esta fuera de rango")]
-
         public int Minimo { get; set; }
 
         [Required(ErrorMessage = "Es necesario introducir una unidad")]
@@ -32,7 +31,7 @@ namespace AgroVeterinariaSoft.Models
         public string UnidadDescripcion { get; set; }
 
         [Required(ErrorMessage = "Es necesario especificar el costo de compra del producto")]
-        [Range(typeof(decimal), minimum: "0", maximum: "1000000", ErrorMessage = "El costo esta fuera de rango")]
+        [Range(typeof(decimal), minimum: "1", maximum: "1000000", ErrorMessage = "El costo esta fuera de rango")]
         public decimal Costo { get; set; }
         [Required(ErrorMessage ="Es necesario introducir un precio")]
         [Range(typeof(decimal), minimum: "1", maximum: "1000000000000", ErrorMessage = "El precio esta fuera de rango")]

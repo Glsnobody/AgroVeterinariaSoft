@@ -139,8 +139,7 @@ namespace AgroVeterinariaSoft.Migrations
                     Fecha = table.Column<DateTime>(nullable: false),
                     Observacion = table.Column<string>(maxLength: 100, nullable: true),
                     Total = table.Column<decimal>(nullable: false),
-                    Itbis = table.Column<decimal>(nullable: false),
-                    TipoVenta = table.Column<int>(nullable: false)
+                    Itbis = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
