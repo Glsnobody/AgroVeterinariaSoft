@@ -121,6 +121,30 @@ namespace AgroVeterinariaSoft.Controllers
             return usuario;
         }
 
+        public static Usuarios BuscarPorNombre(string nombre)
+        {
+            Usuarios usuario;
+            Contexto db = new Contexto();
+
+            try
+            {
+                usuario = db.Usuarios.Where(A => A.Usuario == nombre).FirstOrDefault();
+                
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+
+
+            return usuario;
+        }
+
         public static bool Eliminar(int Id)
         {
             bool paso = false;

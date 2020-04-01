@@ -1,0 +1,70 @@
+﻿@page "/LogoutPage"
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject IToastService toast
+
+<div class="container" style="max-width:500px">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="text-center">Informacion del Usuario</h2>
+        </div>
+        <div class="card-body">
+            <div class="text-center mt-3 mb-5">
+                <i class="fas fa-user fa-9x"></i>
+            </div>
+            <div class="form-row">
+                <label class="col-3">Nombre:</label>
+                <label class="col-7 offset-2">@Usuario.Nombres</label>
+            </div>
+
+            <div class="form-row">
+                <label class="col-3">E-mail:</label>
+                <label class="col-7 offset-2">@Usuario.Correo</label>
+            </div>
+
+            <div class="form-row">
+                <label class="col-3">Usuario:</label>
+                <label class="col-7 offset-2">@Usuario.Usuario</label>
+            </div>
+
+            <div class="form-row">
+                <label class="col-3">Fecha Creacion:</label>
+                <label class="col-7 offset-2">@Usuario.Fecha.ToShortDateString()</label>
+            </div>
+            <div class="form-group">
+                <a href="RUsuarios/@Usuario.UsuarioId">Editar</a>
+            </div>
+        </div>
+
+        <div class="card-footer">
+
+            <div class="form-group">
+                <a class="btn btn-danger btn-block" href="/logout?returnUrl=/">Cerrar Secion</a>
+            </div>
+
+        </div>
+        @*"/logout?returnUrl=/"*@
+    </div>
+</div>
+
+@code {
+    public Usuarios Usuario { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Usuario = new Usuarios();
+
+        try
+        {
+            string usuario = authenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name;
+
+            Usuario = UsuariosController.BuscarPorNombre(usuario);
+        }
+        catch (Exception)
+        {
+
+            toast.ShowError("Hubo un error");
+        }
+
+    }
+
+}

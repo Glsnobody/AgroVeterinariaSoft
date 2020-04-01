@@ -42,20 +42,29 @@ namespace AgroVeterinariaSoft.Models
 
         public static string Encriptar(string cadenaEncriptada)
         {
-            string resultado = string.Empty;
-            byte[] encryted = Encoding.Unicode.GetBytes(cadenaEncriptada);
-            resultado = Convert.ToBase64String(encryted);
+            if(!string.IsNullOrEmpty(cadenaEncriptada))
+            {
+                string resultado = string.Empty;
+                byte[] encryted = Encoding.Unicode.GetBytes(cadenaEncriptada);
+                resultado = Convert.ToBase64String(encryted);
 
-            return resultado;
+                return resultado;
+            }
+            return string.Empty;
         }
 
         public static string DesEncriptar(string cadenaDesencriptada)
         {
-            string resultado = string.Empty;
-            byte[] decryted = Convert.FromBase64String(cadenaDesencriptada);
-            resultado = System.Text.Encoding.Unicode.GetString(decryted);
+            if (!string.IsNullOrEmpty(cadenaDesencriptada))
+            {
+                string resultado = string.Empty;
+                byte[] decryted = Convert.FromBase64String(cadenaDesencriptada);
+                resultado = System.Text.Encoding.Unicode.GetString(decryted);
 
-            return resultado;
+                return resultado;
+            }
+
+            return string.Empty;
         }
 
 
