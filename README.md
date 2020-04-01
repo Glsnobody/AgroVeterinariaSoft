@@ -128,7 +128,7 @@ El objetivo principal de estas ventanas es poder ver todos los elementos almacen
 *	Cualquier Dispositivo Compatible con Firefox, Chrome, Opera o Microsoft Edge
 *	Conexión a internet Estable
 
-## :Pencil: Desarrollado con:
+## :pencil: Desarrollado con:
 * Visual Studio (Blazor Apps) 
 *	Entity Framework Core
 *	SQLite
