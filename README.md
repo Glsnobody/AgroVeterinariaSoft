@@ -131,7 +131,7 @@ El objetivo principal de estas ventanas es poder ver todos los elementos almacen
 ## :pencil: Desarrollado con:
 * Visual Studio (Blazor Apps) 
 *	Entity Framework Core
-*	SQLite
+*	SQLServer
 *	Google Chrome
 
 ## :wrench: Desarrollado por
