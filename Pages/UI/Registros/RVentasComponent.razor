@@ -25,7 +25,7 @@
 {
     <div class="container">
 
-        <h3 class="display-3 text-center">Registro de Ventas</h3>
+        <h2 class=" text-center">Registro de Ventas</h2>
 
         <div>
             <EditForm Model="Venta" OnValidSubmit="Guardar">
@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="form-row">
-                    <div class="col form-group">
+                    <div class="col-lg-6 col-sm-12 col-md-6 form-group">
                         <label>ClienteId</label>
                         <div class="input-group">
                             <InputNumber @bind-Value="Venta.ClienteId" class="form-control" @onchange="BuscarCliente" />
@@ -58,7 +58,7 @@
                         </div>
                     </div>
 
-                    <div class="col form-group">
+                    <div class="col-lg-6 col-sm-12 col-md-6 form-group">
                         <label>Cliente</label>
                         <InputText @bind-Value="Cliente.Nombres" class="form-control" />
                     </div>
@@ -101,8 +101,8 @@
                 </div>
 
 
-                <div>
-                    <table class="table">
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-striped">
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="row">Id</th>
@@ -121,7 +121,7 @@
                                     <td>@obj.Descripcion</td>
                                     <td>@obj.Precio</td>
                                     <td>@obj.Cantidad</td>
-                                    <td><button type="button" class="btn btn-sm " @onclick="(()=> RemoverProducto(obj))">Eliminar</button></td>
+                                    <td><button type="button" class="btn btn-sm btn-danger " @onclick="(()=> RemoverProducto(obj))">Eliminar</button></td>
                                 </tr>
                             }
 

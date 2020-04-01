@@ -35,7 +35,7 @@
 {
     <div class="container">
 
-        <h3 class="display-3 text-center">Registro de Compras</h3>
+        <h2 class=" text-center">Registro de Compras</h2>
 
         <EditForm Model="Compra" OnValidSubmit="Guardar">
             <DataAnnotationsValidator />
@@ -77,7 +77,7 @@
             </div>
 
             <div class="form-row">
-                <div class="form-group col">
+                <div class="form-group col-sm-6 col-md-4 col-lg-4">
                     <label>ProductoId</label>
                     <div class="input-group">
                         <InputNumber @bind-Value="Producto.ProductoId" class="form-control" />
@@ -88,12 +88,12 @@
 
                 </div>
 
-                <div class="form-group col">
+                <div class="form-group col-sm-6 col-md-4 col-lg-4">
                     <label>Producto</label>
                     <InputText @bind-Value="Producto.Descripcion" class="form-control" />
                 </div>
 
-                <div class="form-group col">
+                <div class="form-group col-sm-6 col-md-4 col-lg-4">
                     <label>Cantidad</label>
                     <div class="input-group">
                         <InputNumber @bind-Value="CantidadProducto" class="form-control" />
@@ -106,8 +106,8 @@
             </div>
 
 
-            <div>
-                <table class="table">
+            <div class="table-responsive text-nowrap">
+                <table class="table table-striped">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="row">Id</th>
