@@ -12,7 +12,7 @@
     </NotAuthorized>
 
     <Authorized>
-        @if (!NivelUsuario)
+        @if (NivelUsuario)
         {
             <p class="display-3 text-center">Usted no tiene el nivel necesario para acceder a esta pagina</p>
         }
