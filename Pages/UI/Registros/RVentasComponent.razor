@@ -16,7 +16,7 @@
 
     </NotAuthorized>
 
-   
+
 
 </AuthorizeView>
 
@@ -42,6 +42,11 @@
 
                 </div>
 
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <InputDate @bind-Value="Venta.Fecha" class="form-control" />
+                </div>
+
                 <div class="form-row">
                     <div class="col form-group">
                         <label>ClienteId</label>
@@ -59,21 +64,7 @@
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group col">
-                        <label>Fecha</label>
-                        <InputDate @bind-Value="Venta.Fecha" class="form-control" />
-                    </div>
 
-                    <div class="form-group col">
-                        <label>Tipo de Venta</label>
-                        <InputSelect @bind-Value="TipoVentaSeleccionada" class="form-control" @onclick="setTipoVenta">
-                            <option selected value="1">Contado</option>
-                            <option value="2">Credito</option>
-                        </InputSelect>
-
-                    </div>
-                </div>
 
                 <div class="form-row">
                     <div class="form-group col">
@@ -143,10 +134,19 @@
                         <label>Observacion</label>
                         <InputTextArea @bind-Value="Venta.Observacion" class="form-control" />
                     </div>
-                    <div class="col form-group">
-                        <label>Total</label>
-                        <InputNumber @bind-Value="Venta.Total" class="form-control" ReadOnly="true" />
+
+                    <div class="col form-row">
+                        <div class="col form-group">
+                            <label>Itbis</label>
+                            <InputNumber @bind-Value="Venta.Itbis" class="form-control" ReadOnly="true" />
+                        </div>
+                        <div class="col form-group">
+                            <label>Total</label>
+                            <InputNumber @bind-Value="Venta.Total" class="form-control" ReadOnly="true" />
+                        </div>
                     </div>
+
+
                 </div>
 
 
@@ -175,7 +175,7 @@
     public string TipoVentaSeleccionada { get; set; }
 
 
-     public bool NivelUsuario;
+    public bool NivelUsuario;
     protected override void OnInitialized()
     {
         NivelUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Bajo");
@@ -191,10 +191,7 @@
         }
     }
 
-    private void setTipoVenta()
-    {
-        Venta.TipoVenta = int.Parse(TipoVentaSeleccionada);
-    }
+   
 
     private void Guardar()
     {
@@ -237,7 +234,7 @@
             if (temp != null)
             {
                 Producto = temp;
-               
+
             }
             else
             {
@@ -341,7 +338,6 @@
         CalcularTotal();
 
         CantidadProducto = 0;
-        TipoVentaSeleccionada = Venta.TipoVenta.ToString();
 
     }
 
@@ -354,7 +350,7 @@
             if (temp != null)
             {
                 Cliente = temp;
-                
+
             }
             else
             {
@@ -370,7 +366,10 @@
 
     private void CalcularTotal()
     {
+
         Venta.Total = Venta.Productos.Sum(A => A.Precio * A.Cantidad);
+        Venta.Itbis = Venta.Total * Convert.ToDecimal(0.18);
+        Venta.Total += Venta.Itbis;
     }
 
     private void Eliminar()
