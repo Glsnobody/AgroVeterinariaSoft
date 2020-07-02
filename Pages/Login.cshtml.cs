@@ -19,16 +19,14 @@ namespace AgroVeterinariaSoft
     {
         public string ReturnUrl { get; set; }
         public BlazoredToasts toast { get; set; }
-        public async Task<IActionResult>
-            OnGetAsync(string paramUsername, string paramPassword)
+
+        public async Task<IActionResult> OnGetAsync(string paramUsername, string paramPassword)
         {
             string returnUrl = Url.Content("~/");
             try
             {
                 // Clear the existing external cookie
-                await HttpContext
-                    .SignOutAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             }
             catch { }
             // *** !!! This is where you would validate the user !!! ***
@@ -37,27 +35,24 @@ namespace AgroVeterinariaSoft
 
             if (UsuariosController.InicioSesion(paramUsername, paramPassword))
             {
-                
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, paramUsername),
                     new Claim(ClaimTypes.Role, UsuariosController.GetRol(paramUsername))
 
                 };
-                var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var authProperties = new AuthenticationProperties
                 {
                     IsPersistent = true,
                     RedirectUri = this.Request.Host.Value
                 };
+
                 try
                 {
-                    await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
                 }
                 catch (Exception ex)
                 {
@@ -65,9 +60,6 @@ namespace AgroVeterinariaSoft
                 }
             }
 
-
-            
-            
             return LocalRedirect(returnUrl);
         }
     }

@@ -20,8 +20,21 @@ namespace AgroVeterinariaSoft.Data
         public DbSet<PagosDetalle> PagosDetalles { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server = tcp:agroveterinariasoftdbserver.database.windows.net, 1433; Initial Catalog = AgroVeterinariaSoft_db; Persist Security Info = False; User ID = administrador; Password =Admin12345; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;");
+            optionsBuilder.UseSqlite(@"Data Source = VeteSoft.db");
 
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Usuarios>().HasData(new Models.Usuarios {
+                UsuarioId = 2,
+            Nombres = "admin",
+            Usuario = "admin",
+            Psw =  Models.Usuarios.Encriptar("admin"),
+            Correo = string.Empty,
+            NivelAcceso = "admin",
+            Fecha = DateTime.Now
+        });
         }
     }
 }
